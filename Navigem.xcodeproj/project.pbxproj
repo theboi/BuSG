@@ -103,15 +103,15 @@
 		AAF4A4F625627D4F00FC51E7 /* Navigem */ = {
 			isa = PBXGroup;
 			children = (
-				AAF4A5312562814D00FC51E7 /* Modals */,
-				AAF4A5302562814700FC51E7 /* Views */,
+				AAF4A5502562A53D00FC51E7 /* Views */,
+				AAF4A5312562814D00FC51E7 /* Models */,
+				AAF4A5302562814700FC51E7 /* Controllers */,
 				AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */,
 				AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */,
 				AAF4A4FB25627D4F00FC51E7 /* ViewController.swift */,
 				AAF4A50025627D5100FC51E7 /* Assets.xcassets */,
 				AAF4A50225627D5100FC51E7 /* LaunchScreen.storyboard */,
 				AAF4A50525627D5100FC51E7 /* Info.plist */,
-				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
 			);
 			path = Navigem;
 			sourceTree = "<group>";
@@ -134,20 +134,28 @@
 			path = NavigemUITests;
 			sourceTree = "<group>";
 		};
-		AAF4A5302562814700FC51E7 /* Views */ = {
+		AAF4A5302562814700FC51E7 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				AAF4A5332562840500FC51E7 /* MainViewController.swift */,
 				AAF4A53C256284D100FC51E7 /* BottomSheetViewController.swift */,
 			);
-			path = Views;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		AAF4A5312562814D00FC51E7 /* Modals */ = {
+		AAF4A5312562814D00FC51E7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AAF4A5502562A53D00FC51E7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = Modals;
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

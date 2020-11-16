@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import MapKit
 
 class MainViewController: UIViewController {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        self.view.backgroundColor = .red
+        let mapView = MKMapView()
+        self.view = mapView
     }
     
     required init?(coder: NSCoder) {
