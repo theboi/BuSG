@@ -31,8 +31,6 @@ class MainViewController: UIViewController {
         self.view.addSubview(bottomSheetVC.view)
         bottomSheetVC.didMove(toParent: self)
         
-        let width = view.frame.width
-        let height = view.frame.height-100
-        bottomSheetVC.view.frame = CGRect(x: K.margin.small, y: 100, width: width-K.margin.small*2, height: height)
+        bottomSheetVC.view.frame = CGRect(x: K.margin.small, y: 100, width: (UIScreen.main.bounds.width)-K.margin.small*2, height: 0)
     }
 }
