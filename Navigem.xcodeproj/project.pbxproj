@@ -14,6 +14,9 @@
 		AAF4A50425627D5100FC51E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAF4A50225627D5100FC51E7 /* LaunchScreen.storyboard */; };
 		AAF4A50F25627D5200FC51E7 /* NavigemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A50E25627D5200FC51E7 /* NavigemTests.swift */; };
 		AAF4A51A25627D5200FC51E7 /* NavigemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A51925627D5200FC51E7 /* NavigemUITests.swift */; };
+		AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A5332562840500FC51E7 /* MainViewController.swift */; };
+		AAF4A53D256284D100FC51E7 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A53C256284D100FC51E7 /* BottomSheetViewController.swift */; };
+		AAF4A54525628DEF00FC51E7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A54425628DEF00FC51E7 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		AAF4A51525627D5200FC51E7 /* NavigemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A51925627D5200FC51E7 /* NavigemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigemUITests.swift; sourceTree = "<group>"; };
 		AAF4A51B25627D5200FC51E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AAF4A5332562840500FC51E7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		AAF4A53C256284D100FC51E7 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		AAF4A54425628DEF00FC51E7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +111,7 @@
 				AAF4A50025627D5100FC51E7 /* Assets.xcassets */,
 				AAF4A50225627D5100FC51E7 /* LaunchScreen.storyboard */,
 				AAF4A50525627D5100FC51E7 /* Info.plist */,
+				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
 			);
 			path = Navigem;
 			sourceTree = "<group>";
@@ -130,6 +137,8 @@
 		AAF4A5302562814700FC51E7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AAF4A5332562840500FC51E7 /* MainViewController.swift */,
+				AAF4A53C256284D100FC51E7 /* BottomSheetViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -273,6 +282,9 @@
 				AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */,
 				AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */,
 				AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */,
+				AAF4A53D256284D100FC51E7 /* BottomSheetViewController.swift in Sources */,
+				AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */,
+				AAF4A54525628DEF00FC51E7 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,10 +17,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         (UIApplication.shared.delegate as! AppDelegate).window = window
         window?.windowScene = windowScene
         
-        let vc = UIViewController()
-        vc.view.backgroundColor = .red
-        
-        window?.rootViewController = vc
+        let mainViewController = MainViewController()
+        window?.rootViewController = mainViewController
         window?.makeKeyAndVisible()
     }
 }
