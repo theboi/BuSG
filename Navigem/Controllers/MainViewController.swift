@@ -9,9 +9,10 @@ import UIKit
 import MapKit
 
 class MainViewController: UIViewController {
-
+    
     init() {
         super.init(nibName: nil, bundle: nil)
+        self.view.backgroundColor = .red //.systemBackground
         let mapView = MKMapView()
         self.view = mapView
     }

@@ -8,12 +8,15 @@
 import UIKit
 
 enum SheetState: CGFloat {
-    case mini, half, max
+    case min, half, max
 }
 
 class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var tableView: UITableView?
+    var screenBounds: CGRect {
+        UIScreen.main.bounds
+    }
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -22,23 +25,23 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
         panGesture.delegate = panGestureDelegate
         
         self.view.addGestureRecognizer(panGesture)
-        blurBackground()
+        styleSheet()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateView(with: .half)
+        updateSize(for: .half)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    private func blurBackground() {
+    private func styleSheet() {
+        view.layer.cornerRadius = K.cornerRadius
+        view.layer.masksToBounds = true
         if !UIAccessibility.isReduceTransparencyEnabled {
             view.backgroundColor = .clear
-            view.layer.cornerRadius = K.cornerRadius
-            view.layer.masksToBounds = true
             
             let blurEffect = UIBlurEffect(style: .systemMaterial)
             let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -52,32 +55,31 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func updateView(with state: SheetState) {
-        switch state {
-        case .mini: fallthrough
-        default:
-            UIView.animate(withDuration: 5, animations: {
-                self.view.frame = CGRect(x: K.margin.small, y: 100, width: (UIScreen.main.bounds.width)-K.margin.small*2, height: 100)
-            })
-        }
+    private func updateSize(for state: SheetState) {
+        let height = getSheetHeight(for: state)
+        
+        self.view.frame = getSheetRect(with: height)
     }
     
     private func updateView(recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: view)
-        let minY = view.frame.minY
+        let height = view.frame.height-translation.y
         
-        if (minY + translation.y >= getSheetSize(for: .max)) && (minY + translation.y <= getSheetSize(for: .half)) {
-            view.frame = CGRect(x: 0, y: minY + translation.y, width: view.frame.width, height: view.frame.height)
-            recognizer.setTranslation(CGPoint.zero, in: view)
-        }
+        print(height)
+        //        if (currentHeight >= screenBounds.height-getSheetHeight(for: .max)) && (minY + translation.y <= screenBounds.height-getSheetHeight(for: .half)) {
+        //
+        //        }
+        view.frame = getSheetRect(with: height)
+        //CGRect(x: 0, y: screenBounds.height-height, width: view.frame.width, height: height)
+        recognizer.setTranslation(CGPoint.zero, in: view)
     }
     
     @objc func onSlideDown(_ sender: UIPanGestureRecognizer) {
         updateView(recognizer: sender)
-        
-        if sender.state == .ended {
-            UIView.animate(withDuration: 1, delay: 0.0, options: [.allowUserInteraction], animations: {})
-        }
+        //
+        //        if sender.state == .ended {
+        //            UIView.animate(withDuration: 1, delay: 0.0, options: [.allowUserInteraction], animations: {})
+        //        }
     }
     
     //    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -94,16 +96,16 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
     //        return false
     //    }
     
-    private func getSheetSize(for state: SheetState) -> CGFloat {
+    private func getSheetHeight(for state: SheetState) -> CGFloat {
         switch state {
-        case .mini: return 10
-        case .max: return UIScreen.main.bounds.height - 130
+        case .max: return UIScreen.main.bounds.height-100
+        case .min: return 100
         case .half: fallthrough
-        default: return 100
+        default: return 500
         }
     }
     
-    private func getSheetRect(with height: CGRect) {
-        
+    private func getSheetRect(with height: CGFloat) -> CGRect {
+        return CGRect(x: K.margin.small, y: screenBounds.height-height, width: screenBounds.width-K.margin.small*2, height: height)
     }
 }

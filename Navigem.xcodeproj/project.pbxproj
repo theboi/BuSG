@@ -37,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AAF4A4F425627D4F00FC51E7 /* Navigem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 		AAF4A4EB25627D4F00FC51E7 = {
 			isa = PBXGroup;
 			children = (
+				AAC97DA025638B6D002C5640 /* README.md */,
 				AAF4A4F625627D4F00FC51E7 /* Navigem */,
 				AAF4A50D25627D5200FC51E7 /* NavigemTests */,
 				AAF4A51825627D5200FC51E7 /* NavigemUITests */,
