@@ -8,7 +8,7 @@
 import UIKit
 
 enum SheetState: CGFloat {
-    case min, half, max
+    case min, mid, max
 }
 
 class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -24,13 +24,13 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
         let panGestureDelegate = self
         panGesture.delegate = panGestureDelegate
         
-        self.view.addGestureRecognizer(panGesture)
+        view.addGestureRecognizer(panGesture)
         styleSheet()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateSize(for: .half)
+        updateSize(for: .mid)
     }
     
     required init?(coder: NSCoder) {
@@ -46,7 +46,7 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
             let blurEffect = UIBlurEffect(style: .systemMaterial)
             let blurEffectView = UIVisualEffectView(effect: blurEffect)
             
-            blurEffectView.frame = self.view.bounds
+            blurEffectView.frame = view.bounds
             blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             
             view.addSubview(blurEffectView)
@@ -58,28 +58,34 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
     private func updateSize(for state: SheetState) {
         let height = getSheetHeight(for: state)
         
-        self.view.frame = getSheetRect(with: height)
+        view.frame = getSheetRect(with: height)
     }
     
     private func updateView(recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: view)
         let height = view.frame.height-translation.y
         
-        print(height)
-        //        if (currentHeight >= screenBounds.height-getSheetHeight(for: .max)) && (minY + translation.y <= screenBounds.height-getSheetHeight(for: .half)) {
-        //
-        //        }
         view.frame = getSheetRect(with: height)
-        //CGRect(x: 0, y: screenBounds.height-height, width: view.frame.width, height: height)
         recognizer.setTranslation(CGPoint.zero, in: view)
     }
     
     @objc func onSlideDown(_ sender: UIPanGestureRecognizer) {
         updateView(recognizer: sender)
-        //
-        //        if sender.state == .ended {
-        //            UIView.animate(withDuration: 1, delay: 0.0, options: [.allowUserInteraction], animations: {})
-        //        }
+        
+        if sender.state == .ended {
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.allowUserInteraction], animations: {
+                let midHeight = self.getSheetHeight(for: .mid)
+                let state: SheetState = {
+                    switch self.view.frame.height {
+                    case (midHeight-150)...(midHeight+150): return .mid
+                    case ...(midHeight-150): return .min
+                    case (midHeight+150)...: fallthrough
+                    default: return .max
+                    }
+                }()
+                self.updateSize(for: state)
+            })
+        }
     }
     
     //    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -100,7 +106,7 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
         switch state {
         case .max: return UIScreen.main.bounds.height-100
         case .min: return 100
-        case .half: fallthrough
+        case .mid: fallthrough
         default: return 500
         }
     }
