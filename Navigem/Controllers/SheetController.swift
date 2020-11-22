@@ -16,6 +16,8 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
     var presentingSheetController: SheetController?
     
+    var state: SheetState!
+    
     var screenBounds: CGRect {
         UIScreen.main.bounds
     }
@@ -36,7 +38,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateSize(for: .mid)
+        updateView(for: .mid)
         
     }
     
@@ -63,14 +65,9 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func updateSize(for state: SheetState, velocity: CGFloat? = 0) {
-        //        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.allowUserInteraction], animations: {
-        //            let height = self.getSheetHeight(for: state)
-        //
-        //            self.view.frame = self.getSheetRect(with: height)
-        //        })
-        
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity ?? 0, options: [.allowUserInteraction], animations: {
+    private func updateView(for state: SheetState, velocity: CGFloat = 0) {
+        self.state = state
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity, options: [.allowUserInteraction], animations: {
             let height = self.getSheetHeight(for: state)
             
             self.view.frame = self.getSheetRect(with: height)
@@ -86,26 +83,29 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private var lastScrollHeight: CGFloat!
-    
     @objc func onSlideDown(_ sender: UIPanGestureRecognizer) {
+        print(state)
         updateView(recognizer: sender)
         
         if sender.state == .began {
             lastScrollHeight = view.frame.height
         } else if sender.state == .ended {
+            let distance = abs(lastScrollHeight-view.frame.height)
+            let velocity = sender.velocity(in: view).y / distance
+            
             let midHeight = self.getSheetHeight(for: .mid)
-            let state: SheetState = {
+            let threshold: CGFloat = abs(velocity)*15
+            // FIXME: Redo scroll snapping. Currently is biased towards swiping towards center as threshold increases from centre.
+            let newState: SheetState = {
                 switch self.view.frame.height {
-                case (midHeight-150)...(midHeight+150): return .mid
-                case ...(midHeight-150): return .min
-                case (midHeight+150)...: fallthrough
+                case (midHeight-threshold)...(midHeight+threshold): return .mid
+                case ...(midHeight-threshold): return .min
+                case (midHeight+threshold)...: fallthrough
                 default: return .max
                 }
             }()
             
-            let distance = abs(lastScrollHeight-view.frame.height)
-            
-            updateSize(for: state, velocity: sender.velocity(in: view).y / distance)
+            updateView(for: newState, velocity: velocity)
         }
     }
     
