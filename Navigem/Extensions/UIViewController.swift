@@ -8,16 +8,25 @@
 import UIKit
 
 extension UIViewController {
-    func present(_ sheetControllerToPresent: SheetViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        var targetViewController: UIViewController
+    /// Extension method to present `SheetController`s
+    func present(_ sheetControllerToPresent: SheetController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        var parentViewController: UIViewController
+        
         if let parent = parent {
-            targetViewController = parent
+            parentViewController = parent
         } else {
-            targetViewController = self
+            parentViewController = self
         }
-        targetViewController.addChild(sheetControllerToPresent)
-        targetViewController.view.addSubview(sheetControllerToPresent.view)
+        
+        if let presentingSheetController = self as? SheetController {
+            sheetControllerToPresent.presentingSheetController = presentingSheetController
+        }
+        
+        parentViewController.addChild(sheetControllerToPresent)
+        parentViewController.view.addSubview(sheetControllerToPresent.view)
         
         sheetControllerToPresent.didMove(toParent: self)
+        
+        completion?()
     }
 }
