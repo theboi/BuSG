@@ -12,9 +12,9 @@ class MainViewController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        self.view.backgroundColor = .red //.systemBackground
-        let mapView = MKMapView()
-        self.view = mapView
+        self.view.backgroundColor = .blue//.systemBackground
+//        let mapView = MKMapView()
+//        self.view = mapView
     }
     
     required init?(coder: NSCoder) {
@@ -27,11 +27,9 @@ class MainViewController: UIViewController {
     }
     
     private func createBottomSheet() {
-        let bottomSheetVC = BottomSheetViewController()
-        self.addChild(bottomSheetVC)
-        self.view.addSubview(bottomSheetVC.view)
-        bottomSheetVC.didMove(toParent: self)
-        
-        bottomSheetVC.view.frame = CGRect(x: K.margin.small, y: 100, width: (UIScreen.main.bounds.width)-K.margin.small*2, height: 0)
+        let sheetA = SheetViewController()
+        let sheetB = SheetViewController()
+        self.present(sheetA, animated: true, completion: nil)
+        sheetA.present(sheetB, animated: true, completion: nil)
     }
 }

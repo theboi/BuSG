@@ -11,9 +11,8 @@ enum SheetState: CGFloat {
     case min, mid, max
 }
 
-class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
+class SheetViewController: UIViewController, UIGestureRecognizerDelegate {
     
-    var tableView: UITableView?
     var screenBounds: CGRect {
         UIScreen.main.bounds
     }
@@ -23,6 +22,8 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onSlideDown(_:)))
         let panGestureDelegate = self
         panGesture.delegate = panGestureDelegate
+        
+        view = BottomSheetView()
         
         view.addGestureRecognizer(panGesture)
         styleSheet()
@@ -49,7 +50,7 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
             blurEffectView.frame = view.bounds
             blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             
-            view.addSubview(blurEffectView)
+            view.insertSubview(blurEffectView, at: 0)
         } else {
             view.backgroundColor = .systemBackground
         }
@@ -88,19 +89,19 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    //    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    //        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
-    //        let direction = gesture.velocity(in: view).y
-    //
-    //        let y = view.frame.minY
-    //        if (y == fullView && tableView.contentOffset.y == 0 && direction > 0) || (y == partialView) {
-    //            tableView.isScrollEnabled = false
-    //        } else {
-    //            tableView.isScrollEnabled = true
-    //        }
-    //
-    //        return false
-    //    }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
+//        let direction = gesture.velocity(in: view).y
+//
+//        let y = view.frame.minY
+//        if (y == fullView && (view as! BottomSheetView).tableView.contentOffset.y == 0 && direction > 0) || (y == partialView) {
+//            tableView.isScrollEnabled = false
+//        } else {
+//            tableView.isScrollEnabled = true
+//        }
+//
+//        return false
+//    }
     
     private func getSheetHeight(for state: SheetState) -> CGFloat {
         switch state {
@@ -112,6 +113,6 @@ class BottomSheetViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func getSheetRect(with height: CGFloat) -> CGRect {
-        return CGRect(x: K.margin.small, y: screenBounds.height-height, width: screenBounds.width-K.margin.small*2, height: height)
+        return CGRect(x: 0, y: screenBounds.height-height, width: screenBounds.width, height: height)
     }
 }
