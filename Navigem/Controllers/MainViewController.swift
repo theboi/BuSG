@@ -28,7 +28,8 @@ class MainViewController: UIViewController {
     
     private func createBottomSheet() {
         let sheetA = SheetController()
+        let sheetB = SheetController()
         self.present(sheetA, animated: true, completion: nil)
-        
+        sheetA.present(sheetB, animated: true, completion: nil)
     }
 }

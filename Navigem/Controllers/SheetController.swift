@@ -22,24 +22,25 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         UIScreen.main.bounds
     }
     
+    var contentView: UIView?
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onSlideDown(_:)))
-        let panGestureDelegate = self
-        panGesture.delegate = panGestureDelegate
-        
-        view = BottomSheetView()
-        
+        panGesture.delegate = self
         view.addGestureRecognizer(panGesture)
-        
         styleSheet()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateView(for: .mid)
+        print(presentingSheetController)
         
+        if let contentView = contentView {
+            view.addSubview(contentView)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -84,7 +85,6 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     private var lastScrollHeight: CGFloat!
     @objc func onSlideDown(_ sender: UIPanGestureRecognizer) {
-        print(state)
         updateView(recognizer: sender)
         
         if sender.state == .began {
