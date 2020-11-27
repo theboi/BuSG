@@ -1,3 +1,3 @@
 # Navigem
 
-Bus Transport App
+Singapore Bus Transport App
