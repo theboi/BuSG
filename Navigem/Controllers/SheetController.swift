@@ -16,16 +16,40 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
     var presentingSheetController: SheetController?
     
-    var state: SheetState!
+    /// Holds information about current sheet's state. **Never directly set state**.
+    private var state: SheetState = .mid
+    
+    var isHidden = false {
+        didSet(value) {
+            updateView(for: state)
+        }
+    }
     
     var screenBounds: CGRect {
         UIScreen.main.bounds
     }
     
-    var contentView: UIView?
+    var contentView = UIView()
+    
+    // MARK: Init SheetController
     
     init() {
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    // MARK: Override UIViewController lifecycle
+    
+    override func loadView() {
+        /// Do not call super
+        view = contentView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onSlideDown(_:)))
         panGesture.delegate = self
@@ -36,15 +60,6 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateView(for: .mid)
-        print(presentingSheetController)
-        
-        if let contentView = contentView {
-            view.addSubview(contentView)
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
     }
     
     private func styleSheet() {
@@ -66,7 +81,9 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func updateView(for state: SheetState, velocity: CGFloat = 0) {
+    // MARK: Scrolling/Snapping SheetView
+    
+    func updateView(for state: SheetState, velocity: CGFloat = 0) {
         self.state = state
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity, options: [.allowUserInteraction], animations: {
             let height = self.getSheetHeight(for: state)
@@ -84,7 +101,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private var lastScrollHeight: CGFloat!
-    @objc func onSlideDown(_ sender: UIPanGestureRecognizer) {
+    @objc private func onSlideDown(_ sender: UIPanGestureRecognizer) {
         updateView(recognizer: sender)
         
         if sender.state == .began {
@@ -123,7 +140,9 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     //        return false
     //    }
     
+    // MARK: Utility Methods
     private func getSheetHeight(for state: SheetState) -> CGFloat {
+        if isHidden { return 0 }
         switch state {
         case .max: return UIScreen.main.bounds.height-100
         case .min: return 100

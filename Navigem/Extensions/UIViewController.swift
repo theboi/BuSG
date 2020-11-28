@@ -20,6 +20,7 @@ extension UIViewController {
         
         if let presentingSheetController = self as? SheetController {
             sheetControllerToPresent.presentingSheetController = presentingSheetController
+            presentingSheetController.isHidden = true
         }
         
         parentViewController.addChild(sheetControllerToPresent)

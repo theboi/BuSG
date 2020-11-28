@@ -30,6 +30,8 @@ class MainViewController: UIViewController {
         let sheetA = SheetController()
         let sheetB = SheetController()
         self.present(sheetA, animated: true, completion: nil)
-        sheetA.present(sheetB, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            sheetA.present(sheetB, animated: true)
+        }
     }
 }
