@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ContentSheetView: UIView {
+class SheetContentView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)

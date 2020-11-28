@@ -25,9 +25,9 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    var headerView = HeaderSheetView()
+    var headerView = SheetHeaderView()
     
-    var contentView = ContentSheetView()
+    var contentView = SheetContentView()
     
     var screenBounds: CGRect {
         UIScreen.main.bounds
@@ -46,7 +46,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: Override UIViewController lifecycle
     
     override func loadView() {
-        /// Do not call super
+        // Do not call super
         view = UIView()
         
         view.addSubview(headerView)
