@@ -27,6 +27,11 @@ class MainViewController: UIViewController {
     }
     
     private func createBottomSheet() {
+        do {
+            try DataMallProvider.getBusStop()
+        } catch {
+            fatalError(error.localizedDescription)
+        }
         let sheetA = HomeSheetController()
         let sheetB = SheetController()
         self.present(sheetA, animated: true, completion: nil)

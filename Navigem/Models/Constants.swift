@@ -14,4 +14,6 @@ enum K {
     }
     static let bottomSheetOpacity: CGFloat = 0.7
     static let cornerRadius: CGFloat = 8
+    static let apiUrl = "https://datamall2.mytransport.sg/ltaodataservice"
+    static let datamallEnvVar = "datamall_api_key"
 }
