@@ -12,6 +12,14 @@ class HomeSheetController: SheetController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print("hello")
+        let trailingButton = UIButton(type: .system, primaryAction: UIAction(handler: { (action) in
+            
+        }))
+        trailingButton.setTitle("Cancel", for: .normal)
+        headerView.trailingButton = trailingButton
+
+        let searchBar = UISearchBar()
+        searchBar.searchBarStyle = .minimal
+        headerView.searchBar = searchBar
     }
 }

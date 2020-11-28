@@ -27,11 +27,11 @@ class MainViewController: UIViewController {
     }
     
     private func createBottomSheet() {
-        let sheetA = SheetController()
+        let sheetA = HomeSheetController()
         let sheetB = SheetController()
         self.present(sheetA, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            sheetA.present(sheetB, animated: true)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//            sheetA.present(sheetB, animated: true)
+//        }
     }
 }

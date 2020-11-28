@@ -25,12 +25,14 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    var headerView = HeaderSheetView()
+    
+    var contentView = ContentSheetView()
+    
     var screenBounds: CGRect {
         UIScreen.main.bounds
     }
-    
-    var contentView = UIView()
-    
+        
     // MARK: Init SheetController
     
     init() {
@@ -45,16 +47,33 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     override func loadView() {
         /// Do not call super
-        view = contentView
+        view = UIView()
+        
+        view.addSubview(headerView)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: headerView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        view.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            headerView.bottomAnchor.constraint(equalTo: contentView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onSlideDown(_:)))
         panGesture.delegate = self
         view.addGestureRecognizer(panGesture)
-        styleSheet()
+        styleView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,7 +81,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         updateView(for: .mid)
     }
     
-    private func styleSheet() {
+    private func styleView() {
         view.frame = getSheetRect(with: 0)
         view.layer.cornerRadius = K.cornerRadius
         view.layer.masksToBounds = true
@@ -139,6 +158,12 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     //
     //        return false
     //    }
+    
+    // MARK: Navigation
+    
+    public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion)
+    }
     
     // MARK: Utility Methods
     private func getSheetHeight(for state: SheetState) -> CGFloat {
