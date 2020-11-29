@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BusNumberSheetController: SheetController {
+class BusServiceSheetController: SheetController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
