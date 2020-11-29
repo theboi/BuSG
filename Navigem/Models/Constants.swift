@@ -7,7 +7,8 @@
 
 import UIKit
 
-let apiUrlBase = "https://datamall2.mytransport.sg/ltaodataservice"
+/// DataMall does not support HTTPS
+let apiUrlBase = "http://datamall2.mytransport.sg/ltaodataservice"
 
 enum K {
     enum margin {

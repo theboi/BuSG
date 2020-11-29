@@ -8,15 +8,21 @@
 import Foundation
 
 enum ApiKeyError: LocalizedError {
-    case missing
+    case missing, invalid
     
     var errorDescription: String? {
         switch self {
         case .missing:
             return NSLocalizedString(
-                "DataMall API Key missing. Get access at https://www.mytransport.sg/content/mytransport/home/dataMall.html",
+                "DataMall API Key missing. Get key at https://www.mytransport.sg/content/mytransport/home/dataMall.html",
+                comment: ""
+            )
+        case .invalid:
+            return NSLocalizedString(
+                "DataMall API Key invalid. Check if key is set or get new key at https://www.mytransport.sg/content/mytransport/home/dataMall.html",
                 comment: ""
             )
         }
+        
     }
 }
