@@ -15,7 +15,7 @@ class DataMallProvider {
         guard let apiKey = ProcessInfo.processInfo.environment[K.datamallEnvVar] else {
             throw ApiKeyError.missing
         }
-        request.setValue("AccountKey", forHTTPHeaderField: apiKey)
+        request.setValue(apiKey, forHTTPHeaderField: "AccountKey")
         print(request.allHTTPHeaderFields)
         let task = URLSession.shared.dataTask(with: request) { (data, res, err) in
             if let err = err {
