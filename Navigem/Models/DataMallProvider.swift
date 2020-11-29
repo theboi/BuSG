@@ -9,11 +9,10 @@ import Foundation
 
 class DataMallProvider {
     static func getBusStop() throws {
-        var components = URLComponents(string: "\(K.apiUrl)/BusArrivalv2")!
-        components.queryItems = [
+        let url = URL(string: K.apiUrl.busArrival, with: [
             URLQueryItem(name: "BusStopCode", value: "10079")
-        ]
-        var request = URLRequest(url: components.url!)
+        ])!
+        var request = URLRequest(url: url)
         guard let apiKey = ProcessInfo.processInfo.environment[K.datamallEnvVar] else {
             throw ApiKeyError.missing
         }

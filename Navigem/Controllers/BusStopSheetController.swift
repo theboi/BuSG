@@ -19,7 +19,7 @@ class BusStopSheetController: SheetController {
         headerView.detailText = "Singapore"
     }
     
-    init(busStop: Int) {
+    override init() {
         super.init()
     }
     
