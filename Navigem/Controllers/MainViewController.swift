@@ -27,16 +27,16 @@ class MainViewController: UIViewController {
     }
     
     private func createBottomSheet() {
-        do {
-            try DataMallProvider.getBusStop()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-        let sheetA = HomeSheetController()
-        let sheetB = SheetController()
-        self.present(sheetA, animated: true, completion: nil)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            sheetA.present(sheetB, animated: true)
+//        do {
+//            try DataMallProvider.getBusStop()
+//        } catch {
+//            fatalError(error.localizedDescription)
 //        }
+        let sheetA = HomeSheetController()
+        let sheetB = HomeSheetController()
+        self.present(sheetA, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            sheetA.present(sheetB, animated: true)
+        }
     }
 }

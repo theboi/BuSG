@@ -7,22 +7,26 @@
 
 import UIKit
 
-enum SheetState: CGFloat {
+enum SheetState {
     case min, mid, max
+}
+
+protocol SheetControllerDelegate: class {
+    func sheetController(_ sheetController: SheetController, didUpdateSize state: SheetState)
 }
 
 class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
+    weak var delegate: SheetControllerDelegate?
+    
     /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
     var presentingSheetController: SheetController?
     
-    /// Holds information about current sheet's state. **Never directly set state**.
+    /// Holds information about current sheet's state. **Never directly set this**.
     private var state: SheetState = .mid
     
     var isHidden = false {
-        didSet(value) {
-            updateView(for: state)
-        }
+        didSet { updateView(for: state) }
     }
     
     var headerView = SheetHeaderView()
@@ -55,7 +59,6 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
             view.topAnchor.constraint(equalTo: headerView.topAnchor),
             view.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 100)
         ])
         
         view.addSubview(contentView)
@@ -161,8 +164,15 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Navigation
     
-    public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        super.dismiss(animated: flag, completion: completion)
+    public func popSheet() {
+        if let presentingSheetController = presentingSheetController {
+            presentingSheetController.isHidden = false
+            self.isHidden = true
+            // Clean up container view controller
+            self.willMove(toParent: nil)
+            self.view.removeFromSuperview()
+            self.removeFromParent()
+        }
     }
     
     // MARK: Utility Methods
