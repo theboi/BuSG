@@ -11,15 +11,9 @@ class HomeSheetController: SheetController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
-            self.popSheet()
-        }))
-        headerView.trailingButton = trailingButton
-
+        
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
-        //headerView.searchBar = searchBar
-        headerView.titleText = "Hello"
-        headerView.detailText = "Beybye"
+        headerView.searchBar = searchBar
     }
 }

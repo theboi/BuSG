@@ -33,7 +33,7 @@ class MainViewController: UIViewController {
 //            fatalError(error.localizedDescription)
 //        }
         let sheetA = HomeSheetController()
-        let sheetB = HomeSheetController()
+        let sheetB = BusStopSheetController()
         self.present(sheetA, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             sheetA.present(sheetB, animated: true)
