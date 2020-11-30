@@ -17,6 +17,7 @@ protocol SheetControllerDelegate: class {
 
 class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
+    /// Delegate to handle all changes in sheet
     weak var delegate: SheetControllerDelegate?
     
     /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
@@ -29,14 +30,14 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         didSet { updateView(for: state) }
     }
     
-    var headerView = SheetHeaderView()
+    lazy var headerView = SheetHeaderView()
     
-    var contentView = SheetContentView()
+    lazy var contentView = SheetContentView()
     
     var screenBounds: CGRect {
         UIScreen.main.bounds
     }
-        
+    
     // MARK: Init SheetController
     
     init() {
@@ -60,6 +61,9 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
             view.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
         ])
+        let headerViewHeightAnchor = headerView.heightAnchor.constraint(equalToConstant: 100)
+        headerViewHeightAnchor.priority = .defaultLow
+        headerViewHeightAnchor.isActive = true
         
         view.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
