@@ -26,4 +26,9 @@ enum K {
         static let busRoutes = "\(apiUrlBase)/BusRoutes"
         static let busStops = "\(apiUrlBase)/BusStops"
     }
+    
+    enum identifiers {
+        static let busService = "busServiceCellIdentifier"
+        static let busStop = "busStopCellIdentifier"
+    }
 }

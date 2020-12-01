@@ -11,6 +11,10 @@ class HomeSheetController: SheetController {
 
     lazy var tableView = UITableView()
     
+    let data = [
+        "100"
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
@@ -18,8 +22,11 @@ class HomeSheetController: SheetController {
         searchBar.searchBarStyle = .minimal
         headerView.searchBar = searchBar
         
-        contentView.addSubview(tableView)
         tableView.backgroundColor = .clear
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        contentView.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: tableView.topAnchor),
@@ -28,14 +35,31 @@ class HomeSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
                 
-//        do {
-//            try DataMallProvider.getBusStop()
-//        } catch {
-//            fatalError(error.localizedDescription)
-//        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.present(BusStopSheetController(), animated: true)
+        do {
+            try DataMallProvider.getBusStop()
+        } catch {
+            fatalError(error.localizedDescription)
         }
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
+    }
+}
+
+extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        data.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService)
+        cell?.backgroundColor = .clear
+        cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
+        cell?.textLabel?.text = data[indexPath.row]
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        present(BusServiceSheetController(for: "10"), animated: true)
     }
 }

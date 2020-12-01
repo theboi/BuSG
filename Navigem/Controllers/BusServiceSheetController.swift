@@ -15,13 +15,13 @@ class BusServiceSheetController: SheetController {
             self.popSheet()
         }))
         headerView.trailingButton = trailingButton
-
-        headerView.titleText = "100"
-        headerView.detailText = "Singapore"
     }
     
-    init(busStop: Int) {
+    init(for busServiceNo: BusServiceNumber) {
         super.init()
+        
+        headerView.titleText = busServiceNo
+        headerView.detailText = "Singapore"
     }
     
     required init?(coder: NSCoder) {
