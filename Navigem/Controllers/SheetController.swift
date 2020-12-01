@@ -138,7 +138,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
             
             let midHeight = self.getSheetHeight(for: .mid)
             let threshold: CGFloat = abs(velocity)*15
-            // FIXME: Redo scroll snapping. Currently is biased towards swiping towards center as threshold increases from centre.
+            // FIXME: Redo scroll snapping. Currently is biased towards swiping towards center as threshold increases from centre. Also crashes sometimes if too fast.
             let newState: SheetState = {
                 switch self.view.frame.height {
                 case (midHeight-threshold)...(midHeight+threshold): return .mid

@@ -14,13 +14,13 @@ class BusStopSheetController: SheetController {
             self.popSheet()
         }))
         headerView.trailingButton = trailingButton
-
-        headerView.titleText = "100"
-        headerView.detailText = "Singapore"
     }
     
-    override init() {
+    init(for busStopCode: BusStopCode) {
         super.init()
+        
+        headerView.titleText = String(busStopCode)
+        headerView.detailText = "Singapore"
     }
     
     required init?(coder: NSCoder) {
