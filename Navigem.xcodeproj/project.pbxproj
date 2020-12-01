@@ -11,7 +11,6 @@
 		AA13B6E4257229F2006FD219 /* SheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E3257229F2006FD219 /* SheetContentView.swift */; };
 		AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */; };
 		AA13B6FC2572571F006FD219 /* DataMallProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6FB2572571F006FD219 /* DataMallProvider.swift */; };
-		AA13B70125728D64006FD219 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B70025728D64006FD219 /* Errors.swift */; };
 		AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B7272573447C006FD219 /* BusStopSheetController.swift */; };
 		AA13B72D2573469B006FD219 /* BusServiceSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */; };
 		AA13B732257346D6006FD219 /* OldBusService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B731257346D6006FD219 /* OldBusService.swift */; };
@@ -27,7 +26,6 @@
 		AA91D1312576873B003FAE6E /* BusStop+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D12A25768738003FAE6E /* BusStop+CoreDataProperties.swift */; };
 		AA91D1322576873B003FAE6E /* BusStop+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D12925768738003FAE6E /* BusStop+CoreDataClass.swift */; };
 		AA91D1332576873B003FAE6E /* BusService+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D12C25768738003FAE6E /* BusService+CoreDataProperties.swift */; };
-		AA91D15C257689F3003FAE6E /* CoreDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D15B257689F3003FAE6E /* CoreDataProvider.swift */; };
 		AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */; };
 		AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */; };
 		AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4FB25627D4F00FC51E7 /* ViewController.swift */; };
@@ -62,7 +60,6 @@
 		AA13B6E3257229F2006FD219 /* SheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetContentView.swift; sourceTree = "<group>"; };
 		AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetHeaderView.swift; sourceTree = "<group>"; };
 		AA13B6FB2572571F006FD219 /* DataMallProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMallProvider.swift; sourceTree = "<group>"; };
-		AA13B70025728D64006FD219 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		AA13B7272573447C006FD219 /* BusStopSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopSheetController.swift; sourceTree = "<group>"; };
 		AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceSheetController.swift; sourceTree = "<group>"; };
 		AA13B731257346D6006FD219 /* OldBusService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldBusService.swift; sourceTree = "<group>"; };
@@ -78,7 +75,6 @@
 		AA91D12A25768738003FAE6E /* BusStop+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA91D12B25768738003FAE6E /* BusService+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AA91D12C25768738003FAE6E /* BusService+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		AA91D15B257689F3003FAE6E /* CoreDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataProvider.swift; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AAF4A4F425627D4F00FC51E7 /* Navigem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,7 +133,6 @@
 			children = (
 				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
 				AA13B6FB2572571F006FD219 /* DataMallProvider.swift */,
-				AA91D15B257689F3003FAE6E /* CoreDataProvider.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -219,7 +214,6 @@
 				AA91D12B25768738003FAE6E /* BusService+CoreDataClass.swift */,
 				AA91D12C25768738003FAE6E /* BusService+CoreDataProperties.swift */,
 				AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */,
-				AA13B70025728D64006FD219 /* Errors.swift */,
 				AA13B731257346D6006FD219 /* OldBusService.swift */,
 				AA13B736257346E4006FD219 /* OldBusStop.swift */,
 				AA91D0FB257649A6003FAE6E /* OldBusArrival.swift */,
@@ -373,7 +367,6 @@
 				AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */,
 				AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */,
 				AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */,
-				AA13B70125728D64006FD219 /* Errors.swift in Sources */,
 				AA91D1332576873B003FAE6E /* BusService+CoreDataProperties.swift in Sources */,
 				AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */,
 				AAF4A53D256284D100FC51E7 /* SheetController.swift in Sources */,
@@ -382,7 +375,6 @@
 				AA13B737257346E4006FD219 /* OldBusStop.swift in Sources */,
 				AA91D0FC257649A6003FAE6E /* OldBusArrival.swift in Sources */,
 				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
-				AA91D15C257689F3003FAE6E /* CoreDataProvider.swift in Sources */,
 				AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */,
 				AA91D1322576873B003FAE6E /* BusStop+CoreDataClass.swift in Sources */,
 				AA13B6FC2572571F006FD219 /* DataMallProvider.swift in Sources */,

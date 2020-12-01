@@ -19,6 +19,7 @@ enum K {
     static let bottomSheetOpacity: CGFloat = 0.7
     static let cornerRadius: CGFloat = 8
     static let datamallEnvVar = "datamall_api_key"
+    static let datamallApiKeyHeaderKey = "AccountKey"
     
     enum apiUrl {
         static let busArrival = "\(apiUrlBase)/BusArrivalv2"
