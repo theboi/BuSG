@@ -15,7 +15,7 @@ class MainViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         
         let updateDataButton = UIButton(type: .roundedRect, primaryAction: UIAction(handler: { (action) in
-            DataMallProvider.updateBusData()
+            Provider.shared.updateBusData()
         }))
         updateDataButton.frame = CGRect(x: 10, y: 10, width: 100, height: 100)
         updateDataButton.backgroundColor = .red

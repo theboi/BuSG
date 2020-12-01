@@ -10,7 +10,7 @@
 		AA13B6DC2572127E006FD219 /* HomeSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6DB2572127E006FD219 /* HomeSheetController.swift */; };
 		AA13B6E4257229F2006FD219 /* SheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E3257229F2006FD219 /* SheetContentView.swift */; };
 		AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */; };
-		AA13B6FC2572571F006FD219 /* DataMallProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6FB2572571F006FD219 /* DataMallProvider.swift */; };
+		AA13B6FC2572571F006FD219 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6FB2572571F006FD219 /* Provider.swift */; };
 		AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B7272573447C006FD219 /* BusStopSheetController.swift */; };
 		AA13B72D2573469B006FD219 /* BusServiceSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */; };
 		AA13B732257346D6006FD219 /* OldBusService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B731257346D6006FD219 /* OldBusService.swift */; };
@@ -59,7 +59,7 @@
 		AA13B6DB2572127E006FD219 /* HomeSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSheetController.swift; sourceTree = "<group>"; };
 		AA13B6E3257229F2006FD219 /* SheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetContentView.swift; sourceTree = "<group>"; };
 		AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetHeaderView.swift; sourceTree = "<group>"; };
-		AA13B6FB2572571F006FD219 /* DataMallProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMallProvider.swift; sourceTree = "<group>"; };
+		AA13B6FB2572571F006FD219 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		AA13B7272573447C006FD219 /* BusStopSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopSheetController.swift; sourceTree = "<group>"; };
 		AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceSheetController.swift; sourceTree = "<group>"; };
 		AA13B731257346D6006FD219 /* OldBusService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldBusService.swift; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
-				AA13B6FB2572571F006FD219 /* DataMallProvider.swift */,
+				AA13B6FB2572571F006FD219 /* Provider.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -377,7 +377,7 @@
 				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
 				AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */,
 				AA91D1322576873B003FAE6E /* BusStop+CoreDataClass.swift in Sources */,
-				AA13B6FC2572571F006FD219 /* DataMallProvider.swift in Sources */,
+				AA13B6FC2572571F006FD219 /* Provider.swift in Sources */,
 				AA91D10125764E33003FAE6E /* OldCoordinate.swift in Sources */,
 				AA91D0F72576416C003FAE6E /* BusServiceTimingsTableViewCell.swift in Sources */,
 				AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */,

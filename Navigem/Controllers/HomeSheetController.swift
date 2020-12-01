@@ -37,7 +37,7 @@ class HomeSheetController: SheetController {
         ])
                 
         do {
-            try DataMallProvider.getBusArrivals(for: "10079", completionBlock: {_ in
+            try Provider.shared.getBusArrivals(for: "10079", completionBlock: {_ in
                 
             })
         } catch {
