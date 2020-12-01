@@ -20,6 +20,7 @@ class HomeSheetController: SheetController {
                 
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = "Search for a bus stop or service"
         headerView.searchBar = searchBar
         
         tableView.backgroundColor = .clear
@@ -35,13 +36,13 @@ class HomeSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
                 
-        do {
-            try DataMallProvider.getBusStop()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+//        do {
+//            try DataMallProvider.getBusStop()
+//        } catch {
+//            fatalError(error.localizedDescription)
+//        }
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
+        tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
     }
 }
 
