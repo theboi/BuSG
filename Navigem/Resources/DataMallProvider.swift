@@ -8,6 +8,7 @@
 import Foundation
 
 class DataMallProvider {
+    
     static private func handleClientError(_ error: Error) {
         
     }
@@ -16,9 +17,9 @@ class DataMallProvider {
         
     }
     
-    static func getBusStop() throws {
+    static func getBusArrivals(for busStop: String, completionBlock: @escaping ([String]) -> Void) throws {
         var request = URLRequest(url: URL(string: K.apiUrl.busArrival, with: [
-            URLQueryItem(name: "BusStopCode", value: "10079")
+            URLQueryItem(name: "BusStopCode", value: busStop)
         ])!)
         guard let apiKey = ProcessInfo.processInfo.environment[K.datamallEnvVar] else {
             throw ApiKeyError.missing
@@ -42,8 +43,11 @@ class DataMallProvider {
                 print(string)
             }
             
+            let decoder = JSONDecoder()
+            
             guard let data = data else {return}
-            print(data)
+            
+            completionBlock([])
         }
         task.resume()
     }

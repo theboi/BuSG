@@ -16,7 +16,7 @@ class BusStopSheetController: SheetController {
         headerView.trailingButton = trailingButton
     }
     
-    init(for busStopCode: BusStopCode) {
+    init(for busStopCode: String) {
         super.init()
         
         headerView.titleText = String(busStopCode)

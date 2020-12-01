@@ -36,11 +36,13 @@ class HomeSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
                 
-//        do {
-//            try DataMallProvider.getBusStop()
-//        } catch {
-//            fatalError(error.localizedDescription)
-//        }
+        do {
+            try DataMallProvider.getBusArrivals(for: "10079", completionBlock: {_ in
+                
+            })
+        } catch {
+            fatalError(error.localizedDescription)
+        }
         
         tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
     }
