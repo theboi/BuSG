@@ -2,7 +2,7 @@
 //  BusStop+CoreDataClass.swift
 //  Navigem
 //
-//  Created by Ryan The on 1/12/20.
+//  Created by Ryan The on 2/12/20.
 //
 //
 

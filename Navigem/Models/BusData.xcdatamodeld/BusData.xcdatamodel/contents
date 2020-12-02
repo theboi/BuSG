@@ -3,15 +3,15 @@
     <entity name="BusService" representedClassName="BusService" syncable="YES">
         <attribute name="amOffpeakFreq" attributeType="String"/>
         <attribute name="amPeakFreq" attributeType="String"/>
-        <attribute name="category" attributeType="String"/>
         <attribute name="destinationCode" attributeType="String"/>
-        <attribute name="direction" attributeType="String"/>
+        <attribute name="direction" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="loopDesc" attributeType="String"/>
         <attribute name="originCode" attributeType="String"/>
         <attribute name="pmOffpeakFreq" attributeType="String"/>
         <attribute name="pmPeakFreq" attributeType="String"/>
+        <attribute name="rawCategory" attributeType="String"/>
+        <attribute name="rawServiceOperator" attributeType="String"/>
         <attribute name="serviceNo" attributeType="String"/>
-        <attribute name="serviceOperator" attributeType="String"/>
     </entity>
     <entity name="BusStop" representedClassName="BusStop" syncable="YES">
         <attribute name="busStopCode" attributeType="String"/>
