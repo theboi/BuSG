@@ -19,13 +19,19 @@ enum K {
     static let bottomSheetOpacity: CGFloat = 0.7
     static let cornerRadius: CGFloat = 8
     static let datamallEnvVar = "datamall_api_key"
-    static let datamallApiKeyHeaderKey = "AccountKey"
     
-    enum apiUrl {
+    enum apiUrls {
         static let busArrival = "\(apiUrlBase)/BusArrivalv2"
         static let busServices = "\(apiUrlBase)/BusServices"
         static let busRoutes = "\(apiUrlBase)/BusRoutes"
         static let busStops = "\(apiUrlBase)/BusStops"
+    }
+    
+    enum apiQueries {
+        static let skip = "$skip"
+        static let busStopCode = "BusStopCode"
+        static let busServiceNo = "ServiceNo"
+        static let apiKeyHeader = "AccountKey"
     }
     
     enum identifiers {

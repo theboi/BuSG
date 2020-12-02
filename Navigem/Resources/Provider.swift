@@ -23,50 +23,41 @@ class Provider {
         return apiKey
     }
     
-    public func updateBusData(completion: CompletionHandler<[String]> = nil) {
+    /// Function to fetch bus data in Service nested structures
+    private func fetchData<T: ApiServiceRoot>(_ T_Type: T.Type, withPrevious array: [T.T] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.T]>) {
+        var array = array
+        var req = URLRequest(url: URL(string: T.apiUrl, with: [URLQueryItem(name: K.apiQueries.skip, value: String(skip))])!)
+        req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
+        URLSession.shared.dataTask(with: req) { (data, res, err) in
+            self.handleApiError(res: res, err: err)
+            let decoder = JSONDecoder()
+            do {
+                let busStopServiceRoot = try decoder.decode(T.self, from: data!)
+                array.append(contentsOf: busStopServiceRoot.value)
+                if !busStopServiceRoot.value.isEmpty {
+                    self.fetchData(T_Type, withPrevious: array, withSkip: skip + 500, completion: completion)
+                    return
+                }
+                completion?(array)
+            } catch {
+                print(error)
+            }
+        }.resume()
+    }
+    
+    public func updateBusData(completion: CompletionHandler<[BusServiceServiceValue]> = nil) {
         // Get data from API and put into BusServiceService and BusStopService
-        
-        var req = URLRequest(url: URL(string: K.apiUrl.busStops, with: [])!)
-        completion?([])
-        
-        let json = """
-        {
-            "odata.metadata": "http://datamall2.mytransport.sg/ltaodataservice/$metadata#BusServices",
-            "value": [
-                {
-                    "ServiceNo": "169B",
-                    "Operator": "SMRT",
-                    "Direction": 1,
-                    "Category": "TRUNK",
-                    "OriginCode": "46009",
-                    "DestinationCode": "46711",
-                    "AM_Peak_Freq": "33",
-                    "AM_Offpeak_Freq": "-",
-                    "PM_Peak_Freq": "-",
-                    "PM_Offpeak_Freq": "-",
-                    "LoopDesc": ""
-                },
-            ],
+        fetchData(BusServiceServiceRoot.self) { (busStopServiceBusStops: [BusServiceServiceValue]) in
+            print(busStopServiceBusStops.count)
         }
-        """
-        let data = json.data(using: .utf8)!
-        
-//        let busServiceServiceRoot: BusStopServiceRoot?
-//        let busStopServiceRoot: BusStopServiceRoot?
-        
-        let decoder = JSONDecoder()
-        do {
-            print(try decoder.decode(BusStopServiceRoot.self, from: data))
-        } catch {
-            
+        fetchData(BusStopServiceRoot.self) { (busStopServiceBusStops: [BusStopServiceValue]) in
+            print(busStopServiceBusStops.count)
         }
-        
-        
         
         // Transfer data into Core Data
-//        busServiceServices?.value.forEach({ (busStopServiceBusStop) in
-//            let busServiceData = BusService(context: context)
-//        })
+        //        busServiceServices?.value.forEach({ (busStopServiceBusStop) in
+        //            let busServiceData = BusService(context: context)
+        //        })
     }
     
     public func getBusData(completion: CompletionHandler<[String]> = nil) {
@@ -81,11 +72,11 @@ class Provider {
     }
     
     public func getBusArrivals(for busStop: String, completion: CompletionHandler<[String]> = nil) {
-        var req = URLRequest(url: URL(string: K.apiUrl.busArrival, with: [
-            URLQueryItem(name: "BusStopCode", value: busStop)
+        var req = URLRequest(url: URL(string: K.apiUrls.busArrival, with: [
+            URLQueryItem(name: K.apiQueries.busStopCode, value: busStop)
         ])!)
-        req.setValue(apiKey, forHTTPHeaderField: K.datamallApiKeyHeaderKey)
-        let task = URLSession.shared.dataTask(with: req) { (data, res, err) in
+        req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
+        URLSession.shared.dataTask(with: req) { (data, res, err) in
             self.handleApiError(res: res, err: err)
             
             let decoder = JSONDecoder()
@@ -93,8 +84,7 @@ class Provider {
             guard let data = data else {return}
             
             completion?([])
-        }
-        task.resume()
+        }.resume()
     }
     
     private func handleApiError(res: URLResponse?, err: Error?) {
