@@ -26,6 +26,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     /// Holds information about current sheet's state. **Never directly set this**.
     private var state: SheetState = .mid
     
+    /// Tells class if should prevent sheet from being seen.
     var isHidden = false {
         didSet { updateView(for: state) }
     }

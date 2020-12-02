@@ -25,16 +25,48 @@ class Provider {
     
     public func updateBusData(completion: CompletionHandler<[String]> = nil) {
         // Get data from API and put into BusServiceService and BusStopService
-        let busServiceServices: BusStopServiceRoot?
-        let busStopServices: BusStopServiceRoot?
         
         var req = URLRequest(url: URL(string: K.apiUrl.busStops, with: [])!)
         completion?([])
         
-        // Transfer data into Core Data
-        for busServiceService in busServiceServices {
-            let busServiceData = BusService(context: context)
+        let json = """
+        {
+            "odata.metadata": "http://datamall2.mytransport.sg/ltaodataservice/$metadata#BusServices",
+            "value": [
+                {
+                    "ServiceNo": "169B",
+                    "Operator": "SMRT",
+                    "Direction": 1,
+                    "Category": "TRUNK",
+                    "OriginCode": "46009",
+                    "DestinationCode": "46711",
+                    "AM_Peak_Freq": "33",
+                    "AM_Offpeak_Freq": "-",
+                    "PM_Peak_Freq": "-",
+                    "PM_Offpeak_Freq": "-",
+                    "LoopDesc": ""
+                },
+            ],
         }
+        """
+        let data = json.data(using: .utf8)!
+        
+//        let busServiceServiceRoot: BusStopServiceRoot?
+//        let busStopServiceRoot: BusStopServiceRoot?
+        
+        let decoder = JSONDecoder()
+        do {
+            print(try decoder.decode(BusStopServiceRoot.self, from: data))
+        } catch {
+            
+        }
+        
+        
+        
+        // Transfer data into Core Data
+//        busServiceServices?.value.forEach({ (busStopServiceBusStop) in
+//            let busServiceData = BusService(context: context)
+//        })
     }
     
     public func getBusData(completion: CompletionHandler<[String]> = nil) {
