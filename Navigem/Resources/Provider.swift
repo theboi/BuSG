@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 typealias CompletionHandler<T> = ((T) -> Void)?
 
@@ -46,29 +47,67 @@ class Provider {
     }
     
     public func updateBusData(completion: CompletionHandler<[BusServiceServiceValue]> = nil) {
-        // Get data from API and put into BusServiceService and BusStopService
-        fetchData(BusServiceServiceRoot.self) { (busStopServiceBusStops: [BusServiceServiceValue]) in
-            print(busStopServiceBusStops.count)
+        // Delete previous Core Data records
+        do {
+            try context.execute(NSBatchDeleteRequest(fetchRequest: BusService.fetchRequest()))
+            try context.execute(NSBatchDeleteRequest(fetchRequest: BusStop.fetchRequest()))
+            print("DELETING")
+        } catch {
+            
         }
-        fetchData(BusStopServiceRoot.self) { (busStopServiceBusStops: [BusStopServiceValue]) in
-            print(busStopServiceBusStops.count)
+        // Get data from API and put into BusServiceService and BusStopService
+        fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
+            // Transfer data into Core Data
+            busServiceServiceValues.forEach { (service) in
+                let data = BusService(context: self.context)
+                data.serviceNo = service.serviceNo
+                data.rawServiceOperator = service.serviceOperator.rawValue
+                data.direction = Int64(truncatingIfNeeded: service.direction)
+                data.rawCategory = service.category.rawValue
+                data.originCode = service.originCode
+                data.destinationCode = service.destinationCode
+                data.amPeakFreq = service.amPeakFreq
+                data.amOffpeakFreq = service.amOffpeakFreq
+                data.pmPeakFreq = service.pmPeakFreq
+                data.pmOffpeakFreq = service.pmOffpeakFreq
+                data.loopDesc = service.loopDesc
+            }
+            
+            do {
+                try self.context.save()
+            } catch {
+                // TODO: CATCH
+            }
         }
         
-        // Transfer data into Core Data
-        //        busServiceServices?.value.forEach({ (busStopServiceBusStop) in
-        //            let busServiceData = BusService(context: context)
-        //        })
+//        fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
+//            // Transfer data into Core Data
+//            busStopServiceValues.forEach { (busStopServiceValue) in
+//                let busStopData = BusStop(context: self.context)
+//                busStopData.roadName = busStopServiceValue.roadName
+//            }
+//
+//            do {
+//                try self.context.save()
+//            } catch {
+//                // TODO: CATCH
+//            }
+//        }
     }
     
     public func getBusData(completion: CompletionHandler<[String]> = nil) {
         do {
-            try context.fetch(BusStop.fetchRequest())
-            try context.fetch(BusService.fetchRequest())
+            let busStops: [BusStop] = try context.fetch(BusStop.fetchRequest())
+            let busServices: [BusService] = try context.fetch(BusService.fetchRequest())
+            busServices.forEach { (busService) in
+                print(busService.serviceNo)
+            }
+            //completion?(busStops)
         } catch {
             // TODO: CATCH
         }
         
-        completion?([])
+        
     }
     
     public func getBusArrivals(for busStop: String, completion: CompletionHandler<[String]> = nil) {

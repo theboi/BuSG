@@ -2,7 +2,7 @@
 //  BusService+CoreDataProperties.swift
 //  Navigem
 //
-//  Created by Ryan The on 1/12/20.
+//  Created by Ryan The on 2/12/20.
 //
 //
 
@@ -16,16 +16,20 @@ extension BusService {
         return NSFetchRequest<BusService>(entityName: "BusService")
     }
 
-    @NSManaged public var serviceNumber: String
-    @NSManaged public var busOperator: String
-    @NSManaged public var category: String
-    @NSManaged public var direction: String
-    @NSManaged public var originCode: String
-    @NSManaged public var destinationCode: String
-    @NSManaged public var amPeakFreq: String
-    @NSManaged public var pmPeakFreq: String
-    @NSManaged public var amOffpeakFreq: String
-    @NSManaged public var pmOffpeakFreq: String
-    @NSManaged public var loopDesc: String
+    @NSManaged public var amOffpeakFreq: String?
+    @NSManaged public var amPeakFreq: String?
+    @NSManaged public var rawCategory: String?
+    @NSManaged public var destinationCode: String?
+    @NSManaged public var direction: Int64
+    @NSManaged public var loopDesc: String?
+    @NSManaged public var originCode: String?
+    @NSManaged public var pmOffpeakFreq: String?
+    @NSManaged public var pmPeakFreq: String?
+    @NSManaged public var serviceNo: String?
+    @NSManaged public var rawServiceOperator: String?
+
+}
+
+extension BusService : Identifiable {
 
 }

@@ -20,6 +20,13 @@ class MainViewController: UIViewController {
         updateDataButton.frame = CGRect(x: 10, y: 10, width: 100, height: 100)
         updateDataButton.backgroundColor = .red
         view.addSubview(updateDataButton)
+        
+        let getDataButton = UIButton(type: .roundedRect, primaryAction: UIAction(handler: { (action) in
+            Provider.shared.getBusData()
+        }))
+        getDataButton.frame = CGRect(x: 110, y: 10, width: 100, height: 100)
+        getDataButton.backgroundColor = .green
+        view.addSubview(getDataButton)
 //        let mapView = MKMapView()
 //        self.view = mapView
     }
