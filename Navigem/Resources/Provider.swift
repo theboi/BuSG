@@ -7,6 +7,8 @@
 
 import UIKit
 
+typealias CompletionHandler<T> = ((T) -> Void)?
+
 class Provider {
     
     static let shared = Provider()
@@ -21,23 +23,44 @@ class Provider {
         return apiKey
     }
     
-    public func updateBusData() {
+    public func updateBusData(completion: CompletionHandler<[String]> = nil) {
+        // Get data from API and put into BusServiceService and BusStopService
+        let busServiceServices: BusStopServiceRoot?
+        let busStopServices: BusStopServiceRoot?
         
+        var req = URLRequest(url: URL(string: K.apiUrl.busStops, with: [])!)
+        completion?([])
+        
+        // Transfer data into Core Data
+        for busServiceService in busServiceServices {
+            let busServiceData = BusService(context: context)
+        }
     }
     
-    public func getBusArrivals(for busStop: String, completionBlock: @escaping ([String]) -> Void) throws {
-        var request = URLRequest(url: URL(string: K.apiUrl.busArrival, with: [
+    public func getBusData(completion: CompletionHandler<[String]> = nil) {
+        do {
+            try context.fetch(BusStop.fetchRequest())
+            try context.fetch(BusService.fetchRequest())
+        } catch {
+            // TODO: CATCH
+        }
+        
+        completion?([])
+    }
+    
+    public func getBusArrivals(for busStop: String, completion: CompletionHandler<[String]> = nil) {
+        var req = URLRequest(url: URL(string: K.apiUrl.busArrival, with: [
             URLQueryItem(name: "BusStopCode", value: busStop)
         ])!)
-        request.setValue(apiKey, forHTTPHeaderField: K.datamallApiKeyHeaderKey)
-        let task = URLSession.shared.dataTask(with: request) { (data, res, err) in
+        req.setValue(apiKey, forHTTPHeaderField: K.datamallApiKeyHeaderKey)
+        let task = URLSession.shared.dataTask(with: req) { (data, res, err) in
             self.handleApiError(res: res, err: err)
             
             let decoder = JSONDecoder()
             
             guard let data = data else {return}
             
-            completionBlock([])
+            completion?([])
         }
         task.resume()
     }
@@ -49,7 +72,7 @@ class Provider {
         }
         
         guard let httpResponse = res as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
+              (200...299).contains(httpResponse.statusCode) else {
             // TODO: HANDLE SERVER ERROR (TRY AGAIN)
             return
         }
