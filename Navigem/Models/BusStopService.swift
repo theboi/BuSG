@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-struct BusStopServiceBusStop: Codable {
+struct BusStopServiceValue: Codable {
     
     /// The unique 5-digit identifier for this physical bus stop. Sample: `"01012"`
     let busStopCode: String
@@ -33,11 +33,15 @@ struct BusStopServiceBusStop: Codable {
     
 }
 
-struct BusStopServiceRoot: Codable {
+struct BusStopServiceRoot: Codable, ApiServiceRoot {
+    
+    typealias T = BusStopServiceValue
+    
+    static let apiUrl = K.apiUrls.busStops
+    
+    let value: [BusStopServiceValue]
     
     let metaData: String
-    
-    let value: [BusStopServiceBusStop]
     
     enum CodingKeys: String, CodingKey {
         case metaData = "odata.metadata"

@@ -19,22 +19,28 @@ enum BusServiceOperator: String, Codable {
 }
 
 enum BusServiceCategory: String, Codable {
-    /// EXPRESS, FEEDER, INDUSTRIAL, TOWNLINK, TRUNK, 2 TIER FLAT FEE, FLAT FEE $1.10 (or $1.90, $3.50, $3.80)
+    /// EXPRESS
     case express = "EXPRESS"
+    /// FEEDER
     case feeder = "FEEDER"
+    /// INDUSTRIAL
     case industrial = "INDUSTRIAL"
+    /// TOWNLINK
     case townlink = "TOWNLINK"
+    /// TRUNK
     case trunk = "TRUNK"
+    /// 2 TIER FLAT FEE
     case flat2 = "2-TIER FLAT FARE"
+    /// Uncertain of actual raw value. FLAT FEE $1.10 (or $1.90, $3.50, $3.80)
     case flat = "FLAT"
+    /// Special case for buses CT8 and CT18 solely operated by SBST
+    case sbst = "SBST"
+    
+    case night = "NIGHT RIDER"
 }
 
-enum BusServiceDirection: Int, Codable {
-    case single = 1
-    case double = 2
-}
-
-struct BusServiceServiceService: Codable {
+struct BusServiceServiceValue: Codable {
+    
     /// The bus service number. Sample: `"107M"`
     let serviceNo: String
     
@@ -42,7 +48,7 @@ struct BusServiceServiceService: Codable {
     let serviceOperator: BusServiceOperator
     
     /// The direction in which the bus travels (1 or 2), loop services only have 1 direction. Sample: `"1"`
-    let direction: BusServiceDirection
+    let direction: Int
     
     /// Category of the SBS bus service: EXPRESS, FEEDER, INDUSTRIAL, TOWNLINK, TRUNK, 2 TIER FLAT FEE, FLAT FEE $1.10 (or $1.90, $3.50, $3.80). Sample: `"TRUNK"`
     let category: BusServiceCategory
@@ -81,13 +87,18 @@ struct BusServiceServiceService: Codable {
         case pmOffpeakFreq = "PM_Offpeak_Freq"
         case loopDesc = "LoopDesc"
     }
+    
 }
 
-struct BusServiceServiceRoot: Codable {
+struct BusServiceServiceRoot: Codable, ApiServiceRoot {
     
+    typealias T = BusServiceServiceValue
+    
+    static let apiUrl = K.apiUrls.busServices
+    
+    let value: [BusServiceServiceValue]
+
     let metaData: String
-    
-    let value: [BusServiceServiceService]
     
     enum CodingKeys: String, CodingKey {
         case metaData = "odata.metadata"
