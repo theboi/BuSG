@@ -11,6 +11,8 @@ class HomeSheetController: SheetController {
 
     lazy var tableView = UITableView()
     
+    var searchText: String = ""
+    
     let data = [
         "100"
     ]
@@ -21,6 +23,7 @@ class HomeSheetController: SheetController {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "Search for a bus stop or service"
+        searchBar.delegate = self
         headerView.searchBar = searchBar
         
         tableView.backgroundColor = .clear
@@ -63,6 +66,29 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusServiceSheetController(for: "10"), animated: true)
+        present(BusStopSheetController(for: "10079"), animated: true)
+    }
+}
+
+extension HomeSheetController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        let closeButton = UIButton(type: .system, primaryAction: UIAction(handler: { _ in
+            searchBar.resignFirstResponder()
+        }))
+        closeButton.setTitle("Cancel", for: .normal)
+        headerView.trailingButton = closeButton
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.searchText = searchText
+        self.tableView.reloadData()
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        headerView.trailingButton = nil
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

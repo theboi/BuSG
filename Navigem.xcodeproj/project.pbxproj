@@ -21,6 +21,7 @@
 		AA337D8B2577EDE4001453D0 /* BusStop+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D872577EDE4001453D0 /* BusStop+CoreDataProperties.swift */; };
 		AA337D8C2577EDE4001453D0 /* BusService+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D882577EDE4001453D0 /* BusService+CoreDataClass.swift */; };
 		AA337D8D2577EDE4001453D0 /* BusService+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D892577EDE4001453D0 /* BusService+CoreDataProperties.swift */; };
+		AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */; };
 		AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C6E2A256A541D00DDD32F /* UIViewController.swift */; };
 		AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0DB25763BCA003FAE6E /* FillView.swift */; };
 		AA91D0F72576416C003FAE6E /* BusServiceTimingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0F62576416C003FAE6E /* BusServiceTimingsTableViewCell.swift */; };
@@ -70,6 +71,7 @@
 		AA337D872577EDE4001453D0 /* BusStop+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA337D882577EDE4001453D0 /* BusService+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AA337D892577EDE4001453D0 /* BusService+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
 		AA4C6E2A256A541D00DDD32F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		AA91D0DB25763BCA003FAE6E /* FillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillView.swift; sourceTree = "<group>"; };
 		AA91D0F62576416C003FAE6E /* BusServiceTimingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceTimingsTableViewCell.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			children = (
 				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
 				AA13B6FB2572571F006FD219 /* ApiProvider.swift */,
+				AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				AA13B737257346E4006FD219 /* BusStopService.swift in Sources */,
 				AA91D0FC257649A6003FAE6E /* OldBusArrival.swift in Sources */,
 				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
+				AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */,
 				AA337D8D2577EDE4001453D0 /* BusService+CoreDataProperties.swift in Sources */,
 				AA337D8B2577EDE4001453D0 /* BusStop+CoreDataProperties.swift in Sources */,
 				AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */,
