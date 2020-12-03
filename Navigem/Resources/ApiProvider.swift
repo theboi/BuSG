@@ -16,6 +16,8 @@ class ApiProvider {
     
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    private let backgroundContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext()
+    
     private var apiKey: String {
         guard let apiKey = ProcessInfo.processInfo.environment[K.datamallEnvVar] else {
             assertionFailure("DataMall API Key missing. Get a key at https://www.mytransport.sg/content/mytransport/home/dataMall.html")
@@ -47,77 +49,81 @@ class ApiProvider {
     }
     
     public func updateBusData() {
-        // Delete previous Core Data records
-        
-        let privateMoc = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        privateMoc.parent = context
-        
-        privateMoc.perform {
-            do {
-                try privateMoc.execute(NSBatchDeleteRequest(fetchRequest: BusService.fetchRequest()))
-                try privateMoc.execute(NSBatchDeleteRequest(fetchRequest: BusStop.fetchRequest()))
-            } catch {
-                fatalError("Failure to delete context: \(error)")
-            }
+        // Get data from API and put into BusServiceService and BusStopService
+        self.fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
+            // Transfer data into Core Data
             
-            // Get data from API and put into BusServiceService and BusStopService
-            self.fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
-                // Transfer data into Core Data
-                busStopServiceValues.forEach { (service) in
-                    let data = BusStop(context: privateMoc)
+            busStopServiceValues.forEach { (service) in
+                var data: BusStop
+                
+                let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+                req.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
+                
+                do {
+                    let result = try self.backgroundContext.fetch(req)
+                    if result.count > 0 {
+                        data = result[0]
+                    } else {
+                        data = BusStop(context: self.backgroundContext)
+                    }
                     data.busStopCode = service.busStopCode
                     data.roadName = service.roadName
                     data.roadDesc = service.roadDesc
                     data.latitude = service.latitude
                     data.longitude = service.longitude
+                } catch {
+                    fatalError("Failure to fetch context: \(error)")
                 }
+            }
+            
+            // TODO: ADD ENUMS FOR RAW CONVERSION
+            do {
+                try self.backgroundContext.save()
+            } catch {
+                fatalError("Failure to delete context: \(error)")
+            }
+        }
+        
+        self.fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
+            // Transfer data into Core Data
+            busServiceServiceValues.forEach { (service) in
                 
-                // TODO: ADD ENUMS FOR RAW CONVERSION
+                var data: BusService
+                
+                let req = BusService.fetchRequest() as NSFetchRequest<BusService>
+                req.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
                 
                 do {
-                    try privateMoc.save()
-                    
-                    self.context.performAndWait {
-                        do {
-                            try self.context.save()
-                            print("saved")
-                        } catch {
-                            fatalError("Failure to save context: \(error)")
-                        }
+                    let result = try self.backgroundContext.fetch(req)
+                    if result.count > 0 {
+                        data = result[0]
+                    } else {
+                        data = BusService(context: self.backgroundContext)
                     }
+                    data.serviceNo = service.serviceNo
+                    data.rawServiceOperator = service.serviceOperator.rawValue
+                    data.direction = Int64(truncatingIfNeeded: service.direction)
+                    data.rawCategory = service.category.rawValue
+                    data.originCode = service.originCode
+                    data.destinationCode = service.destinationCode
+                    data.amPeakFreq = service.amPeakFreq
+                    data.amOffpeakFreq = service.amOffpeakFreq
+                    data.pmPeakFreq = service.pmPeakFreq
+                    data.pmOffpeakFreq = service.pmOffpeakFreq
+                    data.loopDesc = service.loopDesc
                 } catch {
-                    fatalError("Failure to save context: \(error)")
-                    // TODO: CATCH
+                    fatalError("Failure to fetch context: \(error)")
                 }
+            }
+            
+            do {
+                try self.backgroundContext.save()
+            } catch {
+                fatalError("Failure to delete context: \(error)")
             }
             
         }
         
-        
-        //        fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
-        //            // Transfer data into Core Data
-        //            busServiceServiceValues.forEach { (service) in
-        //                let data = BusService(context: self.context)
-        //                data.serviceNo = service.serviceNo
-        //                data.rawServiceOperator = service.serviceOperator.rawValue
-        //                data.direction = Int64(truncatingIfNeeded: service.direction)
-        //                data.rawCategory = service.category.rawValue
-        //                data.originCode = service.originCode
-        //                data.destinationCode = service.destinationCode
-        //                data.amPeakFreq = service.amPeakFreq
-        //                data.amOffpeakFreq = service.amOffpeakFreq
-        //                data.pmPeakFreq = service.pmPeakFreq
-        //                data.pmOffpeakFreq = service.pmOffpeakFreq
-        //                data.loopDesc = service.loopDesc
-        //            }
-        //
-        //            do {
-        //                try self.context.save()
-        //            } catch {
-        //                 fatalError("Failure to save context: \(error)")
-        //                // TODO: CATCH
-        //            }
-        //        }
     }
     
     public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop> = nil) {
