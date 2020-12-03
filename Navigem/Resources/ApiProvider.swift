@@ -27,7 +27,7 @@ class ApiProvider {
     }
     
     /// Function to fetch bus data in Service nested structures
-    private func fetchData<T: ApiServiceRoot>(_ T_Type: T.Type, withPrevious array: [T.T] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.T]>) {
+    private func fetchData<T: BusApiServiceRoot>(_ T_Type: T.Type, withPrevious array: [T.T] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.T]>) {
         var array = array
         var req = URLRequest(url: URL(string: T.apiUrl, with: [URLQueryItem(name: K.apiQueries.skip, value: String(skip))])!)
         req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
