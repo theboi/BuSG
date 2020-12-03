@@ -51,7 +51,6 @@ class Provider {
         do {
             try context.execute(NSBatchDeleteRequest(fetchRequest: BusService.fetchRequest()))
             try context.execute(NSBatchDeleteRequest(fetchRequest: BusStop.fetchRequest()))
-            print("DELETING")
         } catch {
             
         }
@@ -80,19 +79,25 @@ class Provider {
             }
         }
         
-//        fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
-//            // Transfer data into Core Data
-//            busStopServiceValues.forEach { (busStopServiceValue) in
-//                let busStopData = BusStop(context: self.context)
-//                busStopData.roadName = busStopServiceValue.roadName
-//            }
-//
-//            do {
-//                try self.context.save()
-//            } catch {
-//                // TODO: CATCH
-//            }
-//        }
+        fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
+            // Transfer data into Core Data
+            busStopServiceValues.forEach { (service) in
+                let data = BusStop(context: self.context)
+                data.busStopCode = service.busStopCode
+                data.roadName = service.roadName
+                data.roadDesc = service.roadDesc
+                data.latitude = service.latitude
+                data.longitude = service.longitude
+            }
+            
+            // TODO: ADD ENUMS FOR RAW CONVERSION
+
+            do {
+                try self.context.save()
+            } catch {
+                // TODO: CATCH
+            }
+        }
     }
     
     public func getBusData(completion: CompletionHandler<[String]> = nil) {
