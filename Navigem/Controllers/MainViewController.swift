@@ -26,6 +26,7 @@ class MainViewController: UIViewController {
         locationManager.delegate = self
         mapView.delegate = self
         
+        // TODO: MOVE INTO LAUNCH
         ApiProvider.shared.updateBusData()
     }
     

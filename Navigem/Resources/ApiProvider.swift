@@ -51,8 +51,8 @@ class ApiProvider {
     public func updateBusData() {
         // Get data from API and put into BusServiceService and BusStopService
         self.fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
-            // Transfer data into Core Data
             
+            // Transfer data into Core Data
             busStopServiceValues.forEach { (service) in
                 var data: BusStop
                 
@@ -61,11 +61,14 @@ class ApiProvider {
                 
                 do {
                     let result = try self.backgroundContext.fetch(req)
+                    
+                    // Update if already present, else Create
                     if result.count > 0 {
                         data = result[0]
                     } else {
                         data = BusStop(context: self.backgroundContext)
                     }
+                    
                     data.busStopCode = service.busStopCode
                     data.roadName = service.roadName
                     data.roadDesc = service.roadDesc
@@ -85,7 +88,6 @@ class ApiProvider {
         }
         
         self.fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
-            // Transfer data into Core Data
             busServiceServiceValues.forEach { (service) in
                 
                 var data: BusService
@@ -115,7 +117,6 @@ class ApiProvider {
                     fatalError("Failure to fetch context: \(error)")
                 }
             }
-            
             do {
                 try self.backgroundContext.save()
             } catch {
