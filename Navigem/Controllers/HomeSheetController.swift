@@ -37,7 +37,7 @@ class HomeSheetController: SheetController {
         ])
                 
         do {
-            try Provider.shared.getBusArrivals(for: "10079", completion: {_ in
+            try ApiProvider.shared.getBusArrivals(for: "10079", completion: {_ in
                 
             })
         } catch {
