@@ -10,9 +10,9 @@ import CoreData
 
 typealias CompletionHandler<T> = ((T) -> Void)?
 
-class Provider {
+class ApiProvider {
     
-    static let shared = Provider()
+    static let shared = ApiProvider()
     
     private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     

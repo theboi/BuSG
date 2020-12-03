@@ -10,25 +10,21 @@ import MapKit
 
 class MainViewController: UIViewController {
     
+    lazy var mapView = MKMapView()
+    
+    lazy var locationManager = CLLocationManager()
+    
+    var currentLocation: CLLocation {
+        locationManager.location ?? CLLocation(latitude: 0, longitude: 0)
+    }
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         self.view.backgroundColor = .systemBackground
         
-        let updateDataButton = UIButton(type: .roundedRect, primaryAction: UIAction(handler: { (action) in
-            Provider.shared.updateBusData()
-        }))
-        updateDataButton.frame = CGRect(x: 10, y: 10, width: 100, height: 100)
-        updateDataButton.backgroundColor = .red
-        view.addSubview(updateDataButton)
-        
-        let getDataButton = UIButton(type: .roundedRect, primaryAction: UIAction(handler: { (action) in
-            Provider.shared.getBusData()
-        }))
-        getDataButton.frame = CGRect(x: 110, y: 10, width: 100, height: 100)
-        getDataButton.backgroundColor = .green
-        view.addSubview(getDataButton)
-//        let mapView = MKMapView()
-//        self.view = mapView
+        self.view = mapView
+        locationManager.delegate = self
+        mapView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -37,10 +33,39 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        createBottomSheet()
+        self.present(HomeSheetController(), animated: true, completion: nil)
+        
+        guard CLLocationManager.locationServicesEnabled() else {
+            return
+        }
+        
+        if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestAlwaysAuthorization()
+        } else {
+            navigateToCurrentLocation()
+        }
     }
     
-    private func createBottomSheet() {
-        self.present(HomeSheetController(), animated: true, completion: nil)
+    private func navigateToCurrentLocation() {
+        locationManager.requestLocation()
+        let region = MKCoordinateRegion(center: currentLocation.coordinate ?? CLLocationCoordinate2D(latitude: 0, longitude: 0), latitudinalMeters: 200, longitudinalMeters: 200)
+        mapView.setRegion(region, animated: true)
+    }
+}
+
+extension MainViewController: CLLocationManagerDelegate, MKMapViewDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        navigateToCurrentLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else {
+            return
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // TODO: CATCH
+        print("ERROR", error)
     }
 }
