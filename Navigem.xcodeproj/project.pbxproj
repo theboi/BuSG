@@ -17,12 +17,15 @@
 		AA13B737257346E4006FD219 /* BusStopService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B736257346E4006FD219 /* BusStopService.swift */; };
 		AA13B73F257369B9006FD219 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B73E257369B9006FD219 /* URL.swift */; };
 		AA337D6B2577CECE001453D0 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D6A2577CECE001453D0 /* ApiService.swift */; };
-		AA337D8A2577EDE4001453D0 /* BusStop+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D862577EDE4001453D0 /* BusStop+CoreDataClass.swift */; };
-		AA337D8B2577EDE4001453D0 /* BusStop+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D872577EDE4001453D0 /* BusStop+CoreDataProperties.swift */; };
-		AA337D8C2577EDE4001453D0 /* BusService+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D882577EDE4001453D0 /* BusService+CoreDataClass.swift */; };
-		AA337D8D2577EDE4001453D0 /* BusService+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D892577EDE4001453D0 /* BusService+CoreDataProperties.swift */; };
 		AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */; };
 		AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C6E2A256A541D00DDD32F /* UIViewController.swift */; };
+		AA808A7A25793D2F0060547F /* BusService+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A7425793D2F0060547F /* BusService+CoreDataClass.swift */; };
+		AA808A7B25793D2F0060547F /* BusService+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A7525793D2F0060547F /* BusService+CoreDataProperties.swift */; };
+		AA808A7C25793D2F0060547F /* BusStop+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A7625793D2F0060547F /* BusStop+CoreDataClass.swift */; };
+		AA808A7D25793D2F0060547F /* BusStop+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A7725793D2F0060547F /* BusStop+CoreDataProperties.swift */; };
+		AA808A7E25793D2F0060547F /* BusRoute+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A7825793D2F0060547F /* BusRoute+CoreDataClass.swift */; };
+		AA808A7F25793D2F0060547F /* BusRoute+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A7925793D2F0060547F /* BusRoute+CoreDataProperties.swift */; };
+		AA808A8725793DA90060547F /* BusRouteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A8625793DA90060547F /* BusRouteService.swift */; };
 		AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0DB25763BCA003FAE6E /* FillView.swift */; };
 		AA91D0F72576416C003FAE6E /* BusServiceTimingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0F62576416C003FAE6E /* BusServiceTimingsTableViewCell.swift */; };
 		AA91D0FC257649A6003FAE6E /* OldBusArrival.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0FB257649A6003FAE6E /* OldBusArrival.swift */; };
@@ -67,12 +70,15 @@
 		AA13B736257346E4006FD219 /* BusStopService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopService.swift; sourceTree = "<group>"; };
 		AA13B73E257369B9006FD219 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		AA337D6A2577CECE001453D0 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
-		AA337D862577EDE4001453D0 /* BusStop+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataClass.swift"; sourceTree = "<group>"; };
-		AA337D872577EDE4001453D0 /* BusStop+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		AA337D882577EDE4001453D0 /* BusService+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataClass.swift"; sourceTree = "<group>"; };
-		AA337D892577EDE4001453D0 /* BusService+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
 		AA4C6E2A256A541D00DDD32F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		AA808A7425793D2F0060547F /* BusService+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AA808A7525793D2F0060547F /* BusService+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AA808A7625793D2F0060547F /* BusStop+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AA808A7725793D2F0060547F /* BusStop+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AA808A7825793D2F0060547F /* BusRoute+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusRoute+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AA808A7925793D2F0060547F /* BusRoute+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusRoute+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AA808A8625793DA90060547F /* BusRouteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusRouteService.swift; sourceTree = "<group>"; };
 		AA91D0DB25763BCA003FAE6E /* FillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillView.swift; sourceTree = "<group>"; };
 		AA91D0F62576416C003FAE6E /* BusServiceTimingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceTimingsTableViewCell.swift; sourceTree = "<group>"; };
 		AA91D0FB257649A6003FAE6E /* OldBusArrival.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldBusArrival.swift; sourceTree = "<group>"; };
@@ -138,6 +144,31 @@
 				AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		AAE39B5825793A310065CFF5 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */,
+				AA808A7425793D2F0060547F /* BusService+CoreDataClass.swift */,
+				AA808A7525793D2F0060547F /* BusService+CoreDataProperties.swift */,
+				AA808A7625793D2F0060547F /* BusStop+CoreDataClass.swift */,
+				AA808A7725793D2F0060547F /* BusStop+CoreDataProperties.swift */,
+				AA808A7825793D2F0060547F /* BusRoute+CoreDataClass.swift */,
+				AA808A7925793D2F0060547F /* BusRoute+CoreDataProperties.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		AAE39B6B25793A4F0065CFF5 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				AA337D6A2577CECE001453D0 /* ApiService.swift */,
+				AA13B731257346D6006FD219 /* BusServiceService.swift */,
+				AA13B736257346E4006FD219 /* BusStopService.swift */,
+				AA808A8625793DA90060547F /* BusRouteService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		AAF4A4EB25627D4F00FC51E7 = {
@@ -212,15 +243,9 @@
 		AAF4A5312562814D00FC51E7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				AA337D862577EDE4001453D0 /* BusStop+CoreDataClass.swift */,
-				AA337D872577EDE4001453D0 /* BusStop+CoreDataProperties.swift */,
-				AA337D882577EDE4001453D0 /* BusService+CoreDataClass.swift */,
-				AA337D892577EDE4001453D0 /* BusService+CoreDataProperties.swift */,
-				AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */,
-				AA13B731257346D6006FD219 /* BusServiceService.swift */,
-				AA13B736257346E4006FD219 /* BusStopService.swift */,
+				AAE39B6B25793A4F0065CFF5 /* Service */,
+				AAE39B5825793A310065CFF5 /* CoreData */,
 				AA91D0FB257649A6003FAE6E /* OldBusArrival.swift */,
-				AA337D6A2577CECE001453D0 /* ApiService.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -365,31 +390,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA337D8C2577EDE4001453D0 /* BusService+CoreDataClass.swift in Sources */,
-				AA337D8A2577EDE4001453D0 /* BusStop+CoreDataClass.swift in Sources */,
+				AA808A7F25793D2F0060547F /* BusRoute+CoreDataProperties.swift in Sources */,
 				AA13B6DC2572127E006FD219 /* HomeSheetController.swift in Sources */,
+				AA808A7A25793D2F0060547F /* BusService+CoreDataClass.swift in Sources */,
 				AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */,
 				AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */,
 				AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */,
 				AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */,
 				AAF4A53D256284D100FC51E7 /* SheetController.swift in Sources */,
 				AA13B73F257369B9006FD219 /* URL.swift in Sources */,
+				AA808A7E25793D2F0060547F /* BusRoute+CoreDataClass.swift in Sources */,
 				AA13B6E4257229F2006FD219 /* SheetContentView.swift in Sources */,
 				AA13B737257346E4006FD219 /* BusStopService.swift in Sources */,
 				AA91D0FC257649A6003FAE6E /* OldBusArrival.swift in Sources */,
 				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
 				AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */,
-				AA337D8D2577EDE4001453D0 /* BusService+CoreDataProperties.swift in Sources */,
-				AA337D8B2577EDE4001453D0 /* BusStop+CoreDataProperties.swift in Sources */,
+				AA808A8725793DA90060547F /* BusRouteService.swift in Sources */,
 				AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */,
+				AA808A7C25793D2F0060547F /* BusStop+CoreDataClass.swift in Sources */,
 				AA13B6FC2572571F006FD219 /* ApiProvider.swift in Sources */,
 				AA337D6B2577CECE001453D0 /* ApiService.swift in Sources */,
 				AA91D0F72576416C003FAE6E /* BusServiceTimingsTableViewCell.swift in Sources */,
 				AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */,
 				AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */,
 				AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */,
+				AA808A7B25793D2F0060547F /* BusService+CoreDataProperties.swift in Sources */,
 				AAF4A54525628DEF00FC51E7 /* Constants.swift in Sources */,
 				AA13B732257346D6006FD219 /* BusServiceService.swift in Sources */,
+				AA808A7D25793D2F0060547F /* BusStop+CoreDataProperties.swift in Sources */,
 				AA13B72D2573469B006FD219 /* BusServiceSheetController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

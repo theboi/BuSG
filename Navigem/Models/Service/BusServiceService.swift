@@ -90,7 +90,7 @@ struct BusServiceServiceValue: Codable {
     
 }
 
-struct BusServiceServiceRoot: Codable, ApiServiceRoot {
+struct BusServiceServiceRoot: Codable, BusApiServiceRoot {
     
     typealias T = BusServiceServiceValue
     

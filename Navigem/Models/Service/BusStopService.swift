@@ -33,7 +33,7 @@ struct BusStopServiceValue: Codable {
     
 }
 
-struct BusStopServiceRoot: Codable, ApiServiceRoot {
+struct BusStopServiceRoot: Codable, BusApiServiceRoot {
     
     typealias T = BusStopServiceValue
     

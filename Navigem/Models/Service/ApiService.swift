@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ApiServiceRoot: Codable {
+protocol BusApiServiceRoot: Codable {
     
     associatedtype T
     
