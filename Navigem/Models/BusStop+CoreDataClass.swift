@@ -11,5 +11,5 @@ import CoreData
 
 @objc(BusStop)
 public class BusStop: NSManagedObject {
-
+    
 }

@@ -25,6 +25,8 @@ class MainViewController: UIViewController {
         self.view = mapView
         locationManager.delegate = self
         mapView.delegate = self
+        
+        ApiProvider.shared.updateBusData()
     }
     
     required init?(coder: NSCoder) {
@@ -48,7 +50,7 @@ class MainViewController: UIViewController {
     
     private func navigateToCurrentLocation() {
         locationManager.requestLocation()
-        let region = MKCoordinateRegion(center: currentLocation.coordinate ?? CLLocationCoordinate2D(latitude: 0, longitude: 0), latitudinalMeters: 200, longitudinalMeters: 200)
+        let region = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 200, longitudinalMeters: 200)
         mapView.setRegion(region, animated: true)
     }
 }

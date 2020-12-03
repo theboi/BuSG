@@ -8,6 +8,9 @@
 import UIKit
 
 class BusStopSheetController: SheetController {
+    
+    var busStop: BusStop?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
@@ -19,8 +22,10 @@ class BusStopSheetController: SheetController {
     init(for busStopCode: String) {
         super.init()
         
-        headerView.titleText = String(busStopCode)
-        headerView.detailText = "Singapore"
+        ApiProvider.shared.getBusStop(for: busStopCode)
+        
+        headerView.titleText = busStop?.busStopCode
+        headerView.detailText = busStop?.roadDesc
     }
     
     required init?(coder: NSCoder) {

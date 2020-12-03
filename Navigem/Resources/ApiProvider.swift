@@ -46,7 +46,7 @@ class ApiProvider {
         }.resume()
     }
     
-    public func updateBusData(completion: CompletionHandler<[BusServiceServiceValue]> = nil) {
+    public func updateBusData() {
         // Delete previous Core Data records
         do {
             try context.execute(NSBatchDeleteRequest(fetchRequest: BusService.fetchRequest()))
@@ -55,29 +55,29 @@ class ApiProvider {
             
         }
         // Get data from API and put into BusServiceService and BusStopService
-        fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
-            // Transfer data into Core Data
-            busServiceServiceValues.forEach { (service) in
-                let data = BusService(context: self.context)
-                data.serviceNo = service.serviceNo
-                data.rawServiceOperator = service.serviceOperator.rawValue
-                data.direction = Int64(truncatingIfNeeded: service.direction)
-                data.rawCategory = service.category.rawValue
-                data.originCode = service.originCode
-                data.destinationCode = service.destinationCode
-                data.amPeakFreq = service.amPeakFreq
-                data.amOffpeakFreq = service.amOffpeakFreq
-                data.pmPeakFreq = service.pmPeakFreq
-                data.pmOffpeakFreq = service.pmOffpeakFreq
-                data.loopDesc = service.loopDesc
-            }
-            
-            do {
-                try self.context.save()
-            } catch {
-                // TODO: CATCH
-            }
-        }
+//        fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
+//            // Transfer data into Core Data
+//            busServiceServiceValues.forEach { (service) in
+//                let data = BusService(context: self.context)
+//                data.serviceNo = service.serviceNo
+//                data.rawServiceOperator = service.serviceOperator.rawValue
+//                data.direction = Int64(truncatingIfNeeded: service.direction)
+//                data.rawCategory = service.category.rawValue
+//                data.originCode = service.originCode
+//                data.destinationCode = service.destinationCode
+//                data.amPeakFreq = service.amPeakFreq
+//                data.amOffpeakFreq = service.amOffpeakFreq
+//                data.pmPeakFreq = service.pmPeakFreq
+//                data.pmOffpeakFreq = service.pmOffpeakFreq
+//                data.loopDesc = service.loopDesc
+//            }
+//            
+//            do {
+//                try self.context.save()
+//            } catch {
+//                // TODO: CATCH
+//            }
+//        }
         
         fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
             // Transfer data into Core Data
@@ -100,19 +100,14 @@ class ApiProvider {
         }
     }
     
-    public func getBusData(completion: CompletionHandler<[String]> = nil) {
+    public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop> = nil) {
         do {
-            let busStops: [BusStop] = try context.fetch(BusStop.fetchRequest())
-            let busServices: [BusService] = try context.fetch(BusService.fetchRequest())
-            busServices.forEach { (busService) in
-                print(busService.serviceNo)
-            }
-            //completion?(busStops)
+            let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+            req.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
+            completion?(try context.fetch(req).first ?? BusStop())
         } catch {
-            // TODO: CATCH
+            
         }
-        
-        
     }
     
     public func getBusArrivals(for busStop: String, completion: CompletionHandler<[String]> = nil) {
