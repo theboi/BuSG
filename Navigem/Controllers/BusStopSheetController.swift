@@ -22,10 +22,12 @@ class BusStopSheetController: SheetController {
     init(for busStopCode: String) {
         super.init()
         
-        ApiProvider.shared.getBusStop(for: busStopCode)
-        
-        headerView.titleText = busStop?.busStopCode
-        headerView.detailText = busStop?.roadDesc
+        ApiProvider.shared.getBusStop(for: busStopCode) {busStop in
+            self.busStop = busStop
+            
+            self.headerView.titleText = busStop.busStopCode
+            self.headerView.detailText = busStop.roadDesc
+        }
     }
     
     required init?(coder: NSCoder) {
