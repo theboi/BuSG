@@ -13,6 +13,8 @@
         <attribute name="sunLastBus" attributeType="String"/>
         <attribute name="wdFirstBus" attributeType="String"/>
         <attribute name="wdLastBus" attributeType="String"/>
+        <relationship name="busService" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BusService" inverseName="busRoute" inverseEntity="BusService"/>
+        <relationship name="busStop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BusStop" inverseName="busRoute" inverseEntity="BusStop"/>
     </entity>
     <entity name="BusService" representedClassName="BusService" syncable="YES">
         <attribute name="amOffpeakFreq" attributeType="String"/>
@@ -26,6 +28,7 @@
         <attribute name="rawCategory" attributeType="String"/>
         <attribute name="rawServiceOperator" attributeType="String"/>
         <attribute name="serviceNo" attributeType="String"/>
+        <relationship name="busRoute" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BusRoute" inverseName="busService" inverseEntity="BusRoute"/>
     </entity>
     <entity name="BusStop" representedClassName="BusStop" syncable="YES">
         <attribute name="busStopCode" attributeType="String"/>
@@ -33,10 +36,11 @@
         <attribute name="longitude" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="roadDesc" attributeType="String"/>
         <attribute name="roadName" attributeType="String"/>
+        <relationship name="busRoute" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BusRoute" inverseName="busStop" inverseEntity="BusRoute"/>
     </entity>
     <elements>
-        <element name="BusRoute" positionX="-54" positionY="90" width="128" height="209"/>
-        <element name="BusService" positionX="-54" positionY="27" width="128" height="194"/>
-        <element name="BusStop" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="BusRoute" positionX="-54" positionY="90" width="128" height="239"/>
+        <element name="BusService" positionX="-54" positionY="27" width="128" height="209"/>
+        <element name="BusStop" positionX="-63" positionY="-18" width="128" height="119"/>
     </elements>
 </model>
