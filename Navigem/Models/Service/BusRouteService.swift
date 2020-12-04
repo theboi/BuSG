@@ -66,8 +66,6 @@ struct BusRouteServiceRoot: Codable, BusApiServiceRoot {
     
     typealias Value = BusRouteServiceValue
     
-    typealias Data = BusRoute
-
     static let apiUrl = K.apiUrls.busRoutes
     
     let value: [Value]

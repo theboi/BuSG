@@ -80,104 +80,103 @@ class ApiProvider {
             do {
                 try self.backgroundContext.save()
             } catch {
-                fatalError("Failure to delete context: \(error)")
-            }
-        }
-        
-        // Fetch BusServices from API
-        self.fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
-            
-            for service in busServiceServiceValues {
-                var data: BusService
-                let req: NSFetchRequest<BusService> = BusService.fetchRequest()
-                req.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
-                
-                do {
-                    let result = try self.backgroundContext.fetch(req)
-                    if result.count > 0 {
-                        data = result[0]
-                    } else {
-                        data = BusService(context: self.backgroundContext)
-                    }
-                    data.serviceNo = service.serviceNo
-                    data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
-                    data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
-                    data.rawCategory = service.category?.rawValue ?? "NULL"
-                    data.originCode = service.originCode ?? "NULL"
-                    data.destinationCode = service.destinationCode ?? "NULL"
-                    data.amPeakFreq = service.amPeakFreq ?? "NULL"
-                    data.amOffpeakFreq = service.amOffpeakFreq ?? "NULL"
-                    data.pmPeakFreq = service.pmPeakFreq ?? "NULL"
-                    data.pmOffpeakFreq = service.pmOffpeakFreq ?? "NULL"
-                    data.loopDesc = service.loopDesc ?? "NULL"
-                } catch {
-                    fatalError("Failure to fetch context: \(error)")
-                }
-            }
-            
-            do {
-                try self.backgroundContext.save()
-            } catch {
-                fatalError("Failure to delete context: \(error)")
-            }
-        }
-        
-        // TODO: MOVE INTO AFTER PREV 2 COMPLETION
-        // Fetch BusRoutes from API
-        self.fetchData(BusRouteServiceRoot.self) { (busServiceServiceValues: [BusRouteServiceValue]) in
-            for service in busServiceServiceValues {
-                var data: BusRoute
-                
-                let req = BusRoute.fetchRequest() as NSFetchRequest<BusRoute>
-                req.predicate = NSPredicate(format: "serviceNo == %@ && busStopCode == %@", service.serviceNo, service.busStopCode)
-                
-                do {
-                    let result = try self.backgroundContext.fetch(req)
-                    if result.count > 0 {
-                        data = result[0]
-                    } else {
-                        data = BusRoute(context: self.backgroundContext)
-                    }
-                    data.serviceNo = service.serviceNo
-                    data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
-                    data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
-                    data.stopSequence = Int64(truncatingIfNeeded: service.stopSequence ?? 0)
-                    data.busStopCode = service.busStopCode
-                    data.distance = service.distance ?? 0
-                    data.wdFirstBus = service.wdFirstBus ?? "NULL"
-                    data.wdLastBus = service.wdLastBus ?? "NULL"
-                    data.satFirstBus = service.satFirstBus ?? "NULL"
-                    data.satLastBus = service.satLastBus ?? "NULL"
-                    data.sunFirstBus = service.sunFirstBus ?? "NULL"
-                    data.sunLastBus = service.sunLastBus ?? "NULL"
-                    
-                    let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-                    busStopReq.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
-                    let busStop = try self.backgroundContext.fetch(busStopReq).first
-                    
-                    let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
-                    busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
-                    let busService = try self.backgroundContext.fetch(busServiceReq).first
-                    
-                    // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
-                    if let busStop = busStop, let busService = busService {
-                        data.busStop = busStop
-                        data.busService = busService
-                    } else {
-                        self.backgroundContext.delete(data)
-                        continue
-                    }
-                } catch {
-                    fatalError("Failure to fetch context: \(error)")
-                }
-            }
-            do {
-                try self.backgroundContext.save()
-            } catch {
                 fatalError("Failure to save context: \(error)")
             }
-        }
-        
+            
+            // Fetch BusServices from API
+            self.fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
+                
+                for service in busServiceServiceValues {
+                    var data: BusService
+                    let req: NSFetchRequest<BusService> = BusService.fetchRequest()
+                    req.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
+                    
+                    do {
+                        let result = try self.backgroundContext.fetch(req)
+                        if result.count > 0 {
+                            data = result[0]
+                        } else {
+                            data = BusService(context: self.backgroundContext)
+                        }
+                        data.serviceNo = service.serviceNo
+                        data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
+                        data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
+                        data.rawCategory = service.category?.rawValue ?? "NULL"
+                        data.originCode = service.originCode ?? "NULL"
+                        data.destinationCode = service.destinationCode ?? "NULL"
+                        data.amPeakFreq = service.amPeakFreq ?? "NULL"
+                        data.amOffpeakFreq = service.amOffpeakFreq ?? "NULL"
+                        data.pmPeakFreq = service.pmPeakFreq ?? "NULL"
+                        data.pmOffpeakFreq = service.pmOffpeakFreq ?? "NULL"
+                        data.loopDesc = service.loopDesc ?? "NULL"
+                    } catch {
+                        fatalError("Failure to fetch context: \(error)")
+                    }
+                }
+                
+                do {
+                    try self.backgroundContext.save()
+                } catch {
+                    fatalError("Failure to save context: \(error)")
+                }
+                
+                // Fetch BusRoutes from API
+                self.fetchData(BusRouteServiceRoot.self) { (busServiceServiceValues: [BusRouteServiceValue]) in
+                    for service in busServiceServiceValues {
+                        var data: BusRoute
+                        
+                        let req = BusRoute.fetchRequest() as NSFetchRequest<BusRoute>
+                        req.predicate = NSPredicate(format: "serviceNo == %@ && busStopCode == %@", service.serviceNo, service.busStopCode)
+                        
+                        do {
+                            let result = try self.backgroundContext.fetch(req)
+                            if result.count > 0 {
+                                data = result[0]
+                            } else {
+                                data = BusRoute(context: self.backgroundContext)
+                            }
+                            data.serviceNo = service.serviceNo
+                            data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
+                            data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
+                            data.stopSequence = Int64(truncatingIfNeeded: service.stopSequence ?? 0)
+                            data.busStopCode = service.busStopCode
+                            data.distance = service.distance ?? 0
+                            data.wdFirstBus = service.wdFirstBus ?? "NULL"
+                            data.wdLastBus = service.wdLastBus ?? "NULL"
+                            data.satFirstBus = service.satFirstBus ?? "NULL"
+                            data.satLastBus = service.satLastBus ?? "NULL"
+                            data.sunFirstBus = service.sunFirstBus ?? "NULL"
+                            data.sunLastBus = service.sunLastBus ?? "NULL"
+                            
+                            let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+                            busStopReq.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
+                            let busStop = try self.backgroundContext.fetch(busStopReq).first
+                            
+                            let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
+                            busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
+                            let busService = try self.backgroundContext.fetch(busServiceReq).first
+                            
+                            // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
+                            if let busStop = busStop, let busService = busService {
+                                data.busStop = busStop
+                                data.busService = busService
+                            } else {
+                                self.backgroundContext.delete(data)
+                                continue
+                            }
+                        } catch {
+                            fatalError("Failure to fetch context: \(error)")
+                        }
+                    }
+                    do {
+                        try self.backgroundContext.save()
+                    } catch {
+                        fatalError("Failure to save context: \(error)")
+                    }
+                    completion?(())
+                } // BusRoutes
+            } // BusServices
+        } // BusStops
     }
     
     public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop> = nil) {
@@ -197,8 +196,7 @@ class ApiProvider {
     
     private func handleApiError(res: URLResponse?, err: Error?) {
         if let err = err {
-            // TODO: HANDLE CLIENT ERROR (TRY AGAIN)
-            return
+            fatalError(err.localizedDescription)
         }
         
         guard let httpResponse = res as? HTTPURLResponse,

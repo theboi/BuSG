@@ -39,13 +39,9 @@ class HomeSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
                 
-        do {
-            try ApiProvider.shared.getBusArrivals(for: "10079", completion: {_ in
-                
-            })
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+        ApiProvider.shared.getBusArrivals(for: "10079", completion: {_ in
+            
+        })
         
         tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
     }
