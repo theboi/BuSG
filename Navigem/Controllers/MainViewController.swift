@@ -20,16 +20,18 @@ class MainViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.view.backgroundColor = .systemBackground
                 
-        //self.view = mapView
+        self.view = mapView
         locationManager.delegate = self
         mapView.delegate = self
-        
-        // TODO: MOVE INTO LAUNCH
+        LocationProvider.shared.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
     private func checkForUpdates() {
-        UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
-
+        
         let nowEpoch = Date().timeIntervalSince1970
         let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
         let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
@@ -57,13 +59,10 @@ class MainViewController: UIViewController {
         //ApiProvider.shared.mapBusData()
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.present(HomeSheetController(), animated: true, completion: nil)
+        let homeSheetController = HomeSheetController()
+        self.present(homeSheetController, animated: true, completion: nil)
         
         guard CLLocationManager.locationServicesEnabled() else {
             return
@@ -72,7 +71,7 @@ class MainViewController: UIViewController {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         } else {
-            LocationProvider.shared.navigateToCurrentLocation(mapView: mapView)
+            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
         }
         
         checkForUpdates()
@@ -81,7 +80,7 @@ class MainViewController: UIViewController {
 
 extension MainViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        LocationProvider.shared.navigateToCurrentLocation(mapView: mapView)
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -91,7 +90,21 @@ extension MainViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        // TODO: CATCH
         fatalError(error.localizedDescription)
     }
+}
+
+extension MainViewController: LocationProviderDelegate {
+    
+    func locationProvider(didRequestNavigateTo location: CLLocation, with zoomLevel: ZoomLevel) {
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        mapView.setRegion(region, animated: true)
+    }
+    
+    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel) {
+        locationManager.requestLocation()
+        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        mapView.setRegion(region, animated: true)
+    }
+
 }

@@ -8,20 +8,30 @@
 import Foundation
 import MapKit
 
+enum ZoomLevel: Double {
+    case one = 300
+    case two = 1000
+    case three = 2000
+}
+
+protocol LocationProviderDelegate: class {
+    
+    func locationProvider(didRequestNavigateTo location: CLLocation, with zoomLevel: ZoomLevel)
+    
+    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel)
+
+}
+
 class LocationProvider: NSObject {
     
     static let shared = LocationProvider()
     
     lazy var locationManager = CLLocationManager()
     
+    weak var delegate: LocationProviderDelegate?
+    
     public var currentLocation: CLLocation {
         locationManager.location ?? CLLocation(latitude: 0, longitude: 0)
-    }
-    
-    public func navigateToCurrentLocation(mapView: MKMapView) {
-        locationManager.requestLocation()
-        let region = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 200, longitudinalMeters: 200)
-        mapView.setRegion(region, animated: true)
     }
     
 }

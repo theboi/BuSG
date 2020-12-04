@@ -12,14 +12,16 @@ enum SheetState {
 }
 
 protocol SheetControllerDelegate: class {
+    
     func sheetController(_ sheetController: SheetController, didUpdateSize state: SheetState)
+
 }
 
 class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     /// Delegate to handle all changes in sheet
     weak var delegate: SheetControllerDelegate?
-    
+            
     /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
     var presentingSheetController: SheetController?
     
