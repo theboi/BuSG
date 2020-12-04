@@ -165,6 +165,10 @@ class ApiProvider {
         } // BusStops
     }
     
+    public func mapBusData() {
+        
+    }
+    
     public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop?> = nil) {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>

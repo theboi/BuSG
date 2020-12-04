@@ -21,24 +21,24 @@ extension BusStop {
     @NSManaged public var longitude: Double
     @NSManaged public var roadDesc: String
     @NSManaged public var roadName: String
-    @NSManaged public var busRoute: NSSet
+    @NSManaged public var busRoutes: NSSet?
 
 }
 
-// MARK: Generated accessors for busRoute
+// MARK: Generated accessors for busRoutes
 extension BusStop {
 
-    @objc(addBusRouteObject:)
-    @NSManaged public func addToBusRoute(_ value: BusRoute)
+    @objc(addBusRoutesObject:)
+    @NSManaged public func addToBusRoutes(_ value: BusRoute)
 
-    @objc(removeBusRouteObject:)
-    @NSManaged public func removeFromBusRoute(_ value: BusRoute)
+    @objc(removeBusRoutesObject:)
+    @NSManaged public func removeFromBusRoutes(_ value: BusRoute)
 
-    @objc(addBusRoute:)
-    @NSManaged public func addToBusRoute(_ values: NSSet)
+    @objc(addBusRoutes:)
+    @NSManaged public func addToBusRoutes(_ values: NSSet)
 
-    @objc(removeBusRoute:)
-    @NSManaged public func removeFromBusRoute(_ values: NSSet)
+    @objc(removeBusRoutes:)
+    @NSManaged public func removeFromBusRoutes(_ values: NSSet)
 
 }
 
