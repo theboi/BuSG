@@ -14,7 +14,6 @@ public class BusStop: NSManagedObject {
     
     public var busServices: [BusService] {
         func fetchImmediately() -> [BusService] {
-            print("IMME")
             let context = self.managedObjectContext!
             let routeReq: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
             routeReq.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
@@ -24,7 +23,10 @@ public class BusStop: NSManagedObject {
                     let stopReq: NSFetchRequest<BusService> = BusService.fetchRequest()
                     stopReq.predicate = NSPredicate(format: "serviceNo == %@", busRoute.serviceNo)
                     do {
-                        return try context.fetch(stopReq).first!
+                        let busService = try context.fetch(stopReq).first!
+                        busRoute.busStop = self
+                        busRoute.busService = busService
+                        return busService
                     } catch {
                         fatalError(error.localizedDescription)
                     }
@@ -41,7 +43,6 @@ public class BusStop: NSManagedObject {
                     busServices.append(busService)
                 } else { return fetchImmediately() }
             }
-            print("RES")
             return busServices
         } else { return fetchImmediately() }
     }
