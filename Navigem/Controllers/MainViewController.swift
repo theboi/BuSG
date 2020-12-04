@@ -52,6 +52,7 @@ class MainViewController: UIViewController {
         
         UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
         
+        ApiProvider.shared.mapBusData()
     }
     
     required init?(coder: NSCoder) {

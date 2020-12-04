@@ -14,6 +14,7 @@ public class BusService: NSManagedObject {
     
     public var busStops: [BusStop] {
         func fetchImmediately() -> [BusStop] {
+            print("IMME")
             let context = self.managedObjectContext!
             let routeReq: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
             routeReq.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
@@ -40,6 +41,7 @@ public class BusService: NSManagedObject {
                     busStops.append(busStop)
                 } else { return fetchImmediately() }
             }
+            print("RES")
             return busStops
         } else { return fetchImmediately() }
     }
