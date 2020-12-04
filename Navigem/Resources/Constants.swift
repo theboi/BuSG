@@ -18,6 +18,8 @@ enum K {
     
     static let bottomSheetOpacity: CGFloat = 0.7
     static let cornerRadius: CGFloat = 8
+    
+    static let coordinateSearchRadiusInMeters = 200
     static let datamallEnvVar = "datamall_api_key"
     
     enum apiUrls {

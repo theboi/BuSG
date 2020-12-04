@@ -13,9 +13,16 @@ class HomeSheetController: SheetController {
     
     var searchText: String = ""
     
-    let data = [
-        "100"
-    ]
+    var suggestedServices: [BusService] = []
+    
+    var nearbyStops: [BusStop] = []
+    
+    private func reloadData() {
+        nearbyStops = ApiProvider.getNearbyBusStops() { busStops in
+            
+        }
+        tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,30 +46,32 @@ class HomeSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
                 
-        ApiProvider.shared.getBusArrivals(for: "10079", completion: {_ in
-            
-        })
+//        ApiProvider.shared.getBusArrivals(for: "10079", completion: {_ in
+//            
+//        })
         
         tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
+        
+        reloadData()
     }
 }
 
 extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        data.count
+        nearbyStops.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService)
         cell?.backgroundColor = .clear
         cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell?.textLabel?.text = data[indexPath.row]
+        cell?.textLabel?.text = nearbyStops[indexPath.row].busStopCode
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusStopSheetController(for: "10079"), animated: true)
+        present(BusStopSheetController(for: nearbyStops[indexPath.row].busStopCode), animated: true)
     }
 }
 

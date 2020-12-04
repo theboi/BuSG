@@ -179,14 +179,31 @@ class ApiProvider {
         } // BusStops
     }
     
-    public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop> = nil) {
+    public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop?> = nil) {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             req.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
             let busStop = try context.fetch(req).first
             if let busStop = busStop {
                 completion?(busStop)
+            } else {
+                completion?(nil)
             }
+        } catch {
+            fatalError("Failure to fetch context: \(error)")
+        }
+    }
+    
+    public func getNearbyBusStops(completion: CompletionHandler<[BusStop]> = nil) {
+        do {
+            let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+            req.predicate = NSPredicate(block: { (busStop, _) -> Bool in
+                if case let busStop as BusStop = busStop {
+                    let busStopLoc = CLLocation(latitude: busStop.latitude, longitude: busStop.longitude)
+                    busStopLoc.distance(from: <#T##CLLocation#>)
+                }
+            })
+            completion?(try context.fetch(req))
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
