@@ -19,7 +19,7 @@ class MainViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         self.view.backgroundColor = .systemBackground
-                
+        
         self.view = mapView
         locationManager.delegate = self
         mapView.delegate = self
@@ -78,7 +78,8 @@ class MainViewController: UIViewController {
     }
 }
 
-extension MainViewController: CLLocationManagerDelegate, MKMapViewDelegate {
+extension MainViewController: CLLocationManagerDelegate {
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
     }
@@ -92,6 +93,24 @@ extension MainViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         fatalError(error.localizedDescription)
     }
+    
+}
+
+extension MainViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKPolyline {
+            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            polylineRenderer.strokeColor = UIColor.red
+            polylineRenderer.lineWidth = 5
+            return polylineRenderer
+        }
+        return MKPolygonRenderer(overlay: overlay)
+    }
+    
+//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+//        
+//    }
 }
 
 extension MainViewController: LocationProviderDelegate {
@@ -101,10 +120,16 @@ extension MainViewController: LocationProviderDelegate {
         mapView.setRegion(region, animated: true)
     }
     
+    func locationProvider(didRequestNavigateTo annotation: MKAnnotation, with zoomLevel: ZoomLevel) {
+        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        mapView.setRegion(region, animated: true)
+        mapView.addAnnotation(annotation)
+    }
+    
     func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel) {
         locationManager.requestLocation()
         let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
         mapView.setRegion(region, animated: true)
     }
-
+    
 }

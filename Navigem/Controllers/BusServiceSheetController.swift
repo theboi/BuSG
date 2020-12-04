@@ -9,7 +9,7 @@ import UIKit
 
 class BusServiceSheetController: SheetController {
 
-    var busService: BusService?
+    var busService: BusService!
     
     lazy var tableView = UITableView()
     
@@ -42,8 +42,8 @@ class BusServiceSheetController: SheetController {
         ApiProvider.shared.getBusService(for: serviceNo ?? "1") {busService in
             self.busService = busService
             
-            self.headerView.titleText = busService?.serviceNo ?? "NULL"
-            self.headerView.detailText = busService?.destinationCode ?? "NULL"
+            self.headerView.titleText = busService.serviceNo
+            self.headerView.detailText = busService.destinationCode
             
             //print(busService?.busRoutes.allObjects as! [BusRoute])
             //print((busService?.busRoutes.allObjects as! [BusRoute])[0].busStopCode)
