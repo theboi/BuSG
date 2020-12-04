@@ -60,6 +60,7 @@ class SheetHeaderView: UIView {
         
         if let titleText = titleText, let detailText = detailText {
             let titleLabel = UILabel()
+            titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
             titleLabel.text = titleText
             let detailLabel = UILabel()
             detailLabel.text = detailText
