@@ -38,4 +38,9 @@ enum K {
         static let busService = "busServiceCellIdentifier"
         static let busStop = "busStopCellIdentifier"
     }
+    
+    enum userDefaults {
+        static let lastOpenedEpoch = "lastOpenedEpoch"
+        static let lastUpdatedEpoch = "lastUpdatedEpoch"
+    }
 }

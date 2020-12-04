@@ -27,7 +27,7 @@ class ApiProvider {
     }
     
     /// Fetch bus data in Service nested structures with skip until DataMall API returns empty array (aka no more entries)
-    private func fetchData<T: BusApiServiceRoot>(_ T_Type: T.Type, withPrevious array: [T.T] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.T]>) {
+    private func fetchData<T: BusApiServiceRoot>(_ T_Type: T.Type, withPrevious array: [T.Value] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.Value]>) {
         var array = array
         var req = URLRequest(url: URL(string: T.apiUrl, with: [URLQueryItem(name: K.apiQueries.skip, value: String(skip))])!)
         req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
@@ -37,10 +37,6 @@ class ApiProvider {
             do {
                 let busStopServiceRoot = try decoder.decode(T.self, from: data!)
                 array.append(contentsOf: busStopServiceRoot.value)
-                //                if let fault = array.first {($0 as? BusRouteServiceValue)?.busStopCode == "CTE"} {
-                //                    print("%@ %@", skip, fault)
-                //                    fatalError("")
-                //                }
                 if !busStopServiceRoot.value.isEmpty {
                     self.fetchData(T_Type, withPrevious: array, withSkip: skip + 500, completion: completion)
                     return
@@ -53,28 +49,23 @@ class ApiProvider {
     }
     
     /// Update bus data from DataMall servers. Runs asynchronous.
-    public func updateBusData() {
+    public func updateBusData(completion: CompletionHandler<Void> = nil) {
         
-        // Fetch BusStops from API
         self.fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
             
-            // Transfer data into Core Data
-            busStopServiceValues.forEach { (service) in
+            for service in busStopServiceValues {
                 var data: BusStop
-                
-                let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-                req.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode ?? "")
+                let req: NSFetchRequest<BusStop> = BusStop.fetchRequest()
+                req.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
                 
                 do {
                     let result = try self.backgroundContext.fetch(req)
-                    
                     // Update if already present, else Create
                     if result.count > 0 {
                         data = result[0]
                     } else {
                         data = BusStop(context: self.backgroundContext)
                     }
-                    
                     data.busStopCode = service.busStopCode
                     data.roadName = service.roadName ?? "NULL"
                     data.roadDesc = service.roadDesc ?? "NULL"
@@ -95,11 +86,10 @@ class ApiProvider {
         
         // Fetch BusServices from API
         self.fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
-            busServiceServiceValues.forEach { (service) in
-                
+            
+            for service in busServiceServiceValues {
                 var data: BusService
-                
-                let req = BusService.fetchRequest() as NSFetchRequest<BusService>
+                let req: NSFetchRequest<BusService> = BusService.fetchRequest()
                 req.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
                 
                 do {
@@ -124,6 +114,7 @@ class ApiProvider {
                     fatalError("Failure to fetch context: \(error)")
                 }
             }
+            
             do {
                 try self.backgroundContext.save()
             } catch {
@@ -181,7 +172,6 @@ class ApiProvider {
                 }
             }
             do {
-                print("save")
                 try self.backgroundContext.save()
             } catch {
                 fatalError("Failure to save context: \(error)")

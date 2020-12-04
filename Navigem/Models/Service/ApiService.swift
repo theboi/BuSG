@@ -6,14 +6,17 @@
 //
 
 import Foundation
+import CoreData
 
 protocol BusApiServiceRoot: Codable {
     
-    associatedtype T
+    associatedtype Value
+    
+    associatedtype Data: NSManagedObject & NSFetchRequestResult
     
     static var apiUrl: String { get }
     
-    var value: [T] { get }
+    var value: [Value] { get }
     
     var metaData: String { get }
     
