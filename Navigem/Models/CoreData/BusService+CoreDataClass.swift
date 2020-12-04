@@ -13,14 +13,20 @@ import CoreData
 public class BusService: NSManagedObject {
     
     public var busStops: [BusStop] {
-        let context = self.managedObjectContext
+        let context = self.managedObjectContext!
         let routeReq: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
         routeReq.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
         do {
-            let busRoute = try context?.fetch(routeReq).first
-            let stopReq: NSFetchRequest<BusStop> = BusStop.fetchRequest()
-            stopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute!.busStopCode)
-            return try context?.fetch(stopReq) ?? []
+            let busRoutes = try context.fetch(routeReq)
+            return busRoutes.map({ (busRoute) -> BusStop in
+                let stopReq: NSFetchRequest<BusStop> = BusStop.fetchRequest()
+                stopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute.busStopCode)
+                do {
+                    return try context.fetch(stopReq).first!
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            })
         } catch {
             fatalError(error.localizedDescription)
         }
