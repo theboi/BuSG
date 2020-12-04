@@ -2,7 +2,7 @@
 //  BusStop+CoreDataProperties.swift
 //  Navigem
 //
-//  Created by Ryan The on 3/12/20.
+//  Created by Ryan The on 4/12/20.
 //
 //
 
@@ -16,12 +16,12 @@ extension BusStop {
         return NSFetchRequest<BusStop>(entityName: "BusStop")
     }
 
-    @NSManaged public var busStopCode: String?
+    @NSManaged public var busStopCode: String
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
-    @NSManaged public var roadDesc: String?
-    @NSManaged public var roadName: String?
-    @NSManaged public var busRoutes: NSSet?
+    @NSManaged public var roadDesc: String
+    @NSManaged public var roadName: String
+    @NSManaged public var busRoutes: NSSet
 
 }
 

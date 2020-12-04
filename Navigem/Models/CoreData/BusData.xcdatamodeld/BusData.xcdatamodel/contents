@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BusRoute" representedClassName="BusRoute" syncable="YES">
-        <attribute name="busStopCode" optional="YES" attributeType="String"/>
-        <attribute name="direction" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="rawServiceOperator" optional="YES" attributeType="String"/>
-        <attribute name="satFirstBus" optional="YES" attributeType="String"/>
-        <attribute name="satLastBus" optional="YES" attributeType="String"/>
-        <attribute name="serviceNo" optional="YES" attributeType="String"/>
-        <attribute name="stopSequence" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="sunFirstBus" optional="YES" attributeType="String"/>
-        <attribute name="sunLastBus" optional="YES" attributeType="String"/>
-        <attribute name="wdFirstBus" optional="YES" attributeType="String"/>
-        <attribute name="wdLastBus" optional="YES" attributeType="String"/>
+        <attribute name="busStopCode" attributeType="String"/>
+        <attribute name="direction" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="rawServiceOperator" attributeType="String"/>
+        <attribute name="satFirstBus" attributeType="String"/>
+        <attribute name="satLastBus" attributeType="String"/>
+        <attribute name="serviceNo" attributeType="String"/>
+        <attribute name="stopSequence" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sunFirstBus" attributeType="String"/>
+        <attribute name="sunLastBus" attributeType="String"/>
+        <attribute name="wdFirstBus" attributeType="String"/>
+        <attribute name="wdLastBus" attributeType="String"/>
         <relationship name="busService" maxCount="1" deletionRule="Nullify" destinationEntity="BusService" inverseName="busRoutes" inverseEntity="BusService"/>
         <relationship name="busStop" maxCount="1" deletionRule="Nullify" destinationEntity="BusStop" inverseName="busRoutes" inverseEntity="BusStop"/>
     </entity>
