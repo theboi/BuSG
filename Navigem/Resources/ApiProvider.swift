@@ -148,22 +148,7 @@ class ApiProvider {
                             data.sunFirstBus = service.sunFirstBus ?? "NULL"
                             data.sunLastBus = service.sunLastBus ?? "NULL"
 
-                            let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-                            busStopReq.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
-                            let busStop = try self.backgroundContext.fetch(busStopReq).first
-
-                            let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
-                            busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
-                            let busService = try self.backgroundContext.fetch(busServiceReq).first
-
                             // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
-                            if let busStop = busStop, let busService = busService {
-                                data.busStop = busStop
-                                data.busService = busService
-                            } else {
-                                self.backgroundContext.delete(data)
-                                continue
-                            }
                         } catch {
                             fatalError("Failure to fetch context: \(error)")
                         }
