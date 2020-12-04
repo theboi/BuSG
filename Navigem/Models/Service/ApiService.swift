@@ -11,9 +11,7 @@ import CoreData
 protocol BusApiServiceRoot: Codable {
     
     associatedtype Value
-    
-    associatedtype Data: NSManagedObject & NSFetchRequestResult
-    
+        
     static var apiUrl: String { get }
     
     var value: [Value] { get }
