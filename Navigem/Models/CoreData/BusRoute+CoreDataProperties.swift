@@ -28,8 +28,6 @@ extension BusRoute {
     @NSManaged public var sunLastBus: String
     @NSManaged public var wdFirstBus: String
     @NSManaged public var wdLastBus: String
-    @NSManaged public var busService: BusService
-    @NSManaged public var busStop: BusStop
 
 }
 

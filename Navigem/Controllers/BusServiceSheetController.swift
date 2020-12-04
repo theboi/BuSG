@@ -36,10 +36,10 @@ class BusServiceSheetController: SheetController {
         tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
     }
     
-    init(for serviceNo: String) {
+    init(for serviceNo: String?) {
         super.init()
         
-        ApiProvider.shared.getBusService(for: serviceNo) {busService in
+        ApiProvider.shared.getBusService(for: serviceNo ?? "1") {busService in
             self.busService = busService
             
             self.headerView.titleText = busService?.serviceNo ?? "NULL"
@@ -57,19 +57,19 @@ class BusServiceSheetController: SheetController {
 
 extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return busService!.busRoutes.count
+        return busService?.busStops.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService)
         cell?.backgroundColor = .clear
         cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell?.textLabel?.text = (busService?.busRoutes.allObjects as! [BusRoute])[indexPath.row].busStopCode
+        cell?.textLabel?.text = busService?.busStops[indexPath.row].busStopCode
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusStopSheetController(for: (busService?.busRoutes.allObjects as! [BusRoute])[indexPath.row].busStopCode), animated: true)
+        present(BusStopSheetController(for: busService?.busStops[indexPath.row].busStopCode ?? "NULL"), animated: true)
     }
 }
