@@ -197,30 +197,24 @@ class ApiProvider {
         }
     }
     
-    public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop?> = nil) {
+    public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop> = nil) {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             req.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
-            let busStop = try context.fetch(req).first
-            if let busStop = busStop {
+            if let busStop = try context.fetch(req).first {
                 completion?(busStop)
-            } else {
-                completion?(nil)
             }
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
     }
     
-    public func getBusService(for serviceNo: String, completion: CompletionHandler<BusService?> = nil) {
+    public func getBusService(for serviceNo: String, completion: CompletionHandler<BusService> = nil) {
         do {
             let req = BusService.fetchRequest() as NSFetchRequest<BusService>
             req.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
-            let busStop: BusService? = try context.fetch(req).first
-            if let busStop = busStop {
-                completion?(busStop)
-            } else {
-                completion?(nil)
+            if let busService = try context.fetch(req).first {
+                completion?(busService)
             }
         } catch {
             fatalError("Failure to fetch context: \(error)")
