@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BusServiceTimingsTableViewCell: UITableViewCell {
+class BusServiceTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -17,11 +17,6 @@ class BusServiceTimingsTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
     }
     
 }

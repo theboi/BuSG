@@ -23,7 +23,7 @@ enum K {
     static let datamallEnvVar = "datamall_api_key"
     
     enum apiUrls {
-        static let busArrival = "\(apiUrlBase)/BusArrivalv2"
+        static let busArrivals = "\(apiUrlBase)/BusArrivalv2"
         static let busServices = "\(apiUrlBase)/BusServices"
         static let busRoutes = "\(apiUrlBase)/BusRoutes"
         static let busStops = "\(apiUrlBase)/BusStops"
