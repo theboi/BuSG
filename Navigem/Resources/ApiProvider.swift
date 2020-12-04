@@ -124,10 +124,10 @@ class ApiProvider {
                 self.fetchData(BusRouteServiceRoot.self) { (busServiceServiceValues: [BusRouteServiceValue]) in
                     for service in busServiceServiceValues {
                         var data: BusRoute
-
+                        
                         let req = BusRoute.fetchRequest() as NSFetchRequest<BusRoute>
                         req.predicate = NSPredicate(format: "serviceNo == %@ && busStopCode == %@", service.serviceNo, service.busStopCode)
-
+                        
                         do {
                             let result = try self.backgroundContext.fetch(req)
                             if result.count > 0 {
@@ -147,7 +147,7 @@ class ApiProvider {
                             data.satLastBus = service.satLastBus ?? "NULL"
                             data.sunFirstBus = service.sunFirstBus ?? "NULL"
                             data.sunLastBus = service.sunLastBus ?? "NULL"
-
+                            
                             // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
                         } catch {
                             fatalError("Failure to fetch context: \(error)")
@@ -166,7 +166,35 @@ class ApiProvider {
     }
     
     public func mapBusData() {
-        
+        DispatchQueue(label: "com.ryanthe.background").async {
+            do {
+                let req: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
+                
+                for busRoute in try self.backgroundContext.fetch(req) {
+                    
+                    if let _ = busRoute.busService, let _ = busRoute.busStop { continue }
+
+                    let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+                    busStopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute.busStopCode)
+                    let busStop = try self.backgroundContext.fetch(busStopReq).first
+                    
+                    let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
+                    busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", busRoute.serviceNo)
+                    let busService = try self.backgroundContext.fetch(busServiceReq).first
+                    
+                    // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
+                    if let busStop = busStop, let busService = busService {
+                        busRoute.busStop = busStop
+                        busRoute.busService = busService
+                    } else {
+                        self.backgroundContext.delete(busRoute)
+                    }
+                }
+                try self.backgroundContext.save()
+            } catch {
+                fatalError(error.localizedDescription)
+            }
+        }
     }
     
     public func getBusStop(for busStopCode: String, completion: CompletionHandler<BusStop?> = nil) {
@@ -207,7 +235,7 @@ class ApiProvider {
             
             let cur = LocationProvider.shared.currentLocation.coordinate
             let rad = K.nearbyCoordRadius
-
+            
             let predicate = NSPredicate(format: "latitude <= %@ && latitude >= %@ && longitude <= %@ && longitude >= %@", argumentArray: [cur.latitude+rad, cur.latitude-rad, cur.longitude+rad, cur.longitude-rad])
             req.predicate = predicate
             
