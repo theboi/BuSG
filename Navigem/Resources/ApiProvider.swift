@@ -197,12 +197,20 @@ class ApiProvider {
     public func getNearbyBusStops(completion: CompletionHandler<[BusStop]> = nil) {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-            req.predicate = NSPredicate(block: { (busStop, _) -> Bool in
-                if case let busStop as BusStop = busStop {
-                    let busStopLoc = CLLocation(latitude: busStop.latitude, longitude: busStop.longitude)
-                    busStopLoc.distance(from: <#T##CLLocation#>)
-                }
-            })
+//            if case let busStop as BusStop = busStop {
+//                let busStopLoc = CLLocation(latitude: busStop.latitude, longitude: busStop.longitude)
+//                return busStopLoc.distance(from: LocationProvider.shared.currentLocation) < K.coordinateSearchRadiusInMeters
+//            }
+//            return false
+            
+            // latitude longitude
+            
+            let cur = LocationProvider.shared.currentLocation.coordinate
+            let rad = K.nearbyCoordRadius
+
+            let predicate = NSPredicate(format: "latitude <= %@ && latitude >= %@ && longitude <= %@ && longitude >= %@", argumentArray: [cur.latitude+rad, cur.latitude-rad, cur.longitude+rad, cur.longitude-rad])
+            req.predicate = predicate
+            
             completion?(try context.fetch(req))
         } catch {
             fatalError("Failure to fetch context: \(error)")

@@ -12,10 +12,8 @@ class MainViewController: UIViewController {
     
     lazy var mapView = MKMapView()
     
-    lazy var locationManager = CLLocationManager()
-    
-    var currentLocation: CLLocation {
-        locationManager.location ?? CLLocation(latitude: 0, longitude: 0)
+    var locationManager: CLLocationManager {
+        LocationProvider.shared.locationManager
     }
     
     init() {
@@ -71,20 +69,14 @@ class MainViewController: UIViewController {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         } else {
-            navigateToCurrentLocation()
+            LocationProvider.shared.navigateToCurrentLocation(mapView: mapView)
         }
-    }
-    
-    private func navigateToCurrentLocation() {
-        locationManager.requestLocation()
-        let region = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 200, longitudinalMeters: 200)
-        mapView.setRegion(region, animated: true)
     }
 }
 
 extension MainViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        navigateToCurrentLocation()
+        LocationProvider.shared.navigateToCurrentLocation(mapView: mapView)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
