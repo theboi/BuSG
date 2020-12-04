@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class BusStopSheetController: SheetController {
     
@@ -45,7 +46,7 @@ class BusStopSheetController: SheetController {
             self.headerView.titleText = busStop?.roadName ?? "NULL"
             self.headerView.detailText = busStop?.roadDesc ?? "NULL"
             
-            //print((busStop?.busRoutes.allObjects as? [BusRoute])?[0].busService.serviceNo)
+            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: CLLocation(latitude: busStop?.latitude ?? 0, longitude: busStop?.longitude ?? 0), with: .one)
         }
     }
     

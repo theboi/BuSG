@@ -216,9 +216,7 @@ class ApiProvider {
         do {
             let req = BusService.fetchRequest() as NSFetchRequest<BusService>
             req.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
-            let out = try context.fetch(req)
-            print(out.count)
-            let busStop: BusService? = out[0]
+            let busStop: BusService? = try context.fetch(req).first
             if let busStop = busStop {
                 completion?(busStop)
             } else {
