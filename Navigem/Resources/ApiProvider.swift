@@ -183,8 +183,10 @@ class ApiProvider {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             req.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
-            let busStop = try context.fetch(req).first ?? BusStop()
-            completion?(busStop)
+            let busStop = try context.fetch(req).first
+            if let busStop = busStop {
+                completion?(busStop)
+            }
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
