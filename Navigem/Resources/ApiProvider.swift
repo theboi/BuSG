@@ -124,10 +124,10 @@ class ApiProvider {
                 self.fetchData(BusRouteServiceRoot.self) { (busServiceServiceValues: [BusRouteServiceValue]) in
                     for service in busServiceServiceValues {
                         var data: BusRoute
-                        
+
                         let req = BusRoute.fetchRequest() as NSFetchRequest<BusRoute>
                         req.predicate = NSPredicate(format: "serviceNo == %@ && busStopCode == %@", service.serviceNo, service.busStopCode)
-                        
+
                         do {
                             let result = try self.backgroundContext.fetch(req)
                             if result.count > 0 {
@@ -147,15 +147,15 @@ class ApiProvider {
                             data.satLastBus = service.satLastBus ?? "NULL"
                             data.sunFirstBus = service.sunFirstBus ?? "NULL"
                             data.sunLastBus = service.sunLastBus ?? "NULL"
-                            
+
                             let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
                             busStopReq.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
                             let busStop = try self.backgroundContext.fetch(busStopReq).first
-                            
+
                             let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
                             busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
                             let busService = try self.backgroundContext.fetch(busServiceReq).first
-                            
+
                             // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
                             if let busStop = busStop, let busService = busService {
                                 data.busStop = busStop
@@ -170,6 +170,7 @@ class ApiProvider {
                     }
                     do {
                         try self.backgroundContext.save()
+                        print("Done Updating Bus Data")
                     } catch {
                         fatalError("Failure to save context: \(error)")
                     }
@@ -194,16 +195,26 @@ class ApiProvider {
         }
     }
     
+    public func getBusService(for serviceNo: String, completion: CompletionHandler<BusService?> = nil) {
+        do {
+            let req = BusService.fetchRequest() as NSFetchRequest<BusService>
+            req.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
+            let out = try context.fetch(req)
+            print(out.count)
+            let busStop: BusService? = out[0]
+            if let busStop = busStop {
+                completion?(busStop)
+            } else {
+                completion?(nil)
+            }
+        } catch {
+            fatalError("Failure to fetch context: \(error)")
+        }
+    }
+    
     public func getNearbyBusStops(completion: CompletionHandler<[BusStop]> = nil) {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-//            if case let busStop as BusStop = busStop {
-//                let busStopLoc = CLLocation(latitude: busStop.latitude, longitude: busStop.longitude)
-//                return busStopLoc.distance(from: LocationProvider.shared.currentLocation) < K.coordinateSearchRadiusInMeters
-//            }
-//            return false
-            
-            // latitude longitude
             
             let cur = LocationProvider.shared.currentLocation.coordinate
             let rad = K.nearbyCoordRadius
