@@ -25,7 +25,7 @@ class BusStopSheetController: SheetController {
         ApiProvider.shared.getBusStop(for: busStopCode) {busStop in
             self.busStop = busStop
             
-            self.headerView.titleText = busStop.busStopCode
+            self.headerView.titleText = busStop.roadName
             self.headerView.detailText = busStop.roadDesc
         }
     }

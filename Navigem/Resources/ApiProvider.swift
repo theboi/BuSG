@@ -26,7 +26,7 @@ class ApiProvider {
         return apiKey
     }
     
-    /// Function to fetch bus data in Service nested structures
+    /// Fetch bus data in Service nested structures with skip until DataMall API returns empty array (aka no more entries)
     private func fetchData<T: BusApiServiceRoot>(_ T_Type: T.Type, withPrevious array: [T.T] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.T]>) {
         var array = array
         var req = URLRequest(url: URL(string: T.apiUrl, with: [URLQueryItem(name: K.apiQueries.skip, value: String(skip))])!)
@@ -37,6 +37,10 @@ class ApiProvider {
             do {
                 let busStopServiceRoot = try decoder.decode(T.self, from: data!)
                 array.append(contentsOf: busStopServiceRoot.value)
+                //                if let fault = array.first {($0 as? BusRouteServiceValue)?.busStopCode == "CTE"} {
+                //                    print("%@ %@", skip, fault)
+                //                    fatalError("")
+                //                }
                 if !busStopServiceRoot.value.isEmpty {
                     self.fetchData(T_Type, withPrevious: array, withSkip: skip + 500, completion: completion)
                     return
@@ -48,8 +52,10 @@ class ApiProvider {
         }.resume()
     }
     
+    /// Update bus data from DataMall servers. Runs asynchronous.
     public func updateBusData() {
-        // Get data from API and put into BusServiceService and BusStopService
+        
+        // Fetch BusStops from API
         self.fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
             
             // Transfer data into Core Data
@@ -57,7 +63,7 @@ class ApiProvider {
                 var data: BusStop
                 
                 let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-                req.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
+                req.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode ?? "")
                 
                 do {
                     let result = try self.backgroundContext.fetch(req)
@@ -70,10 +76,10 @@ class ApiProvider {
                     }
                     
                     data.busStopCode = service.busStopCode
-                    data.roadName = service.roadName
-                    data.roadDesc = service.roadDesc
-                    data.latitude = service.latitude
-                    data.longitude = service.longitude
+                    data.roadName = service.roadName ?? "NULL"
+                    data.roadDesc = service.roadDesc ?? "NULL"
+                    data.latitude = service.latitude ?? 0
+                    data.longitude = service.longitude ?? 0
                 } catch {
                     fatalError("Failure to fetch context: \(error)")
                 }
@@ -87,6 +93,7 @@ class ApiProvider {
             }
         }
         
+        // Fetch BusServices from API
         self.fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
             busServiceServiceValues.forEach { (service) in
                 
@@ -103,16 +110,16 @@ class ApiProvider {
                         data = BusService(context: self.backgroundContext)
                     }
                     data.serviceNo = service.serviceNo
-                    data.rawServiceOperator = service.serviceOperator.rawValue
-                    data.direction = Int64(truncatingIfNeeded: service.direction)
-                    data.rawCategory = service.category.rawValue
-                    data.originCode = service.originCode
-                    data.destinationCode = service.destinationCode
-                    data.amPeakFreq = service.amPeakFreq
-                    data.amOffpeakFreq = service.amOffpeakFreq
-                    data.pmPeakFreq = service.pmPeakFreq
-                    data.pmOffpeakFreq = service.pmOffpeakFreq
-                    data.loopDesc = service.loopDesc
+                    data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
+                    data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
+                    data.rawCategory = service.category?.rawValue ?? "NULL"
+                    data.originCode = service.originCode ?? "NULL"
+                    data.destinationCode = service.destinationCode ?? "NULL"
+                    data.amPeakFreq = service.amPeakFreq ?? "NULL"
+                    data.amOffpeakFreq = service.amOffpeakFreq ?? "NULL"
+                    data.pmPeakFreq = service.pmPeakFreq ?? "NULL"
+                    data.pmOffpeakFreq = service.pmOffpeakFreq ?? "NULL"
+                    data.loopDesc = service.loopDesc ?? "NULL"
                 } catch {
                     fatalError("Failure to fetch context: \(error)")
                 }
@@ -122,7 +129,63 @@ class ApiProvider {
             } catch {
                 fatalError("Failure to delete context: \(error)")
             }
-            
+        }
+        
+        // TODO: MOVE INTO AFTER PREV 2 COMPLETION
+        // Fetch BusRoutes from API
+        self.fetchData(BusRouteServiceRoot.self) { (busServiceServiceValues: [BusRouteServiceValue]) in
+            for service in busServiceServiceValues {
+                var data: BusRoute
+                
+                let req = BusRoute.fetchRequest() as NSFetchRequest<BusRoute>
+                req.predicate = NSPredicate(format: "serviceNo == %@ && busStopCode == %@", service.serviceNo, service.busStopCode)
+                
+                do {
+                    let result = try self.backgroundContext.fetch(req)
+                    if result.count > 0 {
+                        data = result[0]
+                    } else {
+                        data = BusRoute(context: self.backgroundContext)
+                    }
+                    data.serviceNo = service.serviceNo
+                    data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
+                    data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
+                    data.stopSequence = Int64(truncatingIfNeeded: service.stopSequence ?? 0)
+                    data.busStopCode = service.busStopCode
+                    data.distance = service.distance ?? 0
+                    data.wdFirstBus = service.wdFirstBus ?? "NULL"
+                    data.wdLastBus = service.wdLastBus ?? "NULL"
+                    data.satFirstBus = service.satFirstBus ?? "NULL"
+                    data.satLastBus = service.satLastBus ?? "NULL"
+                    data.sunFirstBus = service.sunFirstBus ?? "NULL"
+                    data.sunLastBus = service.sunLastBus ?? "NULL"
+                    
+                    let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+                    busStopReq.predicate = NSPredicate(format: "busStopCode == %@", service.busStopCode)
+                    let busStop = try self.backgroundContext.fetch(busStopReq).first
+                    
+                    let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
+                    busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", service.serviceNo)
+                    let busService = try self.backgroundContext.fetch(busServiceReq).first
+                    
+                    // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
+                    if let busStop = busStop, let busService = busService {
+                        data.busStop = busStop
+                        data.busService = busService
+                    } else {
+                        self.backgroundContext.delete(data)
+                        continue
+                    }
+                } catch {
+                    fatalError("Failure to fetch context: \(error)")
+                }
+            }
+            do {
+                print("save")
+                try self.backgroundContext.save()
+            } catch {
+                fatalError("Failure to save context: \(error)")
+            }
         }
         
     }
@@ -139,19 +202,7 @@ class ApiProvider {
     }
     
     public func getBusArrivals(for busStop: String, completion: CompletionHandler<[String]> = nil) {
-        var req = URLRequest(url: URL(string: K.apiUrls.busArrival, with: [
-            URLQueryItem(name: K.apiQueries.busStopCode, value: busStop)
-        ])!)
-        req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
-        URLSession.shared.dataTask(with: req) { (data, res, err) in
-            self.handleApiError(res: res, err: err)
-            
-            let decoder = JSONDecoder()
-            
-            guard let data = data else {return}
-            
-            completion?([])
-        }.resume()
+        
     }
     
     private func handleApiError(res: URLResponse?, err: Error?) {

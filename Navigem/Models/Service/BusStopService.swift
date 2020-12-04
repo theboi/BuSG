@@ -14,14 +14,14 @@ struct BusStopServiceValue: Codable {
     let busStopCode: String
     
     /// The road on which this bus stop is located. Sample: `"Victoria St"`
-    let roadName: String
+    let roadName: String?
     
     /// Landmarks next to the bus stop (if any) to aid in identifying this bus stop. Sample: `"Hotel Grand Pacific"`
-    let roadDesc: String
+    let roadDesc: String?
     
-    /// Location coordinates for this bus stop. Sample: `"1.29685, 103.853"`
-    let latitude: Double
-    let longitude: Double
+    /// Location coordinates for this bus stop. Sample: `1.29685, 103.853`
+    let latitude: Double?
+    let longitude: Double?
     
     enum CodingKeys: String, CodingKey {
         case busStopCode = "BusStopCode"
@@ -39,7 +39,7 @@ struct BusStopServiceRoot: Codable, BusApiServiceRoot {
     
     static let apiUrl = K.apiUrls.busStops
     
-    let value: [BusStopServiceValue]
+    let value: [T]
     
     let metaData: String
     

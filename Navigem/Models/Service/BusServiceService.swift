@@ -45,34 +45,34 @@ struct BusServiceServiceValue: Codable {
     let serviceNo: String
     
     /// Operator for this bus service. Sample: `"SBST"`
-    let serviceOperator: BusServiceOperator
+    let serviceOperator: BusServiceOperator?
     
-    /// The direction in which the bus travels (1 or 2), loop services only have 1 direction. Sample: `"1"`
-    let direction: Int
+    /// The direction in which the bus travels (1 or 2), loop services only have 1 direction. Sample: `1`
+    let direction: Int?
     
     /// Category of the SBS bus service: EXPRESS, FEEDER, INDUSTRIAL, TOWNLINK, TRUNK, 2 TIER FLAT FEE, FLAT FEE $1.10 (or $1.90, $3.50, $3.80). Sample: `"TRUNK"`
-    let category: BusServiceCategory
+    let category: BusServiceCategory?
     
     /// Bus stop code for first bus stop. Sample: `"64009"`
-    let originCode: String
+    let originCode: String?
     
     /// Bus stop code for last bus stop (similar as first stop for loop services). Sample: `"64009"`
-    let destinationCode: String
+    let destinationCode: String?
     
     /// Freq of dispatch for AM Peak 0630H - 0830H (range in minutes)
-    let amPeakFreq: String
+    let amPeakFreq: String?
     
     /// Freq of dispatch for AM Off-Peak 0831H - 1659H (range in minutes)
-    let amOffpeakFreq: String
+    let amOffpeakFreq: String?
     
     /// Freq of dispatch for PM Peak 1700H - 1900H (range in minutes)
-    let pmPeakFreq: String
+    let pmPeakFreq: String?
     
     /// Freq of dispatch for PM Off-Peak after 1900H (range in minutes)
-    let pmOffpeakFreq: String
+    let pmOffpeakFreq: String?
     
     /// Location at which the bus service loops, empty if not a loop service.
-    let loopDesc: String
+    let loopDesc: String?
     
     enum CodingKeys: String, CodingKey {
         case serviceNo = "ServiceNo"
@@ -96,7 +96,7 @@ struct BusServiceServiceRoot: Codable, BusApiServiceRoot {
     
     static let apiUrl = K.apiUrls.busServices
     
-    let value: [BusServiceServiceValue]
+    let value: [T]
 
     let metaData: String
     
