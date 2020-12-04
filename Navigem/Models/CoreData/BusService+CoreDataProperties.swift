@@ -27,6 +27,24 @@ extension BusService {
     @NSManaged public var rawCategory: String
     @NSManaged public var rawServiceOperator: String
     @NSManaged public var serviceNo: String
+    @NSManaged public var busRoute: NSSet
+
+}
+
+// MARK: Generated accessors for busRoute
+extension BusService {
+
+    @objc(addBusRouteObject:)
+    @NSManaged public func addToBusRoute(_ value: BusRoute)
+
+    @objc(removeBusRouteObject:)
+    @NSManaged public func removeFromBusRoute(_ value: BusRoute)
+
+    @objc(addBusRoute:)
+    @NSManaged public func addToBusRoute(_ values: NSSet)
+
+    @objc(removeBusRoute:)
+    @NSManaged public func removeFromBusRoute(_ values: NSSet)
 
 }
 
