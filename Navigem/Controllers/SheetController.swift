@@ -62,7 +62,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
             view.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
         ])
-        let headerViewHeightAnchor = headerView.heightAnchor.constraint(equalToConstant: 100)
+        let headerViewHeightAnchor = headerView.heightAnchor.constraint(equalToConstant: 60)
         headerViewHeightAnchor.priority = .defaultLow
         headerViewHeightAnchor.isActive = true
         
@@ -112,7 +112,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     func updateView(for state: SheetState, velocity: CGFloat = 0) {
         self.state = state
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity, options: [.allowUserInteraction], animations: {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity, options: [.allowUserInteraction], animations: {
             let height = self.getSheetHeight(for: state)
             
             self.view.frame = self.getSheetRect(with: height)

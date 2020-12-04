@@ -50,7 +50,7 @@ class HomeSheetController: SheetController {
 //            
 //        })
         
-        tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
+        tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
         
         reloadData()
     }

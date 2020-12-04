@@ -25,21 +25,22 @@ class MainViewController: UIViewController {
         mapView.delegate = self
         
         // TODO: MOVE INTO LAUNCH
-        checkForUpdates()
     }
     
     private func checkForUpdates() {
+        UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
+
         let nowEpoch = Date().timeIntervalSince1970
         let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
         let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
-    
-        print(nowEpoch, lastOpenedEpoch)
+        
         if lastOpenedEpoch == 0 {
             print("First Timer!")
             // First time using app
-            let vc = UIViewController()
-            vc.view.backgroundColor = .red
-            self.present(vc, animated: true)
+            let launchViewController = UIViewController()
+            launchViewController.view.backgroundColor = .systemBackground
+            launchViewController.isModalInPresentation = true
+            self.present(launchViewController, animated: true)
         }
         
         if lastUpdatedEpoch+604800 < nowEpoch { // 1 week = 604800 seconds
@@ -52,7 +53,8 @@ class MainViewController: UIViewController {
         
         UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
         
-        ApiProvider.shared.mapBusData()
+        // FIX: MAPPING CAUSING CRASH EXC_BAD_ACCESS
+        //ApiProvider.shared.mapBusData()
     }
     
     required init?(coder: NSCoder) {
@@ -72,6 +74,8 @@ class MainViewController: UIViewController {
         } else {
             LocationProvider.shared.navigateToCurrentLocation(mapView: mapView)
         }
+        
+        checkForUpdates()
     }
 }
 
@@ -88,6 +92,6 @@ extension MainViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         // TODO: CATCH
-        print("ERROR", error)
+        fatalError(error.localizedDescription)
     }
 }

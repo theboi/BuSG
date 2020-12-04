@@ -33,7 +33,7 @@ class BusServiceSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
+        tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
     }
     
     init(for serviceNo: String?) {

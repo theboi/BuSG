@@ -33,7 +33,7 @@ class BusStopSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        tableView.register(BusServiceTimingsTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
+        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStop)
     }
     
     init(for busStopCode: String?) {
@@ -60,7 +60,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService)
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStop)
         cell?.backgroundColor = .clear
         cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
         cell?.textLabel?.text = busStop?.busServices[indexPath.row].serviceNo
