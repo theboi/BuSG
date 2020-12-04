@@ -18,10 +18,10 @@ class HomeSheetController: SheetController {
     var nearbyStops: [BusStop] = []
     
     private func reloadData() {
-        nearbyStops = ApiProvider.getNearbyBusStops() { busStops in
-            
+        ApiProvider.shared.getNearbyBusStops {busStops in
+            self.nearbyStops = busStops
+            self.tableView.reloadData()
         }
-        tableView.reloadData()
     }
     
     override func viewDidLoad() {
