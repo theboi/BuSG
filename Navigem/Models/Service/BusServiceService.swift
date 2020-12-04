@@ -92,11 +92,13 @@ struct BusServiceServiceValue: Codable {
 
 struct BusServiceServiceRoot: Codable, BusApiServiceRoot {
     
-    typealias T = BusServiceServiceValue
+    typealias Value = BusServiceServiceValue
+    
+    typealias Data = BusService
     
     static let apiUrl = K.apiUrls.busServices
     
-    let value: [T]
+    let value: [Value]
 
     let metaData: String
     

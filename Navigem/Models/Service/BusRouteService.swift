@@ -64,11 +64,13 @@ struct BusRouteServiceValue: Codable {
 
 struct BusRouteServiceRoot: Codable, BusApiServiceRoot {
     
-    typealias T = BusRouteServiceValue
+    typealias Value = BusRouteServiceValue
     
+    typealias Data = BusRoute
+
     static let apiUrl = K.apiUrls.busRoutes
     
-    let value: [T]
+    let value: [Value]
 
     let metaData: String
     

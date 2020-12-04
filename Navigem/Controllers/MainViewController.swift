@@ -21,13 +21,39 @@ class MainViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         self.view.backgroundColor = .systemBackground
-        
-        self.view = mapView
+                
+        //self.view = mapView
         locationManager.delegate = self
         mapView.delegate = self
         
         // TODO: MOVE INTO LAUNCH
-        ApiProvider.shared.updateBusData()
+        checkForUpdates()
+    }
+    
+    private func checkForUpdates() {
+        let nowEpoch = Date().timeIntervalSince1970
+        let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
+        let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
+    
+        print(nowEpoch, lastOpenedEpoch)
+        if lastOpenedEpoch == 0 {
+            print("First Timer!")
+            // First time using app
+            let vc = UIViewController()
+            vc.view.backgroundColor = .red
+            self.present(vc, animated: true)
+        }
+        
+        if lastUpdatedEpoch+604800 < nowEpoch { // 1 week = 604800 seconds
+            // Requires update of bus data
+            print("Updating Bus Data...")
+            ApiProvider.shared.updateBusData() {
+                UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastUpdatedEpoch)
+            }
+        }
+        
+        UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
+        
     }
     
     required init?(coder: NSCoder) {
