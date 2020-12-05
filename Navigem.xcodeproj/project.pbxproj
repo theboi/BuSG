@@ -42,6 +42,7 @@
 		AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A5332562840500FC51E7 /* MainViewController.swift */; };
 		AAF4A53D256284D100FC51E7 /* SheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A53C256284D100FC51E7 /* SheetController.swift */; };
 		AAF4A54525628DEF00FC51E7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A54425628DEF00FC51E7 /* Constants.swift */; };
+		C0DB89AE257B8E58009013D8 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DB89AD257B8E58009013D8 /* SetupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		AAF4A5332562840500FC51E7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		AAF4A53C256284D100FC51E7 /* SheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetController.swift; sourceTree = "<group>"; };
 		AAF4A54425628DEF00FC51E7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C0DB89AD257B8E58009013D8 /* SetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 				AA13B6DB2572127E006FD219 /* HomeSheetController.swift */,
 				AA13B7272573447C006FD219 /* BusStopSheetController.swift */,
 				AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */,
+				C0DB89AD257B8E58009013D8 /* SetupViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				AA908429257A4012000A9D2B /* BusService+CoreDataClass.swift in Sources */,
 				AA13B6DC2572127E006FD219 /* HomeSheetController.swift in Sources */,
 				AA7F4CB5257A58BE00A4DD14 /* BusStop+CoreDataProperties.swift in Sources */,
+				C0DB89AE257B8E58009013D8 /* SetupViewController.swift in Sources */,
 				AA7F4CB7257A58BE00A4DD14 /* BusService+CoreDataProperties.swift in Sources */,
 				AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */,
 				AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */,
