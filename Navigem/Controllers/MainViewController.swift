@@ -76,6 +76,11 @@ class MainViewController: UIViewController {
         
         checkForUpdates()
     }
+    
+    private func clearMapView() {
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.removeOverlays(mapView.overlays)
+    }
 }
 
 extension MainViewController: CLLocationManagerDelegate {
@@ -95,7 +100,7 @@ extension MainViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.red
+            polylineRenderer.strokeColor = UIColor.systemGreen
             polylineRenderer.lineWidth = 5
             return polylineRenderer
         }
@@ -115,13 +120,14 @@ extension MainViewController: MKMapViewDelegate {
 extension MainViewController: LocationProviderDelegate {
     
     func locationProvider(didRequestNavigateTo location: CLLocation, with zoomLevel: ZoomLevel) {
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        let region = MKCoordinateRegion(center: location.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
         mapView.setRegion(region, animated: true)
     }
     
     func locationProvider(didRequestNavigateTo annotation: MKAnnotation, with zoomLevel: ZoomLevel) {
-        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        let region = MKCoordinateRegion(center: annotation.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
         mapView.setRegion(region, animated: true)
+        self.clearMapView()
         mapView.addAnnotation(annotation)
     }
     
@@ -143,9 +149,15 @@ extension MainViewController: LocationProviderDelegate {
         
         directions.calculate { res, err in
             if let res = res, res.routes.count > 0 {
+                self.clearMapView()
                 self.mapView.addOverlay(res.routes[0].polyline)
-                self.mapView.setVisibleMapRect(res.routes[0].polyline.boundingMapRect, animated: true)
+                self.mapView.addAnnotations([
+                    BusStopAnnotation(for: originBusStop),
+                    BusStopAnnotation(for: destinationBusStop),
+                ])
+                self.mapView.setVisibleMapRect(res.routes[0].polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 400, right: 50), animated: true)
             }
         }
     }
+    
 }
