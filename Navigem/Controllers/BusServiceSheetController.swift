@@ -48,7 +48,7 @@ class BusServiceSheetController: SheetController {
         self.headerView.titleText = busService.serviceNo
         self.headerView.detailText = busService.destinationCode
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService)
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 1)
         
     }
     
@@ -90,7 +90,7 @@ extension BusServiceSheetController: SheetControllerDelegate {
     }
     
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService)
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 1)
     }
 
 }
