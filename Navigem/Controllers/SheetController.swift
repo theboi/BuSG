@@ -186,10 +186,10 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     private func getSheetHeight(for state: SheetState) -> CGFloat {
         if isHidden { return 0 }
         switch state {
-        case .max: return UIScreen.main.bounds.height-100
+        case .max: return UIScreen.main.bounds.height-50
         case .min: return 100
         case .mid: fallthrough
-        default: return 500
+        default: return 400
         }
     }
     

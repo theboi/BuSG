@@ -71,7 +71,7 @@ class MainViewController: UIViewController {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         } else {
-            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
+            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one, animated: false)
         }
         
         checkForUpdates()
@@ -81,13 +81,7 @@ class MainViewController: UIViewController {
 extension MainViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else {
-            return
-        }
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one, animated: false)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -108,9 +102,14 @@ extension MainViewController: MKMapViewDelegate {
         return MKPolygonRenderer(overlay: overlay)
     }
     
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//        
-//    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+    }
+    
+    //    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+    //
+    //    }
+    
 }
 
 extension MainViewController: LocationProviderDelegate {
@@ -126,10 +125,30 @@ extension MainViewController: LocationProviderDelegate {
         mapView.addAnnotation(annotation)
     }
     
-    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel) {
+    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel, animated: Bool) {
         locationManager.requestLocation()
         let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
-        mapView.setRegion(region, animated: true)
+        mapView.setRegion(region, animated: animated)
+        if !animated {
+            self.mapView.setVisibleMapRect(self.mapView.visibleMapRect, edgePadding: UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0), animated: false)
+        }
+        mapView.showsUserLocation = true
     }
     
+    func locationProvider(didRequestRouteFrom originBusStop: BusStop, to destinationBusStop: BusStop) {
+        let req = MKDirections.Request()
+        req.source = MKMapItem(placemark: MKPlacemark(coordinate: originBusStop.coordinate, addressDictionary: nil))
+        req.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationBusStop.coordinate, addressDictionary: nil))
+        req.requestsAlternateRoutes = true
+        req.transportType = .automobile
+        
+        let directions = MKDirections(request: req)
+        
+        directions.calculate { res, err in
+            if let res = res, res.routes.count > 0 {
+                self.mapView.addOverlay(res.routes[0].polyline)
+                self.mapView.setVisibleMapRect(res.routes[0].polyline.boundingMapRect, animated: true)
+            }
+        }
+    }
 }

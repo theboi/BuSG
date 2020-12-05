@@ -13,8 +13,9 @@ import CoreData
 public class BusStop: NSManagedObject {
     
     public var busServices: [BusService] {
-        func fetchImmediately() -> [BusService] {
-            let context = self.managedObjectContext!
+        
+        func fetch() -> [BusService] {
+            let context = managedObjectContext!
             let routeReq: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
             routeReq.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
             do {
@@ -41,9 +42,14 @@ public class BusStop: NSManagedObject {
             for busRoute in (busRoutes.allObjects as! [BusRoute]) {
                 if let busService = busRoute.busService {
                     busServices.append(busService)
-                } else { return fetchImmediately() }
+                } else { return fetch() }
             }
             return busServices
-        } else { return fetchImmediately() }
+        } else { return fetch() }
     }
+    
+    public var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
 }
