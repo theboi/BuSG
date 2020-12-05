@@ -71,7 +71,7 @@ class MainViewController: UIViewController {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         } else {
-            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one, animated: false)
+            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
         }
         
         checkForUpdates()
@@ -81,7 +81,7 @@ class MainViewController: UIViewController {
 extension MainViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one, animated: false)
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -94,7 +94,7 @@ extension MainViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
-            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            let polylineRenderer = MKPolylineRenderer(overlay: overlay)
             polylineRenderer.strokeColor = UIColor.red
             polylineRenderer.lineWidth = 5
             return polylineRenderer
@@ -125,13 +125,10 @@ extension MainViewController: LocationProviderDelegate {
         mapView.addAnnotation(annotation)
     }
     
-    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel, animated: Bool) {
+    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel) {
         locationManager.requestLocation()
-        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
-        mapView.setRegion(region, animated: animated)
-        if !animated {
-            self.mapView.setVisibleMapRect(self.mapView.visibleMapRect, edgePadding: UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0), animated: false)
-        }
+        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        mapView.setRegion(region, animated: true)
         mapView.showsUserLocation = true
     }
     

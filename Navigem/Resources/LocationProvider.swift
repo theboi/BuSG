@@ -23,7 +23,7 @@ protocol LocationProviderDelegate: class {
     
     func locationProvider(didRequestRouteFrom originBusStop: BusStop, to destinationBusStop: BusStop)
     
-    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel, animated: Bool)
+    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel)
 
 }
 
