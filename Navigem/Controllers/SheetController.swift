@@ -12,20 +12,23 @@ enum SheetState {
 }
 
 protocol SheetControllerDelegate: class {
+    
     func sheetController(_ sheetController: SheetController, didUpdateSize state: SheetState)
+
 }
 
 class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     /// Delegate to handle all changes in sheet
     weak var delegate: SheetControllerDelegate?
-    
+            
     /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
     var presentingSheetController: SheetController?
     
     /// Holds information about current sheet's state. **Never directly set this**.
     private var state: SheetState = .mid
     
+    /// Tells class if should prevent sheet from being seen.
     var isHidden = false {
         didSet { updateView(for: state) }
     }
@@ -61,7 +64,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
             view.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
         ])
-        let headerViewHeightAnchor = headerView.heightAnchor.constraint(equalToConstant: 100)
+        let headerViewHeightAnchor = headerView.heightAnchor.constraint(equalToConstant: 60)
         headerViewHeightAnchor.priority = .defaultLow
         headerViewHeightAnchor.isActive = true
         
@@ -111,7 +114,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     func updateView(for state: SheetState, velocity: CGFloat = 0) {
         self.state = state
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity, options: [.allowUserInteraction], animations: {
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity, options: [.allowUserInteraction], animations: {
             let height = self.getSheetHeight(for: state)
             
             self.view.frame = self.getSheetRect(with: height)
@@ -183,10 +186,10 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     private func getSheetHeight(for state: SheetState) -> CGFloat {
         if isHidden { return 0 }
         switch state {
-        case .max: return UIScreen.main.bounds.height-100
+        case .max: return UIScreen.main.bounds.height-50
         case .min: return 100
         case .mid: fallthrough
-        default: return 500
+        default: return 400
         }
     }
     

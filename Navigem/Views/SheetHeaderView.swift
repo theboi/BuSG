@@ -22,12 +22,18 @@ class SheetHeaderView: UIView {
     /// An optional trailing button such as close or cancel buttons.
     var trailingButton: UIButton? {
         didSet { updateHeader() }
-        willSet { trailingButton?.removeFromSuperview() }
+        willSet { clearHeader() }
     }
     
     /// An optional search bar. Setting this will override `textView` and cause it to be hidden.
     var searchBar: UISearchBar? {
         didSet { updateHeader() }
+        willSet { clearHeader() }
+    }
+    
+    private func clearHeader() {
+        trailingButton?.removeFromSuperview()
+        searchBar?.removeFromSuperview()
     }
     
     private func updateHeader() {
@@ -54,6 +60,7 @@ class SheetHeaderView: UIView {
         
         if let titleText = titleText, let detailText = detailText {
             let titleLabel = UILabel()
+            titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
             titleLabel.text = titleText
             let detailLabel = UILabel()
             detailLabel.text = detailText
