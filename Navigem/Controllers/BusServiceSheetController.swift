@@ -16,8 +16,11 @@ class BusServiceSheetController: SheetController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        delegate = self
+        
         let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
-            self.popSheet()
+            self.dismissSheet()
         }))
         headerView.trailingButton = trailingButton
         
@@ -45,7 +48,7 @@ class BusServiceSheetController: SheetController {
         self.headerView.titleText = busService.serviceNo
         self.headerView.detailText = busService.destinationCode
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFrom: busService.originBusStop, to: busService.destinationBusStop)
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService)
         
     }
     
@@ -71,4 +74,23 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
         tableView.deselectRow(at: indexPath, animated: true)
         present(BusStopSheetController(for: busService?.busStops[indexPath.row].busStopCode ?? "NULL"), animated: true)
     }
+}
+
+extension BusServiceSheetController: SheetControllerDelegate {
+    
+    func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
+        UIView.animate(withDuration: 0.3) {
+            switch state {
+            case .min:
+                self.tableView.layer.opacity = 0
+            default:
+                self.tableView.layer.opacity = 1
+            }
+        }
+    }
+    
+    func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService)
+    }
+
 }
