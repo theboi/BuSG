@@ -138,30 +138,45 @@ extension MainViewController: LocationProviderDelegate {
         mapView.showsUserLocation = true
     }
     
-    func locationProvider(didRequestRouteFor busService: BusService) {
-        let busStops = busService.busStops
-        self.clearMapView()
-        for (index, busStop) in busStops.enumerated().dropLast() {
-            let req = MKDirections.Request()
-            req.source = MKMapItem(placemark: MKPlacemark(coordinate: busStop.coordinate, addressDictionary: nil))
-            req.destination = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index+1].coordinate, addressDictionary: nil))
-            req.transportType = .automobile
-            
-            let directions = MKDirections(request: req)
-            
-            directions.calculate { res, err in
-                if let res = res {
-                    self.mapView.addOverlay(res.routes[0].polyline)
-                    self.mapView.addAnnotations([
-                        BusStopAnnotation(for: busStop),
-                        BusStopAnnotation(for: busStops[index]),
-                    ])
-                    self.mapView.setVisibleMapRect(res.routes[0].polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 400, right: 50), animated: true)
-                }
+    func locationProvider(didRequestRouteFor busService: BusService, in direction: Int64) {
+        let busStops = busService.busStops.filter { (busStop) -> Bool in
+            busStop.accessorBusRoute?.direction == direction ? true : false
+        }.sorted { (prevBusStop, nextBusStop) -> Bool in
+            if let prevBusRoute = prevBusStop.accessorBusRoute, let nextBusRoute = nextBusStop.accessorBusRoute {
+                return prevBusRoute.stopSequence < nextBusRoute.stopSequence
             }
-            
+            return false
         }
         
+        self.clearMapView()
+        
+        for (index, _) in busStops.enumerated().dropLast() {
+            if index%K.busStopRoutingSkip==0 || index == 0 || index == (busStops.count-1) {
+                let skip = index+K.busStopRoutingSkip >= busStops.count-1 ? busStops.count-1-index : K.busStopRoutingSkip
+                let req = MKDirections.Request()
+                req.source = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index].coordinate, addressDictionary: nil))
+                req.destination = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index+skip].coordinate, addressDictionary: nil))
+                req.transportType = .automobile
+                MKDirections(request: req).calculate { res, _ in
+                    if let res = res {
+                        self.mapView.addOverlay(res.routes[0].polyline)
+                    } else {
+                        print("STRAIGHT TIME")
+                        let polylineMax = index+K.busStopRoutingSkip > busStops.count-1 ? busStops.count-1-index : K.busStopRoutingSkip
+                        print(Array(0...polylineMax))
+                        let polylineCoords = Array(0...polylineMax).map { (num) -> CLLocationCoordinate2D in
+                            busStops[index+num].coordinate
+                        }
+                        self.mapView.addOverlay(MKPolyline(coordinates: polylineCoords, count: polylineMax+1))
+                    }
+                }
+            }
+        }
+        
+        busStops.forEach { busStop in
+            self.mapView.addAnnotation(BusStopAnnotation(for: busStop))
+        }
+        
+        self.mapView.fitAll()
     }
-    
 }

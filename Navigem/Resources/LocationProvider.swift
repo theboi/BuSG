@@ -21,7 +21,7 @@ protocol LocationProviderDelegate: class {
     
     func locationProvider(didRequestNavigateTo annotation: MKAnnotation, with zoomLevel: ZoomLevel)
     
-    func locationProvider(didRequestRouteFor busService: BusService)
+    func locationProvider(didRequestRouteFor busService: BusService, in direction: Int64)
     
     func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel)
 
