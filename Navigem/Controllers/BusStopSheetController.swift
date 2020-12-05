@@ -13,6 +13,7 @@ class BusStopSheetController: SheetController {
     var busStop: BusStop!
     
     lazy var tableView = UITableView()
+    lazy var button = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,7 @@ class BusStopSheetController: SheetController {
         
         self.busStop = ApiProvider.shared.getBusStop(for: busStopCode ?? "00000")
         
-        self.headerView.titleText = busStop.roadName
+        self.headerView.titleText = "􀮅\(busStop.roadName)"
         self.headerView.detailText = busStop.roadDesc
         
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
