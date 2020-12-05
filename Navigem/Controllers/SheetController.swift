@@ -13,15 +13,17 @@ enum SheetState {
 
 protocol SheetControllerDelegate: class {
     
-    func sheetController(_ sheetController: SheetController, didUpdateSize state: SheetState)
-
+    func sheetController(_ sheetController: SheetController, didUpdate state: SheetState)
+    
+    func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy dismissingSheetController: SheetController)
+    
 }
 
 class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     /// Delegate to handle all changes in sheet
     weak var delegate: SheetControllerDelegate?
-            
+    
     /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
     var presentingSheetController: SheetController?
     
@@ -114,6 +116,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     func updateView(for state: SheetState, velocity: CGFloat = 0) {
         self.state = state
+        delegate?.sheetController(self, didUpdate: state)
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity, options: [.allowUserInteraction], animations: {
             let height = self.getSheetHeight(for: state)
             
@@ -155,25 +158,31 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    //    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    //        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
-    //        let direction = gesture.velocity(in: view).y
-    //
-    //        let y = view.frame.minY
-    //        if (y == fullView && (view as! BottomSheetView).tableView.contentOffset.y == 0 && direction > 0) || (y == partialView) {
-    //            tableView.isScrollEnabled = false
-    //        } else {
-    //            tableView.isScrollEnabled = true
-    //        }
-    //
-    //        return false
-    //    }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
+//        let direction = gesture.velocity(in: view).y
+//
+//        let height = view.frame.height
+//
+////        if (y == fullView && (view as! BottomSheetView).tableView.contentOffset.y == 0 && direction > 0) || (y == partialView) {
+////            tableView.isScrollEnabled = false
+////        } else {
+////            tableView.isScrollEnabled = true
+////        }
+//
+//        return false
+//    }
     
     // MARK: Navigation
     
-    public func popSheet() {
+    fileprivate func didReturnFromDismissalBy(dismissingSheetController: SheetController) {
+        delegate?.sheetController(self, didReturnFromDismissalBy: dismissingSheetController)
+    }
+    
+    public func dismissSheet() {
         if let presentingSheetController = presentingSheetController {
             presentingSheetController.isHidden = false
+            presentingSheetController.didReturnFromDismissalBy(dismissingSheetController: self)
             self.isHidden = true
             // Clean up container view controller
             self.willMove(toParent: nil)

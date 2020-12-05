@@ -26,6 +26,8 @@ class HomeSheetController: SheetController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        delegate = self
                 
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
@@ -45,10 +47,6 @@ class HomeSheetController: SheetController {
             contentView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
-                
-//        ApiProvider.shared.getBusArrivals(for: "10079", completion: {_ in
-//            
-//        })
         
         tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
         
@@ -96,4 +94,23 @@ extension HomeSheetController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
+}
+
+extension HomeSheetController: SheetControllerDelegate {
+    
+    func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
+        UIView.animate(withDuration: 0.3) {
+            switch state {
+            case .min:
+                self.tableView.layer.opacity = 0
+            default:
+                self.tableView.layer.opacity = 1
+            }
+        }
+    }
+
+    func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
+    }
+    
 }

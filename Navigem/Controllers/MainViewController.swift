@@ -138,26 +138,30 @@ extension MainViewController: LocationProviderDelegate {
         mapView.showsUserLocation = true
     }
     
-    func locationProvider(didRequestRouteFrom originBusStop: BusStop, to destinationBusStop: BusStop) {
-        let req = MKDirections.Request()
-        req.source = MKMapItem(placemark: MKPlacemark(coordinate: originBusStop.coordinate, addressDictionary: nil))
-        req.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationBusStop.coordinate, addressDictionary: nil))
-        req.requestsAlternateRoutes = true
-        req.transportType = .automobile
-        
-        let directions = MKDirections(request: req)
-        
-        directions.calculate { res, err in
-            if let res = res, res.routes.count > 0 {
-                self.clearMapView()
-                self.mapView.addOverlay(res.routes[0].polyline)
-                self.mapView.addAnnotations([
-                    BusStopAnnotation(for: originBusStop),
-                    BusStopAnnotation(for: destinationBusStop),
-                ])
-                self.mapView.setVisibleMapRect(res.routes[0].polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 400, right: 50), animated: true)
+    func locationProvider(didRequestRouteFor busService: BusService) {
+        let busStops = busService.busStops
+        self.clearMapView()
+        for (index, busStop) in busStops.enumerated().dropLast() {
+            let req = MKDirections.Request()
+            req.source = MKMapItem(placemark: MKPlacemark(coordinate: busStop.coordinate, addressDictionary: nil))
+            req.destination = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index+1].coordinate, addressDictionary: nil))
+            req.transportType = .automobile
+            
+            let directions = MKDirections(request: req)
+            
+            directions.calculate { res, err in
+                if let res = res {
+                    self.mapView.addOverlay(res.routes[0].polyline)
+                    self.mapView.addAnnotations([
+                        BusStopAnnotation(for: busStop),
+                        BusStopAnnotation(for: busStops[index]),
+                    ])
+                    self.mapView.setVisibleMapRect(res.routes[0].polyline.boundingMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 400, right: 50), animated: true)
+                }
             }
+            
         }
+        
     }
     
 }
