@@ -40,14 +40,12 @@ class BusStopSheetController: SheetController {
     init(for busStopCode: String?) {
         super.init()
         
-        ApiProvider.shared.getBusStop(for: busStopCode ?? "00000") {busStop in
-            self.busStop = busStop
-            
-            self.headerView.titleText = busStop.roadName
-            self.headerView.detailText = busStop.roadDesc
-            //CLLocation(latitude: busStop?.latitude ?? 0, longitude: busStop?.longitude ?? 0)
-            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
-        }
+        self.busStop = ApiProvider.shared.getBusStop(for: busStopCode ?? "00000")
+        
+        self.headerView.titleText = busStop.roadName
+        self.headerView.detailText = busStop.roadDesc
+        
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
     }
     
     required init?(coder: NSCoder) {

@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import MapKit
 
 class BusServiceSheetController: SheetController {
-
+    
     var busService: BusService!
     
     lazy var tableView = UITableView()
@@ -37,17 +38,15 @@ class BusServiceSheetController: SheetController {
     }
     
     init(for serviceNo: String?) {
+        
         super.init()
         
-        ApiProvider.shared.getBusService(for: serviceNo ?? "1") {busService in
-            self.busService = busService
-            
-            self.headerView.titleText = busService.serviceNo
-            self.headerView.detailText = busService.destinationCode
-            
-            //print(busService?.busRoutes.allObjects as! [BusRoute])
-            //print((busService?.busRoutes.allObjects as! [BusRoute])[0].busStopCode)
-        }
+        self.busService = ApiProvider.shared.getBusService(for: serviceNo ?? "1")
+        self.headerView.titleText = busService.serviceNo
+        self.headerView.detailText = busService.destinationCode
+        
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFrom: busService.originBusStop, to: busService.destinationBusStop)
+        
     }
     
     required init?(coder: NSCoder) {
