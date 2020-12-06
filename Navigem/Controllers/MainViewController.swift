@@ -16,6 +16,8 @@ class MainViewController: UIViewController {
         LocationProvider.shared.locationManager
     }
     
+    var currentlyPresentingSheetController: SheetController?
+        
     init() {
         super.init(nibName: nil, bundle: nil)
         self.view.backgroundColor = .systemBackground
@@ -71,7 +73,8 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.present(HomeSheetController(), animated: true, completion: nil)
+        let homeSheetController = HomeSheetController()
+        self.present(homeSheetController, animated: true, completion: nil)
         
         guard CLLocationManager.locationServicesEnabled() else {
             return
@@ -139,7 +142,7 @@ extension MainViewController: MKMapViewDelegate {
             stack.axis = .vertical
             annotationView?.detailCalloutAccessoryView = stack
             annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure, primaryAction: UIAction(handler: { _ in
-                present(BusStopSheetController(for: annotation.busStop.busStopCode), animated: true)
+                self.currentlyPresentingSheetController?.present(BusStopSheetController(for: annotation.busStop.busStopCode), animated: true)
             }))
 
             return annotationView
