@@ -172,16 +172,32 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
-		AAE39B6B25793A4F0065CFF5 /* Mapper */ = {
+		AAE39B6B25793A4F0065CFF5 /* Mappers */ = {
 			isa = PBXGroup;
 			children = (
 				AA337D6A2577CECE001453D0 /* BusApiMapper.swift */,
-				AA91D0FB257649A6003FAE6E /* BusArrivalMapper.swift */,
 				AA13B731257346D6006FD219 /* BusServiceMapper.swift */,
 				AA13B736257346E4006FD219 /* BusStopMapper.swift */,
 				AA808A8625793DA90060547F /* BusRouteMapper.swift */,
 			);
-			path = Mapper;
+			path = Mappers;
+			sourceTree = "<group>";
+		};
+		AAE490A2257CDA510010B483 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				AA91D0FB257649A6003FAE6E /* BusArrivalMapper.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		AAE490A3257CDA600010B483 /* Annotations */ = {
+			isa = PBXGroup;
+			children = (
+				AA7F4CC6257A9D0900A4DD14 /* BusStopAnnotation.swift */,
+				AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */,
+			);
+			path = Annotations;
 			sourceTree = "<group>";
 		};
 		AAF4A4EB25627D4F00FC51E7 = {
@@ -256,9 +272,9 @@
 		AAF4A5312562814D00FC51E7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				AA7F4CC6257A9D0900A4DD14 /* BusStopAnnotation.swift */,
-				AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */,
-				AAE39B6B25793A4F0065CFF5 /* Mapper */,
+				AAE490A3257CDA600010B483 /* Annotations */,
+				AAE490A2257CDA510010B483 /* Data */,
+				AAE39B6B25793A4F0065CFF5 /* Mappers */,
 				AAE39B5825793A310065CFF5 /* CoreData */,
 			);
 			path = Models;

@@ -5,8 +5,6 @@
 //  Created by Ryan The on 1/12/20.
 //
 
-import CoreLocation
-
 enum BusArrivalLoad: String, Codable {
     /// SEA (for Seats Available)
     case sea = "SEA"
@@ -14,6 +12,7 @@ enum BusArrivalLoad: String, Codable {
     case sda = "SDA"
     /// LSD (for Limited Standing)
     case lsd = "LSD"
+    case none = ""
 }
 
 enum BusArrivalFeature: String, Codable {
@@ -30,9 +29,10 @@ enum BusArrivalType: String, Codable {
     case dd = "DD"
     /// BD (for Bendy)
     case bd = "BD"
+    case none = ""
 }
 
-struct BusArrivalMapperBus: Codable {
+struct BusArrivalBus: Codable {
     
     /// Reference code of the first bus stop where this bus started its service. Sample: `"77009"`
     let originCode: String?
@@ -44,11 +44,11 @@ struct BusArrivalMapperBus: Codable {
     let estimatedArrival: String?
     
     /// Current estimated location coordinates of this bus at point of published data. Sample: `1.42117943692586, 103.831477233098`
-    let latitude: Double?
-    let longitude: Double?
+    let latitude: String?
+    let longitude: String?
     
     /// Ordinal value of the nth visit of this vehicle at this bus stop; 1=1st visit, 2=2nd visit. Sample: `1`
-    let visitNo: Int?
+    let visitNo: String?
     
     /// Current bus occupancy / crowding level. Sample: `"SEA"`
     let load: BusArrivalLoad?
@@ -72,7 +72,7 @@ struct BusArrivalMapperBus: Codable {
     }
 }
 
-struct BusArrivalMapperValue: Codable {
+struct BusArrivalValue: Codable {
     
     /// Bus service number. Sample: `"15"`
     let serviceNo: String
@@ -81,9 +81,9 @@ struct BusArrivalMapperValue: Codable {
     let serviceOperator: BusServiceOperator?
     
     /// Structural tags for all bus level attributes^ of the next 3 oncoming buses. Note that if there is only one last bus left on the roads (e.g. at night), attributes values in NextBus2 and NextBus3 will be empty / blank.
-    let nextBus1: BusArrivalMapperBus?
-    let nextBus2: BusArrivalMapperBus?
-    let nextBus3: BusArrivalMapperBus?
+    let nextBus1: BusArrivalBus?
+    let nextBus2: BusArrivalBus?
+    let nextBus3: BusArrivalBus?
     
     enum CodingKeys: String, CodingKey {
         case serviceNo = "ServiceNo"
@@ -95,9 +95,9 @@ struct BusArrivalMapperValue: Codable {
     
 }
 
-struct BusArrivalMapperRoot: Codable, BusApiMapperRoot {
+struct BusArrivalRoot: Codable, BusApiMapperRoot {
     
-    typealias Value = BusServiceMapperValue
+    typealias Value = BusArrivalValue
         
     static let apiUrl = K.apiUrls.busServices
     

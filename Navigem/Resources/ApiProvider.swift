@@ -27,7 +27,7 @@ class ApiProvider {
     }
     
     /// Fetch bus data in Service nested structures with skip until DataMall API returns empty array (aka no more entries)
-    private func fetchData<T: BusApiMapperRoot>(_ T_Type: T.Type, withPrevious array: [T.Value] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.Value]>) {
+    private func fetchStaticData<T: BusApiMapperRoot>(_ T_Type: T.Type, withPrevious array: [T.Value] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.Value]>) {
         var array = array
         var req = URLRequest(url: URL(string: T.apiUrl, with: [URLQueryItem(name: K.apiQueries.skip, value: String(skip))])!)
         req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
@@ -35,10 +35,10 @@ class ApiProvider {
             self.handleApiError(res: res, err: err)
             let decoder = JSONDecoder()
             do {
-                let busStopServiceRoot = try decoder.decode(T.self, from: data!)
-                array.append(contentsOf: busStopServiceRoot.value)
-                if !busStopServiceRoot.value.isEmpty {
-                    self.fetchData(T_Type, withPrevious: array, withSkip: skip + 500, completion: completion)
+                let busStopMapperRoot = try decoder.decode(T.self, from: data!)
+                array.append(contentsOf: busStopMapperRoot.value)
+                if !busStopMapperRoot.value.isEmpty {
+                    self.fetchStaticData(T_Type, withPrevious: array, withSkip: skip + 500, completion: completion)
                     return
                 }
                 completion?(array)
@@ -48,10 +48,10 @@ class ApiProvider {
         }.resume()
     }
     
-    /// Update bus data from DataMall servers. Runs asynchronous.
-    public func updateBusData(completion: CompletionHandler<Void> = nil) {
+    /// Update static bus data from DataMall servers such as available Bus Services, Bus Stops and Bus Routes. Runs asynchronous.
+    public func updateStaticData(completion: CompletionHandler<Void> = nil) {
         
-        self.fetchData(BusStopMapperRoot.self) { (busStopServiceValues: [BusStopMapperValue]) in
+        self.fetchStaticData(BusStopMapperRoot.self) { (busStopServiceValues: [BusStopMapperValue]) in
             
             for service in busStopServiceValues {
                 var data: BusStop
@@ -84,7 +84,7 @@ class ApiProvider {
             }
             
             // Fetch BusServices from API
-            self.fetchData(BusServiceMapperRoot.self) { (busServiceServiceValues: [BusServiceMapperValue]) in
+            self.fetchStaticData(BusServiceMapperRoot.self) { (busServiceServiceValues: [BusServiceMapperValue]) in
                 
                 for service in busServiceServiceValues {
                     var data: BusService
@@ -121,7 +121,7 @@ class ApiProvider {
                 }
                 
                 // Fetch BusRoutes from API
-                self.fetchData(BusRouteMapperRoot.self) { (busServiceServiceValues: [BusRouteMapperValue]) in
+                self.fetchStaticData(BusRouteMapperRoot.self) { (busServiceServiceValues: [BusRouteMapperValue]) in
                     for service in busServiceServiceValues {
                         var data: BusRoute
                         
@@ -165,7 +165,7 @@ class ApiProvider {
         } // BusStops
     }
     
-    public func mapBusData() {
+    public func mapStaticData() {
         DispatchQueue(label: "com.ryanthe.background").async {
             do {
                 let req: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
@@ -233,8 +233,20 @@ class ApiProvider {
         }
     }
     
-    public func getBusArrivals(for busStop: String, completion: CompletionHandler<[String]> = nil) {
-        
+    public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrivalRoot> = nil) {
+        var req = URLRequest(url: URL(string: K.apiUrls.busArrivals, with: [
+            URLQueryItem(name: K.apiQueries.busStopCode, value: busStopCode)
+        ])!)
+        req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
+        URLSession.shared.dataTask(with: req) { (data, res, err) in
+            self.handleApiError(res: res, err: err)
+            do {
+                let busArrivalMapperRoot = try JSONDecoder().decode(BusArrivalRoot.self, from: data!)
+                completion?(busArrivalMapperRoot)
+            } catch {
+                fatalError("Failure to decode JSON into Objects: \(error)")
+            }
+        }.resume()
     }
     
     private func handleApiError(res: URLResponse?, err: Error?) {

@@ -60,7 +60,7 @@ class MainViewController: UIViewController {
         if lastUpdatedEpoch+604800 < nowEpoch { // 1 week = 604800 seconds
             // Requires update of bus data
             print("Updating Bus Data...")
-            ApiProvider.shared.updateBusData() {
+            ApiProvider.shared.updateStaticData() {
                 UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastUpdatedEpoch)
             }
         }
@@ -144,7 +144,6 @@ extension MainViewController: MKMapViewDelegate {
             annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure, primaryAction: UIAction(handler: { _ in
                 self.currentlyPresentingSheetController?.present(BusStopSheetController(for: annotation.busStop.busStopCode), animated: true)
             }))
-
             return annotationView
         default:
             return nil
