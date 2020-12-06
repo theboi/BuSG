@@ -83,7 +83,7 @@ class MainViewController: UIViewController {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         } else {
-            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
+            LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
         }
         
         /// Show Apple Maps logo and legal notice when sheet at min state
@@ -102,7 +102,7 @@ class MainViewController: UIViewController {
 extension MainViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
+        LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -154,21 +154,21 @@ extension MainViewController: MKMapViewDelegate {
 
 extension MainViewController: LocationProviderDelegate {
     
-    func locationProvider(didRequestNavigateTo location: CLLocation, with zoomLevel: ZoomLevel) {
-        let region = MKCoordinateRegion(center: location.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+    func locationProvider(didRequestNavigateTo location: CLLocation) {
+        let region = MKCoordinateRegion(center: location.coordinate.shift, latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
         mapView.setRegion(region, animated: true)
     }
     
-    func locationProvider(didRequestNavigateTo annotation: MKAnnotation, with zoomLevel: ZoomLevel) {
-        let region = MKCoordinateRegion(center: annotation.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+    func locationProvider(didRequestNavigateTo annotation: MKAnnotation) {
+        let region = MKCoordinateRegion(center: annotation.coordinate.shift, latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
         mapView.setRegion(region, animated: true)
         self.clearMapView()
         mapView.addAnnotation(annotation)
     }
     
-    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel) {
+    func locationProviderDidRequestNavigateToCurrentLocation() {
         locationManager.requestLocation()
-        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate.shift, latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
         mapView.setRegion(region, animated: true)
         mapView.showsUserLocation = true
     }

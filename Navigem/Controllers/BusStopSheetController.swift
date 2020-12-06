@@ -33,7 +33,7 @@ class BusStopSheetController: SheetController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop))
         
         let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
             self.dismissSheet()
@@ -136,7 +136,7 @@ extension BusStopSheetController: SheetControllerDelegate {
     }
     
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop))
     }
     
 }

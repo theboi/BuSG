@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 /// DataMall does not support HTTPS
 let apiUrlBase = "http://datamall2.mytransport.sg/ltaodataservice"
@@ -50,5 +51,6 @@ enum K {
     
     enum mapView {
         static let edgePadding = UIEdgeInsets(top: 100, left: 10, bottom: 400, right: 10)
+        static let span: CLLocationDistance = 400
     }
 }
