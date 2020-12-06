@@ -12,6 +12,8 @@ import CoreData
 @objc(BusStop)
 public class BusStop: NSManagedObject {
     
+    public var accessorBusRoute: BusRoute?
+
     public var busServices: [BusService] {
         
         func fetch() -> [BusService] {
@@ -25,6 +27,7 @@ public class BusStop: NSManagedObject {
                     stopReq.predicate = NSPredicate(format: "serviceNo == %@", busRoute.serviceNo)
                     do {
                         let busService = try context.fetch(stopReq).first!
+                        busService.accessorBusRoute = busRoute
                         busRoute.busStop = self
                         busRoute.busService = busService
                         return busService
@@ -41,6 +44,7 @@ public class BusStop: NSManagedObject {
             var busServices: [BusService] = []
             for busRoute in (busRoutes.allObjects as! [BusRoute]) {
                 if let busService = busRoute.busService {
+                    busService.accessorBusRoute = busRoute
                     busServices.append(busService)
                 } else { return fetch() }
             }

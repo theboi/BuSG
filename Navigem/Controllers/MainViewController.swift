@@ -71,17 +71,22 @@ class MainViewController: UIViewController {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         } else {
-            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one, animated: false)
+            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
         }
         
         checkForUpdates()
+    }
+    
+    private func clearMapView() {
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.removeOverlays(mapView.overlays)
     }
 }
 
 extension MainViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one, animated: false)
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -94,8 +99,8 @@ extension MainViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
-            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.red
+            let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            polylineRenderer.strokeColor = UIColor.systemGreen
             polylineRenderer.lineWidth = 5
             return polylineRenderer
         }
@@ -115,40 +120,63 @@ extension MainViewController: MKMapViewDelegate {
 extension MainViewController: LocationProviderDelegate {
     
     func locationProvider(didRequestNavigateTo location: CLLocation, with zoomLevel: ZoomLevel) {
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        let region = MKCoordinateRegion(center: location.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
         mapView.setRegion(region, animated: true)
     }
     
     func locationProvider(didRequestNavigateTo annotation: MKAnnotation, with zoomLevel: ZoomLevel) {
-        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        let region = MKCoordinateRegion(center: annotation.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
         mapView.setRegion(region, animated: true)
+        self.clearMapView()
         mapView.addAnnotation(annotation)
     }
     
-    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel, animated: Bool) {
+    func locationProvider(didRequestNavigateToCurrentLocationWith zoomLevel: ZoomLevel) {
         locationManager.requestLocation()
-        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
-        mapView.setRegion(region, animated: animated)
-        if !animated {
-            self.mapView.setVisibleMapRect(self.mapView.visibleMapRect, edgePadding: UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0), animated: false)
-        }
+        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate.shift, latitudinalMeters: zoomLevel.rawValue, longitudinalMeters: zoomLevel.rawValue)
+        mapView.setRegion(region, animated: true)
         mapView.showsUserLocation = true
     }
     
-    func locationProvider(didRequestRouteFrom originBusStop: BusStop, to destinationBusStop: BusStop) {
-        let req = MKDirections.Request()
-        req.source = MKMapItem(placemark: MKPlacemark(coordinate: originBusStop.coordinate, addressDictionary: nil))
-        req.destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationBusStop.coordinate, addressDictionary: nil))
-        req.requestsAlternateRoutes = true
-        req.transportType = .automobile
+    func locationProvider(didRequestRouteFor busService: BusService, in direction: Int64) {
+        let busStops = busService.busStops.filter { (busStop) -> Bool in
+            busStop.accessorBusRoute?.direction == direction ? true : false
+        }.sorted { (prevBusStop, nextBusStop) -> Bool in
+            if let prevBusRoute = prevBusStop.accessorBusRoute, let nextBusRoute = nextBusStop.accessorBusRoute {
+                return prevBusRoute.stopSequence < nextBusRoute.stopSequence
+            }
+            return false
+        }
         
-        let directions = MKDirections(request: req)
+        self.clearMapView()
         
-        directions.calculate { res, err in
-            if let res = res, res.routes.count > 0 {
-                self.mapView.addOverlay(res.routes[0].polyline)
-                self.mapView.setVisibleMapRect(res.routes[0].polyline.boundingMapRect, animated: true)
+        for (index, _) in busStops.enumerated().dropLast() {
+            if index%K.busStopRoutingSkip==0 || index == 0 || index == (busStops.count-1) {
+                let skip = index+K.busStopRoutingSkip >= busStops.count-1 ? busStops.count-1-index : K.busStopRoutingSkip
+                let req = MKDirections.Request()
+                req.source = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index].coordinate, addressDictionary: nil))
+                req.destination = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index+skip].coordinate, addressDictionary: nil))
+                req.transportType = .automobile
+                MKDirections(request: req).calculate { res, _ in
+                    if let res = res {
+                        self.mapView.addOverlay(res.routes[0].polyline)
+                    } else {
+                        print("STRAIGHT TIME")
+                        let polylineMax = index+K.busStopRoutingSkip > busStops.count-1 ? busStops.count-1-index : K.busStopRoutingSkip
+                        print(Array(0...polylineMax))
+                        let polylineCoords = Array(0...polylineMax).map { (num) -> CLLocationCoordinate2D in
+                            busStops[index+num].coordinate
+                        }
+                        self.mapView.addOverlay(MKPolyline(coordinates: polylineCoords, count: polylineMax+1))
+                    }
+                }
             }
         }
+        
+        busStops.forEach { busStop in
+            self.mapView.addAnnotation(BusStopAnnotation(for: busStop))
+        }
+        
+        self.mapView.fitAll()
     }
 }
