@@ -233,7 +233,7 @@ class ApiProvider {
         }
     }
     
-    public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrivalRoot> = nil) {
+    public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrival> = nil) {
         var req = URLRequest(url: URL(string: K.apiUrls.busArrivals, with: [
             URLQueryItem(name: K.apiQueries.busStopCode, value: busStopCode)
         ])!)
@@ -241,7 +241,7 @@ class ApiProvider {
         URLSession.shared.dataTask(with: req) { (data, res, err) in
             self.handleApiError(res: res, err: err)
             do {
-                let busArrivalMapperRoot = try JSONDecoder().decode(BusArrivalRoot.self, from: data!)
+                let busArrivalMapperRoot = try JSONDecoder().decode(BusArrival.self, from: data!)
                 completion?(busArrivalMapperRoot)
             } catch {
                 fatalError("Failure to decode JSON into Objects: \(error)")
