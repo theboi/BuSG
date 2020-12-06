@@ -36,6 +36,7 @@
 		AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
 		AAE490B9257CEBCF0010B483 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE490B8257CEBCF0010B483 /* UIColor.swift */; };
+		AAE490BE257D20080010B483 /* BusSuggestedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE490BD257D20080010B483 /* BusSuggestedTableViewCell.swift */; };
 		AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */; };
 		AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */; };
 		AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4FB25627D4F00FC51E7 /* ViewController.swift */; };
@@ -96,6 +97,7 @@
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceAnnotation.swift; sourceTree = "<group>"; };
 		AAE490B8257CEBCF0010B483 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		AAE490BD257D20080010B483 /* BusSuggestedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusSuggestedTableViewCell.swift; sourceTree = "<group>"; };
 		AAF4A4F425627D4F00FC51E7 /* Navigem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				AA91D0DB25763BCA003FAE6E /* FillView.swift */,
 				AA91D0F62576416C003FAE6E /* BusServiceTableViewCell.swift */,
 				AA7F4CC1257A81B200A4DD14 /* BusStopTableViewCell.swift */,
+				AAE490BD257D20080010B483 /* BusSuggestedTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				AA7F4CB5257A58BE00A4DD14 /* BusStop+CoreDataProperties.swift in Sources */,
 				AA7F4CB7257A58BE00A4DD14 /* BusService+CoreDataProperties.swift in Sources */,
 				AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */,
+				AAE490BE257D20080010B483 /* BusSuggestedTableViewCell.swift in Sources */,
 				AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */,
 				AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */,
 				AA90842B257A4012000A9D2B /* BusRoute+CoreDataClass.swift in Sources */,

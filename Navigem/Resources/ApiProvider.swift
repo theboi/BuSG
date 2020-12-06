@@ -237,6 +237,10 @@ class ApiProvider {
         }
     }
     
+    public func getSuggestedServices() -> [BusService] {
+        self.getBusStop(for: "10079").busServices
+    }
+    
     public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrival> = nil) {
         var req = URLRequest(url: URL(string: K.apiUrls.busArrivals, with: [
             URLQueryItem(name: K.apiQueries.busStopCode, value: busStopCode)
