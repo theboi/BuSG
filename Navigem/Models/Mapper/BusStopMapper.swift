@@ -5,7 +5,6 @@
 //  Created by Ryan The on 29/11/20.
 //
 
-import Foundation
 import CoreLocation
 
 struct BusStopMapperValue: Codable {
