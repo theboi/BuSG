@@ -16,16 +16,31 @@ class BusStopSheetController: SheetController {
     
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
+    lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: { _ in
+        self.reloadData()
+    }))
+    
+    private func reloadData() {
+        ApiProvider.shared.getBusArrivals(for: busStop.busStopCode) {busArrival in
+            self.busArrival = busArrival
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delegate = self
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
         
         let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
             self.dismissSheet()
         }))
         headerView.trailingButton = trailingButton
         
+        tableView.addSubview(refreshControl)
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
@@ -39,25 +54,20 @@ class BusStopSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStop)
-        
-        ApiProvider.shared.getBusArrivals(for: busStop.busStopCode) {busArrival in
-            self.busArrival = busArrival
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
+        reloadData()
     }
     
     init(for busStopCode: String?) {
         super.init()
         
-        self.busStop = ApiProvider.shared.getBusStop(for: busStopCode ?? "00000")
+        delegate = self
         
-        self.headerView.titleText = busStop.roadName
-        self.headerView.detailText = busStop.roadDesc
+        busStop = ApiProvider.shared.getBusStop(for: busStopCode ?? "00000")
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
+        headerView.titleText = busStop.roadName
+        headerView.detailText = busStop.roadDesc
+        
+        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStop)
     }
     
     required init?(coder: NSCoder) {
@@ -109,6 +119,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         present(BusServiceSheetController(for: busStop.busServices[indexPath.row].serviceNo), animated: true)
     }
+
 }
 
 extension BusStopSheetController: SheetControllerDelegate {
