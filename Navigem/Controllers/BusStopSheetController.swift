@@ -45,7 +45,7 @@ class BusStopSheetController: SheetController {
         
         self.busStop = ApiProvider.shared.getBusStop(for: busStopCode ?? "00000")
         
-        self.headerView.titleText = busStop.roadName
+        self.headerView.titleText = "􀮅\(busStop.roadName)"
         self.headerView.detailText = busStop.roadDesc
         
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
@@ -62,11 +62,13 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStop)
-        cell?.backgroundColor = .clear
-        cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell?.textLabel?.text = busStop.busServices[indexPath.row].serviceNo
-        return cell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStop) as! BusStopTableViewCell
+        let busNumber = busStop.busServices[indexPath.row].serviceNo
+        cell.backgroundColor = .clear
+        cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
+        //busStop.busServices[indexPath.row].serviceNo
+        cell.set(bus: String(busStop.busServices[indexPath.row].serviceNo))
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

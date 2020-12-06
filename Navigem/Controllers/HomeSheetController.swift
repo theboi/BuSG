@@ -58,12 +58,16 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         nearbyStops.count
     }
-    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection
+                                section: Int) -> String? {
+       return "Nearby"
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService)
         cell?.backgroundColor = .clear
         cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
         cell?.textLabel?.text = nearbyStops[indexPath.row].busStopCode
+        cell?.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
         return cell!
     }
     
