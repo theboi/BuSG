@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BusRouteServiceValue: Codable {
+struct BusRouteMapperValue: Codable {
     
     /// The bus service number. Sample: `"107M"`
     let serviceNo: String
@@ -62,9 +62,9 @@ struct BusRouteServiceValue: Codable {
     
 }
 
-struct BusRouteServiceRoot: Codable, BusApiServiceRoot {
+struct BusRouteMapperRoot: Codable, BusApiMapperRoot {
     
-    typealias Value = BusRouteServiceValue
+    typealias Value = BusRouteMapperValue
     
     static let apiUrl = K.apiUrls.busRoutes
     

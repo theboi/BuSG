@@ -39,7 +39,7 @@ enum BusServiceCategory: String, Codable {
     case night = "NIGHT RIDER"
 }
 
-struct BusServiceServiceValue: Codable {
+struct BusServiceMapperValue: Codable {
     
     /// The bus service number. Sample: `"107M"`
     let serviceNo: String
@@ -90,9 +90,9 @@ struct BusServiceServiceValue: Codable {
     
 }
 
-struct BusServiceServiceRoot: Codable, BusApiServiceRoot {
+struct BusServiceMapperRoot: Codable, BusApiMapperRoot {
     
-    typealias Value = BusServiceServiceValue
+    typealias Value = BusServiceMapperValue
         
     static let apiUrl = K.apiUrls.busServices
     
