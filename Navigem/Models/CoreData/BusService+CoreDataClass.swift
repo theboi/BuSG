@@ -11,7 +11,9 @@ import CoreData
 
 @objc(BusService)
 public class BusService: NSManagedObject {
-        
+    
+    public var accessorBusRoute: BusRoute?
+    
     public var busStops: [BusStop] {
         func fetch() -> [BusStop] {
             let context = managedObjectContext!
@@ -24,6 +26,7 @@ public class BusService: NSManagedObject {
                     stopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute.busStopCode)
                     do {
                         let busStop = try context.fetch(stopReq).first!
+                        busStop.accessorBusRoute = busRoute
                         busRoute.busService = self
                         busRoute.busStop = busStop
                         return busStop
@@ -40,6 +43,7 @@ public class BusService: NSManagedObject {
             var busStops: [BusStop] = []
             for busRoute in (busRoutes.allObjects as! [BusRoute]) {
                 if let busStop = busRoute.busStop {
+                    busStop.accessorBusRoute = busRoute
                     busStops.append(busStop)
                 } else { return fetch() }
             }
@@ -54,4 +58,5 @@ public class BusService: NSManagedObject {
     public var destinationBusStop: BusStop {
         ApiProvider.shared.getBusStop(for: destinationCode)
     }
+    
 }
