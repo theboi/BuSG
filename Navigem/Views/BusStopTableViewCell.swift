@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum BusArrivalTiming {
+    case arr
+    case left
+    case mins(Int)
+}
+
 class BusStopTableViewCell: UITableViewCell {
     
     var busNumberLabel = UILabel()
@@ -23,18 +29,11 @@ class BusStopTableViewCell: UITableViewCell {
         setBusArrivedLabelConstraints()
     }
     
-    
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    func set(bus: String){
-        busNumberLabel.text = bus
-        busArrivedLabel.text = "Arr"
-    }
-    
-    func configureBusNumberLabel(){
+    func configureBusNumberLabel() {
         busNumberLabel.numberOfLines = 0
         busNumberLabel.adjustsFontSizeToFitWidth = true
         busNumberLabel.backgroundColor = UIColor(red: 0.0 / 255.0, green: 122.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
@@ -44,24 +43,26 @@ class BusStopTableViewCell: UITableViewCell {
         busNumberLabel.clipsToBounds = true
     }
     
-    func configureBusArrivedLabel(){
+    func configureBusArrivedLabel() {
         busArrivedLabel.numberOfLines = 0
         busArrivedLabel.adjustsFontSizeToFitWidth = true
-        if busArrivedLabel.text == "Arr"{
-            busArrivedLabel.textColor = .green
+        if busArrivedLabel.text == "Arr" {
+            busArrivedLabel.textColor = .systemGreen
         }else{
-            busArrivedLabel.textColor = .red
+            busArrivedLabel.textColor = .systemRed
         }
     }
     
-    func setBusNumberLabelConstraints(){
+    func setBusNumberLabelConstraints() {
         busNumberLabel.translatesAutoresizingMaskIntoConstraints = false
-        busNumberLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        busNumberLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12).isActive = true
-        busNumberLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        busArrivedLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -200).isActive = true
+        NSLayoutConstraint.activate([
+            busNumberLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            busNumberLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            busNumberLabel.heightAnchor.constraint(equalToConstant: 40),
+            busArrivedLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -200),
+        ])
     }
-    func setBusArrivedLabelConstraints(){
+    func setBusArrivedLabelConstraints() {
         busArrivedLabel.translatesAutoresizingMaskIntoConstraints = false
         busArrivedLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         busArrivedLabel.leadingAnchor.constraint(equalTo: busNumberLabel.trailingAnchor, constant: 50).isActive = true

@@ -12,7 +12,7 @@ class BusServiceSheetController: SheetController {
     
     var busService: BusService!
     
-    lazy var tableView = UITableView()
+    lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +45,7 @@ class BusServiceSheetController: SheetController {
         super.init()
         
         self.busService = ApiProvider.shared.getBusService(for: serviceNo ?? "1")
-        self.headerView.titleText = "􀝉\(busService.serviceNo)"
+        self.headerView.titleText = busService.serviceNo
         self.headerView.detailText = busService.destinationCode
         
         LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 1)
@@ -63,22 +63,16 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService)
-        cell?.backgroundColor = .clear
-        cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell?.textLabel?.text = busService?.busStops[indexPath.row].busStopCode
-        cell?.accessoryType = UITableViewCell.AccessoryType.detailButton
-        return cell!
-    }
-    func tableView(_ tableView: UITableView,
-                            accessoryButtonTappedForRowWith indexPath: IndexPath){
-        present(BusStopSheetController(for: busService?.busStops[indexPath.row].busStopCode), animated: true)
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService, for: indexPath) as! BusServiceTableViewCell
+        cell.backgroundColor = .clear
+        cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
+        cell.textLabel?.text = busService?.busStops[indexPath.row].busStopCode
+        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusStopSheetController(for: busService?.busStops[indexPath.row].busStopCode ?? "NULL"), animated: true)
+        present(BusStopSheetController(for: busService?.busStops[indexPath.row].busStopCode ?? K.nilStr), animated: true)
     }
 }
 

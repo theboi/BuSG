@@ -67,8 +67,8 @@ class ApiProvider {
                         data = BusStop(context: self.backgroundContext)
                     }
                     data.busStopCode = service.busStopCode
-                    data.roadName = service.roadName ?? "NULL"
-                    data.roadDesc = service.roadDesc ?? "NULL"
+                    data.roadName = service.roadName ?? K.nilStr
+                    data.roadDesc = service.roadDesc ?? K.nilStr
                     data.latitude = service.latitude ?? 0
                     data.longitude = service.longitude ?? 0
                 } catch {
@@ -99,16 +99,16 @@ class ApiProvider {
                             data = BusService(context: self.backgroundContext)
                         }
                         data.serviceNo = service.serviceNo
-                        data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
+                        data.rawServiceOperator = service.serviceOperator?.rawValue ?? K.nilStr
                         data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
-                        data.rawCategory = service.category?.rawValue ?? "NULL"
-                        data.originCode = service.originCode ?? "NULL"
-                        data.destinationCode = service.destinationCode ?? "NULL"
-                        data.amPeakFreq = service.amPeakFreq ?? "NULL"
-                        data.amOffpeakFreq = service.amOffpeakFreq ?? "NULL"
-                        data.pmPeakFreq = service.pmPeakFreq ?? "NULL"
-                        data.pmOffpeakFreq = service.pmOffpeakFreq ?? "NULL"
-                        data.loopDesc = service.loopDesc ?? "NULL"
+                        data.rawCategory = service.category?.rawValue ?? K.nilStr
+                        data.originCode = service.originCode ?? K.nilStr
+                        data.destinationCode = service.destinationCode ?? K.nilStr
+                        data.amPeakFreq = service.amPeakFreq ?? K.nilStr
+                        data.amOffpeakFreq = service.amOffpeakFreq ?? K.nilStr
+                        data.pmPeakFreq = service.pmPeakFreq ?? K.nilStr
+                        data.pmOffpeakFreq = service.pmOffpeakFreq ?? K.nilStr
+                        data.loopDesc = service.loopDesc ?? K.nilStr
                     } catch {
                         fatalError("Failure to fetch context: \(error)")
                     }
@@ -136,17 +136,17 @@ class ApiProvider {
                                 data = BusRoute(context: self.backgroundContext)
                             }
                             data.serviceNo = service.serviceNo
-                            data.rawServiceOperator = service.serviceOperator?.rawValue ?? "NULL"
+                            data.rawServiceOperator = service.serviceOperator?.rawValue ?? K.nilStr
                             data.direction = Int64(truncatingIfNeeded: service.direction ?? 0)
                             data.stopSequence = Int64(truncatingIfNeeded: service.stopSequence ?? 0)
                             data.busStopCode = service.busStopCode
                             data.distance = service.distance ?? 0
-                            data.wdFirstBus = service.wdFirstBus ?? "NULL"
-                            data.wdLastBus = service.wdLastBus ?? "NULL"
-                            data.satFirstBus = service.satFirstBus ?? "NULL"
-                            data.satLastBus = service.satLastBus ?? "NULL"
-                            data.sunFirstBus = service.sunFirstBus ?? "NULL"
-                            data.sunLastBus = service.sunLastBus ?? "NULL"
+                            data.wdFirstBus = service.wdFirstBus ?? K.nilStr
+                            data.wdLastBus = service.wdLastBus ?? K.nilStr
+                            data.satFirstBus = service.satFirstBus ?? K.nilStr
+                            data.satLastBus = service.satLastBus ?? K.nilStr
+                            data.sunFirstBus = service.sunFirstBus ?? K.nilStr
+                            data.sunLastBus = service.sunLastBus ?? K.nilStr
                             
                             // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
                         } catch {

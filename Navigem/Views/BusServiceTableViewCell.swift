@@ -13,7 +13,6 @@ class BusServiceTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

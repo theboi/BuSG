@@ -22,6 +22,7 @@ enum K {
     static let nearbyCoordRadius: Double = 1/111.3/2 // 0.5km radius. 1 degree of lat/long is approximately equal to 111.3 kilometers
     static let datamallEnvVar = "datamall_api_key"
     static let busStopRoutingSkip = 5
+    static let nilStr = "-"
     
     enum apiUrls {
         static let busArrivals = "\(apiUrlBase)/BusArrivalv2"
