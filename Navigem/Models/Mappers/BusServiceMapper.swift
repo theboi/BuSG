@@ -14,6 +14,7 @@ enum BusServiceOperator: String, Codable {
     case tts = "TTS"
     /// GAS (for Go Ahead Singapore)
     case gas = "GAS"
+    case none = ""
 }
 
 enum BusServiceCategory: String, Codable {
@@ -35,6 +36,7 @@ enum BusServiceCategory: String, Codable {
     case sbst = "SBST"
     
     case night = "NIGHT RIDER"
+    case none = ""
 }
 
 struct BusServiceMapperValue: Codable {

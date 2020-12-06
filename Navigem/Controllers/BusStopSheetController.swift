@@ -38,6 +38,10 @@ class BusStopSheetController: SheetController {
         ])
         
         tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStop)
+        
+        ApiProvider.shared.getBusArrivals(for: busStop.busStopCode) {busArrivalRoot in 
+            
+        }
     }
     
     init(for busStopCode: String?) {
