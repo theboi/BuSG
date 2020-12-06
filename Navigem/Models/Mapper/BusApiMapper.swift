@@ -5,9 +5,6 @@
 //  Created by Ryan The on 2/12/20.
 //
 
-import Foundation
-import CoreData
-
 protocol BusApiMapperRoot: Codable {
     
     associatedtype Value

@@ -5,8 +5,6 @@
 //  Created by Ryan The on 3/12/20.
 //
 
-import Foundation
-
 struct BusRouteMapperValue: Codable {
     
     /// The bus service number. Sample: `"107M"`

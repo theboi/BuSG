@@ -21,9 +21,19 @@ class MainViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         
         self.view = mapView
+        
         locationManager.delegate = self
         mapView.delegate = self
         LocationProvider.shared.delegate = self
+        
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "busStop")
+        let segmentedControl = UISegmentedControl(items: [
+            UIImage(systemName: "location"),
+            UIImage(systemName: "location"),
+        ])
+        
+        mapView.addSubview(segmentedControl)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -61,8 +71,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let homeSheetController = HomeSheetController()
-        self.present(homeSheetController, animated: true, completion: nil)
+        self.present(HomeSheetController(), animated: true, completion: nil)
         
         guard CLLocationManager.locationServicesEnabled() else {
             return
@@ -73,6 +82,10 @@ class MainViewController: UIViewController {
         } else {
             LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
         }
+        
+        /// Show Apple Maps logo and legal notice when sheet at min state
+        mapView.layoutMargins.bottom = 40
+        mapView.layoutMargins.top = 40
         
         checkForUpdates()
     }
@@ -93,6 +106,10 @@ extension MainViewController: CLLocationManagerDelegate {
         fatalError(error.localizedDescription)
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+    }
+    
 }
 
 extension MainViewController: MKMapViewDelegate {
@@ -107,13 +124,29 @@ extension MainViewController: MKMapViewDelegate {
         return MKPolygonRenderer(overlay: overlay)
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        switch annotation {
+        case let annotation as BusStopAnnotation:
+            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "busStop", for: annotation) as? MKMarkerAnnotationView
+            annotationView?.glyphImage = UIImage(systemName: "building")
+            annotationView?.markerTintColor = .systemRed
+            annotationView?.canShowCallout = true
+            let roadNameLabel = UILabel()
+            roadNameLabel.text = annotation.busStop.roadDesc
+            let busStopCodeLabel = UILabel()
+            busStopCodeLabel.text = annotation.busStop.busStopCode
+            let stack = UIStackView(arrangedSubviews: [roadNameLabel, busStopCodeLabel])
+            stack.axis = .vertical
+            annotationView?.detailCalloutAccessoryView = stack
+            annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure, primaryAction: UIAction(handler: { _ in
+                present(BusStopSheetController(for: annotation.busStop.busStopCode), animated: true)
+            }))
+
+            return annotationView
+        default:
+            return nil
+        }
     }
-    
-    //    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-    //
-    //    }
     
 }
 

@@ -5,8 +5,6 @@
 //  Created by Ryan The on 29/11/20.
 //
 
-import Foundation
-
 enum BusServiceOperator: String, Codable {
     /// SBST (for SBS Transit)
     case sbst = "SBST"

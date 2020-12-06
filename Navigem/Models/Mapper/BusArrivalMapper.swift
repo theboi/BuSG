@@ -5,7 +5,6 @@
 //  Created by Ryan The on 1/12/20.
 //
 
-import Foundation
 import CoreLocation
 
 enum BusArrivalLoad: String, Codable {
