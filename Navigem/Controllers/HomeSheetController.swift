@@ -11,6 +11,10 @@ class HomeSheetController: SheetController {
 
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
+    lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: { _ in
+        self.reloadData()
+    }))
+    
     var searchText: String = ""
     
     var suggestedServices: [BusService] = []
@@ -18,10 +22,9 @@ class HomeSheetController: SheetController {
     var nearbyStops: [BusStop] = []
     
     private func reloadData() {
-        ApiProvider.shared.getNearbyBusStops {busStops in
-            self.nearbyStops = busStops
-            self.tableView.reloadData()
-        }
+        self.nearbyStops = ApiProvider.shared.getNearbyBusStops()
+        self.tableView.reloadData()
+        self.refreshControl.endRefreshing()
     }
     
     override func viewDidLoad() {
@@ -35,6 +38,7 @@ class HomeSheetController: SheetController {
         searchBar.delegate = self
         headerView.searchBar = searchBar
         
+        tableView.addSubview(refreshControl)
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
@@ -121,7 +125,7 @@ extension HomeSheetController: SheetControllerDelegate {
     }
 
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationWith: .one)
+        LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
     }
     
 }
