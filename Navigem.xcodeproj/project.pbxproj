@@ -32,9 +32,10 @@
 		AA90842D257A4012000A9D2B /* BusStop+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA908427257A4012000A9D2B /* BusStop+CoreDataClass.swift */; };
 		AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0DB25763BCA003FAE6E /* FillView.swift */; };
 		AA91D0F72576416C003FAE6E /* BusServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0F62576416C003FAE6E /* BusServiceTableViewCell.swift */; };
-		AA91D0FC257649A6003FAE6E /* BusArrivalMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0FB257649A6003FAE6E /* BusArrivalMapper.swift */; };
+		AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0FB257649A6003FAE6E /* BusArrival.swift */; };
 		AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
+		AAE490B9257CEBCF0010B483 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE490B8257CEBCF0010B483 /* UIColor.swift */; };
 		AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */; };
 		AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */; };
 		AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF4A4FB25627D4F00FC51E7 /* ViewController.swift */; };
@@ -90,10 +91,11 @@
 		AA908427257A4012000A9D2B /* BusStop+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AA91D0DB25763BCA003FAE6E /* FillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillView.swift; sourceTree = "<group>"; };
 		AA91D0F62576416C003FAE6E /* BusServiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceTableViewCell.swift; sourceTree = "<group>"; };
-		AA91D0FB257649A6003FAE6E /* BusArrivalMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalMapper.swift; sourceTree = "<group>"; };
+		AA91D0FB257649A6003FAE6E /* BusArrival.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrival.swift; sourceTree = "<group>"; };
 		AA91D10725765A10003FAE6E /* BusData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusData.xcdatamodel; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceAnnotation.swift; sourceTree = "<group>"; };
+		AAE490B8257CEBCF0010B483 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		AAF4A4F425627D4F00FC51E7 /* Navigem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				AA13B73E257369B9006FD219 /* URL.swift */,
 				AA8D078C257B8E6C00BF3E3B /* CLLocationCoordinate2D.swift */,
 				AA8D0794257BDA2800BF3E3B /* MKMapView.swift */,
+				AAE490B8257CEBCF0010B483 /* UIColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -186,7 +189,7 @@
 		AAE490A2257CDA510010B483 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				AA91D0FB257649A6003FAE6E /* BusArrivalMapper.swift */,
+				AA91D0FB257649A6003FAE6E /* BusArrival.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -438,7 +441,7 @@
 				AA13B6E4257229F2006FD219 /* SheetContentView.swift in Sources */,
 				AA7F4CC7257A9D0900A4DD14 /* BusStopAnnotation.swift in Sources */,
 				AA13B737257346E4006FD219 /* BusStopMapper.swift in Sources */,
-				AA91D0FC257649A6003FAE6E /* BusArrivalMapper.swift in Sources */,
+				AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */,
 				AA7F4CC2257A81B200A4DD14 /* BusStopTableViewCell.swift in Sources */,
 				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
 				AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */,
@@ -450,6 +453,7 @@
 				AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */,
 				AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */,
 				AA8D0795257BDA2800BF3E3B /* MKMapView.swift in Sources */,
+				AAE490B9257CEBCF0010B483 /* UIColor.swift in Sources */,
 				AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */,
 				AAF4A54525628DEF00FC51E7 /* Constants.swift in Sources */,
 				AA8D078D257B8E6C00BF3E3B /* CLLocationCoordinate2D.swift in Sources */,

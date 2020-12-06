@@ -15,59 +15,47 @@ enum BusArrivalTiming {
 
 class BusStopTableViewCell: UITableViewCell {
     
-    var busNumberLabel = UILabel()
-    var busArrivedLabel = UILabel()
-
+    public lazy var serviceNoLabel = UILabel()
+    public lazy var busTimingLabels = [UILabel(), UILabel(), UILabel()]
+    public var stackView: UIStackView!
+    public lazy var errorLabel = UILabel()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(busNumberLabel)
-        addSubview(busArrivedLabel)
         
-        configureBusNumberLabel()
-        configureBusArrivedLabel()
-        setBusNumberLabelConstraints()
-        setBusArrivedLabelConstraints()
+        addSubview(serviceNoLabel)
+        
+        serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            serviceNoLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+        ])
+        
+        stackView = UIStackView(arrangedSubviews: busTimingLabels)
+        stackView.distribution = .fillEqually
+        stackView.alignment = .trailing
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: K.margin.large),
+            stackView.widthAnchor.constraint(equalToConstant: 200),
+        ])
+        
+        errorLabel.backgroundColor = .clear
+        errorLabel.textColor = UIColor.label.withAlphaComponent(0.3)
+        insertSubview(errorLabel, aboveSubview: stackView)
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            errorLabel.topAnchor.constraint(equalTo: stackView.topAnchor),
+            errorLabel.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            errorLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+        ])
+        
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
-    func configureBusNumberLabel() {
-        busNumberLabel.numberOfLines = 0
-        busNumberLabel.adjustsFontSizeToFitWidth = true
-        busNumberLabel.backgroundColor = UIColor(red: 0.0 / 255.0, green: 122.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
-        busNumberLabel.layer.cornerRadius = 8
-        busNumberLabel.textColor = .white
-        busNumberLabel.textAlignment = .center
-        busNumberLabel.clipsToBounds = true
-    }
-    
-    func configureBusArrivedLabel() {
-        busArrivedLabel.numberOfLines = 0
-        busArrivedLabel.adjustsFontSizeToFitWidth = true
-        if busArrivedLabel.text == "Arr" {
-            busArrivedLabel.textColor = .systemGreen
-        }else{
-            busArrivedLabel.textColor = .systemRed
-        }
-    }
-    
-    func setBusNumberLabelConstraints() {
-        busNumberLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            busNumberLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            busNumberLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            busNumberLabel.heightAnchor.constraint(equalToConstant: 40),
-            busArrivedLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -200),
-        ])
-    }
-    func setBusArrivedLabelConstraints() {
-        busArrivedLabel.translatesAutoresizingMaskIntoConstraints = false
-        busArrivedLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        busArrivedLabel.leadingAnchor.constraint(equalTo: busNumberLabel.trailingAnchor, constant: 50).isActive = true
-        busArrivedLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        busArrivedLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
-    }
-    
 }

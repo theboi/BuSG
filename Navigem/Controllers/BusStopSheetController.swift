@@ -12,13 +12,15 @@ class BusStopSheetController: SheetController {
     
     var busStop: BusStop!
     
+    var busArrival: BusArrival?
+    
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         delegate = self
-
+        
         let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
             self.dismissSheet()
         }))
@@ -39,8 +41,11 @@ class BusStopSheetController: SheetController {
         
         tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStop)
         
-        ApiProvider.shared.getBusArrivals(for: busStop.busStopCode) {busArrivalRoot in 
-            
+        ApiProvider.shared.getBusArrivals(for: busStop.busStopCode) {busArrival in
+            self.busArrival = busArrival
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -69,8 +74,34 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStop, for: indexPath) as! BusStopTableViewCell
         cell.backgroundColor = .clear
         cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell.busNumberLabel.text = busStop.busServices[indexPath.row].serviceNo
-        cell.busArrivedLabel.text = "Arr" // TODO
+        cell.serviceNoLabel.text = busStop.busServices[indexPath.row].serviceNo
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        cell.busTimingLabels.enumerated().forEach { (index, label) in
+            let optionalBusArrival = busArrival?.busServices[busStop.busServices[indexPath.row].serviceNo]
+            if let estimatedArrival = optionalBusArrival?.nextBuses[index].estimatedArrival, estimatedArrival != "" {
+                cell.stackView.isHidden = false
+                cell.errorLabel.text = ""
+                let date = dateFormatter.date(from: estimatedArrival)!
+                let arrTime = Calendar.current.dateComponents([.minute], from: Date(), to: date).minute!
+                if arrTime <= 0 { label.text = "Arr" }
+                else { label.text = String(arrTime) }
+                if arrTime < 0 { label.textColor = UIColor.label.withAlphaComponent(0.3) }
+                
+            } else if optionalBusArrival == nil {
+                /// Bus Service not operating
+                cell.stackView.isHidden = true
+                cell.errorLabel.text = "Not In Operation"
+            } else {
+                /// Bus service stopped due to night time etc.
+                label.text = "-"
+            }
+        }
+        
         return cell
     }
     
@@ -92,7 +123,7 @@ extension BusStopSheetController: SheetControllerDelegate {
             }
         }
     }
-
+    
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop), with: .one)
     }
