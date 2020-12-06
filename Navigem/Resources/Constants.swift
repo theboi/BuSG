@@ -48,6 +48,6 @@ enum K {
     }
     
     enum mapView {
-        static let edgePadding = UIEdgeInsets(top: 0, left: 10, bottom: 400, right: 10)
+        static let edgePadding = UIEdgeInsets(top: 100, left: 10, bottom: 400, right: 10)
     }
 }
