@@ -40,8 +40,9 @@ enum K {
     }
     
     enum identifiers {
-        static let busService = "busServiceCellIdentifier"
-        static let busStop = "busStopCellIdentifier"
+        static let busService = "busServiceIdentifier"
+        static let busStop = "busStopIdentifier"
+        static let busSuggested = "busSuggestedIdentifier"
     }
     
     enum userDefaults {

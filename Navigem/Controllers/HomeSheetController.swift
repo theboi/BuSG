@@ -23,6 +23,7 @@ class HomeSheetController: SheetController {
     
     private func reloadData() {
         self.nearbyStops = ApiProvider.shared.getNearbyBusStops()
+        self.suggestedServices = ApiProvider.shared.getSuggestedServices()
         self.tableView.reloadData()
         self.refreshControl.endRefreshing()
     }
@@ -53,33 +54,54 @@ class HomeSheetController: SheetController {
         ])
         
         tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
-        
+        tableView.register(BusSuggestedTableViewCell.self, forCellReuseIdentifier: K.identifiers.busSuggested)
+
         reloadData()
     }
 }
 
 extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        nearbyStops.count
+        switch section {
+        case 0: return suggestedServices.count
+        case 1: fallthrough
+        default: return nearbyStops.count
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0: return "Nearby"
-        default: return K.nilStr
+        case 0: return "Suggested"
+        case 1: fallthrough
+        default: return "Nearby"
         }
     }
-    
+        
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         40
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService)
-        cell?.backgroundColor = .clear
-        cell?.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell?.textLabel?.text = nearbyStops[indexPath.row].busStopCode
-        return cell!
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggested, for: indexPath) as! BusSuggestedTableViewCell
+            cell.backgroundColor = .clear
+            cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
+            cell.textLabel?.text = suggestedServices[indexPath.row].serviceNo
+            return cell
+        case 1: fallthrough
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService, for: indexPath) as! BusServiceTableViewCell
+            cell.backgroundColor = .clear
+            cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
+            cell.textLabel?.text = nearbyStops[indexPath.row].busStopCode
+            return cell
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
