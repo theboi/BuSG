@@ -27,7 +27,7 @@ class ApiProvider {
     }
     
     /// Fetch bus data in Service nested structures with skip until DataMall API returns empty array (aka no more entries)
-    private func fetchData<T: BusApiServiceRoot>(_ T_Type: T.Type, withPrevious array: [T.Value] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.Value]>) {
+    private func fetchData<T: BusApiMapperRoot>(_ T_Type: T.Type, withPrevious array: [T.Value] = [], withSkip skip: Int = 0, completion: CompletionHandler<[T.Value]>) {
         var array = array
         var req = URLRequest(url: URL(string: T.apiUrl, with: [URLQueryItem(name: K.apiQueries.skip, value: String(skip))])!)
         req.setValue(apiKey, forHTTPHeaderField: K.apiQueries.apiKeyHeader)
@@ -51,7 +51,7 @@ class ApiProvider {
     /// Update bus data from DataMall servers. Runs asynchronous.
     public func updateBusData(completion: CompletionHandler<Void> = nil) {
         
-        self.fetchData(BusStopServiceRoot.self) { (busStopServiceValues: [BusStopServiceValue]) in
+        self.fetchData(BusStopMapperRoot.self) { (busStopServiceValues: [BusStopMapperValue]) in
             
             for service in busStopServiceValues {
                 var data: BusStop
@@ -84,7 +84,7 @@ class ApiProvider {
             }
             
             // Fetch BusServices from API
-            self.fetchData(BusServiceServiceRoot.self) { (busServiceServiceValues: [BusServiceServiceValue]) in
+            self.fetchData(BusServiceMapperRoot.self) { (busServiceServiceValues: [BusServiceMapperValue]) in
                 
                 for service in busServiceServiceValues {
                     var data: BusService
@@ -121,7 +121,7 @@ class ApiProvider {
                 }
                 
                 // Fetch BusRoutes from API
-                self.fetchData(BusRouteServiceRoot.self) { (busServiceServiceValues: [BusRouteServiceValue]) in
+                self.fetchData(BusRouteMapperRoot.self) { (busServiceServiceValues: [BusRouteMapperValue]) in
                     for service in busServiceServiceValues {
                         var data: BusRoute
                         

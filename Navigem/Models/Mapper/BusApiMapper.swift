@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-protocol BusApiServiceRoot: Codable {
+protocol BusApiMapperRoot: Codable {
     
     associatedtype Value
         
