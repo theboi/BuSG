@@ -182,6 +182,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     public func dismissSheet() {
         if let presentingSheetController = presentingSheetController {
             presentingSheetController.isHidden = false
+            (parent as! MainViewController).currentlyPresentingSheetController = presentingSheetController
             presentingSheetController.didReturnFromDismissalBy(dismissingSheetController: self)
             self.isHidden = true
             // Clean up container view controller
