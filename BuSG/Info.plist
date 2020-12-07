@@ -26,9 +26,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Gimme</string>
+	<string>BuSG requires your location to recommend nearby Buses and Bus Stops.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>GImme</string>
+	<string>BuSG requires your location to recommend nearby Buses and Bus Stops.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
