@@ -207,6 +207,14 @@
 			path = Annotations;
 			sourceTree = "<group>";
 		};
+		AAE490C7257E069D0010B483 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				AAF4A53C256284D100FC51E7 /* SheetController.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		AAF4A4EB25627D4F00FC51E7 = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +243,7 @@
 				AAF4A5502562A53D00FC51E7 /* Views */,
 				AA91D105257659DA003FAE6E /* Resources */,
 				AAF4A5312562814D00FC51E7 /* Models */,
+				AAE490C7257E069D0010B483 /* Helper */,
 				AAF4A5302562814700FC51E7 /* Controllers */,
 				AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */,
 				AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */,
@@ -268,7 +277,6 @@
 			isa = PBXGroup;
 			children = (
 				AAF4A5332562840500FC51E7 /* MainViewController.swift */,
-				AAF4A53C256284D100FC51E7 /* SheetController.swift */,
 				AA13B6DB2572127E006FD219 /* HomeSheetController.swift */,
 				AA13B7272573447C006FD219 /* BusStopSheetController.swift */,
 				AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */,
