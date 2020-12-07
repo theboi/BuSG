@@ -1,8 +1,8 @@
 //
 //  BusService+CoreDataProperties.swift
-//  Navigem
+//  BuSG
 //
-//  Created by Ryan The on 4/12/20.
+//  Created by Ryan The on 7/12/20.
 //
 //
 
@@ -27,6 +27,7 @@ extension BusService {
     @NSManaged public var rawCategory: String
     @NSManaged public var rawServiceOperator: String
     @NSManaged public var serviceNo: String
+    @NSManaged public var timestamp: Date
     @NSManaged public var busRoutes: NSSet?
 
 }
