@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
     }
     
     var currentlyPresentingSheetController: SheetController?
-        
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         self.view.backgroundColor = .systemBackground
@@ -29,12 +29,52 @@ class MainViewController: UIViewController {
         LocationProvider.shared.delegate = self
         
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "busStop")
-        let segmentedControl = UISegmentedControl(items: [
-            UIImage(systemName: "location"),
-            UIImage(systemName: "location"),
-        ])
         
-        mapView.addSubview(segmentedControl)
+        let stackButtons = [
+            UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
+                self.present(SettingsViewController(), animated: true)
+            })),
+            UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
+                print("CLICK")
+            }))
+        ]
+        
+        stackButtons.enumerated().forEach { (index, button) in
+            if let imageView = button.imageView {
+                button.bringSubviewToFront(imageView)
+            }
+            
+            if !UIAccessibility.isReduceTransparencyEnabled {
+                button.backgroundColor = .clear
+                
+                let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+                blurEffectView.isUserInteractionEnabled = false // allows button to be clicked
+                blurEffectView.frame = button.bounds
+                blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                
+                button.insertSubview(blurEffectView, at: 0)
+            } else {
+                button.backgroundColor = .systemBackground
+            }
+        }
+        stackButtons[0].setImage(UIImage(systemName: "gear"), for: .normal)
+        stackButtons[1].setImage(UIImage(systemName: "location"), for: .normal)
+        
+        let stackView = UIStackView(arrangedSubviews: stackButtons)
+        
+        stackView.layer.cornerRadius = K.cornerRadius
+        stackView.clipsToBounds = true
+        
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        mapView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large),
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            stackView.widthAnchor.constraint(equalToConstant: 50),
+            stackView.heightAnchor.constraint(equalToConstant: 100),
+        ])
         
     }
     
@@ -88,7 +128,7 @@ class MainViewController: UIViewController {
         
         /// Show Apple Maps logo and legal notice when sheet at min state
         mapView.layoutMargins.bottom = 40
-        mapView.layoutMargins.top = 40
+        mapView.layoutMargins.top = 120
         
         checkForUpdates()
     }
@@ -170,6 +210,7 @@ extension MainViewController: LocationProviderDelegate {
         locationManager.requestLocation()
         let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate.shift, latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
         mapView.setRegion(region, animated: true)
+        self.clearMapView()
         mapView.showsUserLocation = true
     }
     
@@ -192,13 +233,11 @@ extension MainViewController: LocationProviderDelegate {
                 req.source = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index].coordinate, addressDictionary: nil))
                 req.destination = MKMapItem(placemark: MKPlacemark(coordinate: busStops[index+skip].coordinate, addressDictionary: nil))
                 req.transportType = .automobile
-                MKDirections(request: req).calculate { res, _ in
+                MKDirections(request: req).calculate { res, err in
                     if let res = res {
                         self.mapView.addOverlay(res.routes[0].polyline)
                     } else {
-                        print("STRAIGHT TIME")
                         let polylineMax = index+K.busStopRoutingSkip > busStops.count-1 ? busStops.count-1-index : K.busStopRoutingSkip
-                        print(Array(0...polylineMax))
                         let polylineCoords = Array(0...polylineMax).map { (num) -> CLLocationCoordinate2D in
                             busStops[index+num].coordinate
                         }

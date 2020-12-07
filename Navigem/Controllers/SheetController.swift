@@ -100,8 +100,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         if !UIAccessibility.isReduceTransparencyEnabled {
             view.backgroundColor = .clear
             
-            let blurEffect = UIBlurEffect(style: .systemMaterial)
-            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
             
             blurEffectView.frame = view.bounds
             blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
