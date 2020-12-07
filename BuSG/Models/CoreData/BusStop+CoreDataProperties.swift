@@ -1,8 +1,8 @@
 //
 //  BusStop+CoreDataProperties.swift
-//  Navigem
+//  BuSG
 //
-//  Created by Ryan The on 4/12/20.
+//  Created by Ryan The on 7/12/20.
 //
 //
 
@@ -21,6 +21,7 @@ extension BusStop {
     @NSManaged public var longitude: Double
     @NSManaged public var roadDesc: String
     @NSManaged public var roadName: String
+    @NSManaged public var timestamp: Date
     @NSManaged public var busRoutes: NSSet?
 
 }

@@ -1,8 +1,8 @@
 //
 //  BusRoute+CoreDataProperties.swift
-//  Navigem
+//  BuSG
 //
-//  Created by Ryan The on 4/12/20.
+//  Created by Ryan The on 7/12/20.
 //
 //
 
@@ -28,6 +28,7 @@ extension BusRoute {
     @NSManaged public var sunLastBus: String
     @NSManaged public var wdFirstBus: String
     @NSManaged public var wdLastBus: String
+    @NSManaged public var timestamp: Date
     @NSManaged public var busService: BusService?
     @NSManaged public var busStop: BusStop?
 

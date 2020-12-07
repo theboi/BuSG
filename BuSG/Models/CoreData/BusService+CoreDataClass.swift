@@ -29,6 +29,7 @@ public class BusService: NSManagedObject {
                         busStop.accessorBusRoute = busRoute
                         busRoute.busService = self
                         busRoute.busStop = busStop
+                        try context.save()
                         return busStop
                     } catch {
                         fatalError(error.localizedDescription)
