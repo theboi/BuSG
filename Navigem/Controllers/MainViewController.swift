@@ -32,7 +32,7 @@ class MainViewController: UIViewController {
         
         let stackButtons = [
             UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
-                self.present(SettingsViewController(), animated: true)
+                self.present(UINavigationController(rootViewController: SettingsViewController()), animated: true)
             })),
             UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
                 print("CLICK")
