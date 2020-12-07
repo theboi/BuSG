@@ -100,17 +100,17 @@
 		AAE490B8257CEBCF0010B483 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		AAE490BD257D20080010B483 /* BusSuggestedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusSuggestedTableViewCell.swift; sourceTree = "<group>"; };
 		AAE490C8257E07EA0010B483 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		AAF4A4F425627D4F00FC51E7 /* Navigem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAF4A4F425627D4F00FC51E7 /* BuSG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuSG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AAF4A4FB25627D4F00FC51E7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AAF4A50025627D5100FC51E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AAF4A50325627D5100FC51E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AAF4A50525627D5100FC51E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AAF4A50A25627D5200FC51E7 /* NavigemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAF4A50A25627D5200FC51E7 /* BuSGTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuSGTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A50E25627D5200FC51E7 /* NavigemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigemTests.swift; sourceTree = "<group>"; };
 		AAF4A51025627D5200FC51E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AAF4A51525627D5200FC51E7 /* NavigemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavigemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAF4A51525627D5200FC51E7 /* BuSGUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuSGUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A51925627D5200FC51E7 /* NavigemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigemUITests.swift; sourceTree = "<group>"; };
 		AAF4A51B25627D5200FC51E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AAF4A5332562840500FC51E7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -220,9 +220,9 @@
 			isa = PBXGroup;
 			children = (
 				AAC97DA025638B6D002C5640 /* README.md */,
-				AAF4A4F625627D4F00FC51E7 /* Navigem */,
-				AAF4A50D25627D5200FC51E7 /* NavigemTests */,
-				AAF4A51825627D5200FC51E7 /* NavigemUITests */,
+				AAF4A4F625627D4F00FC51E7 /* BuSG */,
+				AAF4A50D25627D5200FC51E7 /* BuSGTests */,
+				AAF4A51825627D5200FC51E7 /* BuSGUITests */,
 				AAF4A4F525627D4F00FC51E7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -230,14 +230,14 @@
 		AAF4A4F525627D4F00FC51E7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AAF4A4F425627D4F00FC51E7 /* Navigem.app */,
-				AAF4A50A25627D5200FC51E7 /* NavigemTests.xctest */,
-				AAF4A51525627D5200FC51E7 /* NavigemUITests.xctest */,
+				AAF4A4F425627D4F00FC51E7 /* BuSG.app */,
+				AAF4A50A25627D5200FC51E7 /* BuSGTests.xctest */,
+				AAF4A51525627D5200FC51E7 /* BuSGUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AAF4A4F625627D4F00FC51E7 /* Navigem */ = {
+		AAF4A4F625627D4F00FC51E7 /* BuSG */ = {
 			isa = PBXGroup;
 			children = (
 				AA4C6E26256A52B300DDD32F /* Extensions */,
@@ -253,25 +253,25 @@
 				AAF4A50225627D5100FC51E7 /* LaunchScreen.storyboard */,
 				AAF4A50525627D5100FC51E7 /* Info.plist */,
 			);
-			path = Navigem;
+			path = BuSG;
 			sourceTree = "<group>";
 		};
-		AAF4A50D25627D5200FC51E7 /* NavigemTests */ = {
+		AAF4A50D25627D5200FC51E7 /* BuSGTests */ = {
 			isa = PBXGroup;
 			children = (
 				AAF4A50E25627D5200FC51E7 /* NavigemTests.swift */,
 				AAF4A51025627D5200FC51E7 /* Info.plist */,
 			);
-			path = NavigemTests;
+			path = BuSGTests;
 			sourceTree = "<group>";
 		};
-		AAF4A51825627D5200FC51E7 /* NavigemUITests */ = {
+		AAF4A51825627D5200FC51E7 /* BuSGUITests */ = {
 			isa = PBXGroup;
 			children = (
 				AAF4A51925627D5200FC51E7 /* NavigemUITests.swift */,
 				AAF4A51B25627D5200FC51E7 /* Info.plist */,
 			);
-			path = NavigemUITests;
+			path = BuSGUITests;
 			sourceTree = "<group>";
 		};
 		AAF4A5302562814700FC51E7 /* Controllers */ = {
@@ -312,9 +312,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AAF4A4F325627D4F00FC51E7 /* Navigem */ = {
+		AAF4A4F325627D4F00FC51E7 /* BuSG */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AAF4A51E25627D5200FC51E7 /* Build configuration list for PBXNativeTarget "Navigem" */;
+			buildConfigurationList = AAF4A51E25627D5200FC51E7 /* Build configuration list for PBXNativeTarget "BuSG" */;
 			buildPhases = (
 				AAF4A4F025627D4F00FC51E7 /* Sources */,
 				AAF4A4F125627D4F00FC51E7 /* Frameworks */,
@@ -324,14 +324,14 @@
 			);
 			dependencies = (
 			);
-			name = Navigem;
+			name = BuSG;
 			productName = Navigem;
-			productReference = AAF4A4F425627D4F00FC51E7 /* Navigem.app */;
+			productReference = AAF4A4F425627D4F00FC51E7 /* BuSG.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AAF4A50925627D5200FC51E7 /* NavigemTests */ = {
+		AAF4A50925627D5200FC51E7 /* BuSGTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AAF4A52125627D5200FC51E7 /* Build configuration list for PBXNativeTarget "NavigemTests" */;
+			buildConfigurationList = AAF4A52125627D5200FC51E7 /* Build configuration list for PBXNativeTarget "BuSGTests" */;
 			buildPhases = (
 				AAF4A50625627D5200FC51E7 /* Sources */,
 				AAF4A50725627D5200FC51E7 /* Frameworks */,
@@ -342,14 +342,14 @@
 			dependencies = (
 				AAF4A50C25627D5200FC51E7 /* PBXTargetDependency */,
 			);
-			name = NavigemTests;
+			name = BuSGTests;
 			productName = NavigemTests;
-			productReference = AAF4A50A25627D5200FC51E7 /* NavigemTests.xctest */;
+			productReference = AAF4A50A25627D5200FC51E7 /* BuSGTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		AAF4A51425627D5200FC51E7 /* NavigemUITests */ = {
+		AAF4A51425627D5200FC51E7 /* BuSGUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AAF4A52425627D5200FC51E7 /* Build configuration list for PBXNativeTarget "NavigemUITests" */;
+			buildConfigurationList = AAF4A52425627D5200FC51E7 /* Build configuration list for PBXNativeTarget "BuSGUITests" */;
 			buildPhases = (
 				AAF4A51125627D5200FC51E7 /* Sources */,
 				AAF4A51225627D5200FC51E7 /* Frameworks */,
@@ -360,9 +360,9 @@
 			dependencies = (
 				AAF4A51725627D5200FC51E7 /* PBXTargetDependency */,
 			);
-			name = NavigemUITests;
+			name = BuSGUITests;
 			productName = NavigemUITests;
-			productReference = AAF4A51525627D5200FC51E7 /* NavigemUITests.xctest */;
+			productReference = AAF4A51525627D5200FC51E7 /* BuSGUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -387,7 +387,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AAF4A4EF25627D4F00FC51E7 /* Build configuration list for PBXProject "Navigem" */;
+			buildConfigurationList = AAF4A4EF25627D4F00FC51E7 /* Build configuration list for PBXProject "BuSG" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -400,9 +400,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AAF4A4F325627D4F00FC51E7 /* Navigem */,
-				AAF4A50925627D5200FC51E7 /* NavigemTests */,
-				AAF4A51425627D5200FC51E7 /* NavigemUITests */,
+				AAF4A4F325627D4F00FC51E7 /* BuSG */,
+				AAF4A50925627D5200FC51E7 /* BuSGTests */,
+				AAF4A51425627D5200FC51E7 /* BuSGUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -499,12 +499,12 @@
 /* Begin PBXTargetDependency section */
 		AAF4A50C25627D5200FC51E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AAF4A4F325627D4F00FC51E7 /* Navigem */;
+			target = AAF4A4F325627D4F00FC51E7 /* BuSG */;
 			targetProxy = AAF4A50B25627D5200FC51E7 /* PBXContainerItemProxy */;
 		};
 		AAF4A51725627D5200FC51E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AAF4A4F325627D4F00FC51E7 /* Navigem */;
+			target = AAF4A4F325627D4F00FC51E7 /* BuSG */;
 			targetProxy = AAF4A51625627D5200FC51E7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -645,12 +645,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 66HB97DLV4;
-				INFOPLIST_FILE = Navigem/Info.plist;
+				INFOPLIST_FILE = BuSG/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ryanthe.Navige;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ryanthe.BuSG;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -666,12 +666,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 66HB97DLV4;
-				INFOPLIST_FILE = Navigem/Info.plist;
+				INFOPLIST_FILE = BuSG/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ryanthe.Navige;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ryanthe.BuSG;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -696,7 +696,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Navigem.app/Navigem";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BuSG.app/BuSG";
 			};
 			name = Debug;
 		};
@@ -717,7 +717,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Navigem.app/Navigem";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BuSG.app/BuSG";
 			};
 			name = Release;
 		};
@@ -762,7 +762,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AAF4A4EF25627D4F00FC51E7 /* Build configuration list for PBXProject "Navigem" */ = {
+		AAF4A4EF25627D4F00FC51E7 /* Build configuration list for PBXProject "BuSG" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAF4A51C25627D5200FC51E7 /* Debug */,
@@ -771,7 +771,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AAF4A51E25627D5200FC51E7 /* Build configuration list for PBXNativeTarget "Navigem" */ = {
+		AAF4A51E25627D5200FC51E7 /* Build configuration list for PBXNativeTarget "BuSG" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAF4A51F25627D5200FC51E7 /* Debug */,
@@ -780,7 +780,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AAF4A52125627D5200FC51E7 /* Build configuration list for PBXNativeTarget "NavigemTests" */ = {
+		AAF4A52125627D5200FC51E7 /* Build configuration list for PBXNativeTarget "BuSGTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAF4A52225627D5200FC51E7 /* Debug */,
@@ -789,7 +789,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AAF4A52425627D5200FC51E7 /* Build configuration list for PBXNativeTarget "NavigemUITests" */ = {
+		AAF4A52425627D5200FC51E7 /* Build configuration list for PBXNativeTarget "BuSGUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AAF4A52525627D5200FC51E7 /* Debug */,
