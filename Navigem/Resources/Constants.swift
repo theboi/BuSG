@@ -43,6 +43,7 @@ enum K {
         static let busService = "busServiceIdentifier"
         static let busStop = "busStopIdentifier"
         static let busSuggested = "busSuggestedIdentifier"
+        static let settings = "settingsIdentifier"
     }
     
     enum userDefaults {
