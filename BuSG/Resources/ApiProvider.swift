@@ -197,21 +197,21 @@ class ApiProvider {
         }
     }
     
-    public func getBusStop(for busStopCode: String) -> BusStop {
+    public func getBusStop(for busStopCode: String) -> BusStop? {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             req.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
-            return try context.fetch(req).first!
+            return try context.fetch(req).first
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
     }
     
-    public func getBusService(for serviceNo: String) -> BusService {
+    public func getBusService(for serviceNo: String) -> BusService? {
         do {
             let req = BusService.fetchRequest() as NSFetchRequest<BusService>
             req.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
-            return try context.fetch(req).first!
+            return try context.fetch(req).first
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
@@ -238,7 +238,7 @@ class ApiProvider {
     }
     
     public func getSuggestedServices() -> [BusService] {
-        self.getBusStop(for: "10079").busServices
+        self.getBusStop(for: "10079")?.busServices ?? []
     }
     
     public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrival> = nil) {

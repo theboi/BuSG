@@ -51,11 +51,11 @@ public class BusService: NSManagedObject {
         } else { return fetch() }
     }
     
-    public var originBusStop: BusStop {
+    public var originBusStop: BusStop? {
         ApiProvider.shared.getBusStop(for: originCode)
     }
     
-    public var destinationBusStop: BusStop {
+    public var destinationBusStop: BusStop? {
         ApiProvider.shared.getBusStop(for: destinationCode)
     }
     

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AAF4A4F325627D4F00FC51E7"
-               BuildableName = "Navigem.app"
-               BlueprintName = "Navigem"
-               ReferencedContainer = "container:Navigem.xcodeproj">
+               BuildableName = "BuSG.app"
+               BlueprintName = "BuSG"
+               ReferencedContainer = "container:BuSG.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AAF4A50925627D5200FC51E7"
-               BuildableName = "NavigemTests.xctest"
-               BlueprintName = "NavigemTests"
-               ReferencedContainer = "container:Navigem.xcodeproj">
+               BuildableName = "BuSGTests.xctest"
+               BlueprintName = "BuSGTests"
+               ReferencedContainer = "container:BuSG.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AAF4A51425627D5200FC51E7"
-               BuildableName = "NavigemUITests.xctest"
-               BlueprintName = "NavigemUITests"
-               ReferencedContainer = "container:Navigem.xcodeproj">
+               BuildableName = "BuSGUITests.xctest"
+               BlueprintName = "BuSGUITests"
+               ReferencedContainer = "container:BuSG.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AAF4A4F325627D4F00FC51E7"
-            BuildableName = "Navigem.app"
-            BlueprintName = "Navigem"
-            ReferencedContainer = "container:Navigem.xcodeproj">
+            BuildableName = "BuSG.app"
+            BlueprintName = "BuSG"
+            ReferencedContainer = "container:BuSG.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AAF4A4F325627D4F00FC51E7"
-            BuildableName = "Navigem.app"
-            BlueprintName = "Navigem"
-            ReferencedContainer = "container:Navigem.xcodeproj">
+            BuildableName = "BuSG.app"
+            BlueprintName = "BuSG"
+            ReferencedContainer = "container:BuSG.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
