@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StoreKit
 
 typealias SettingsTableList = [[SettingsTableItem]]
 
@@ -18,28 +19,28 @@ struct SettingsTableItem {
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
     var action: (() -> Void)?
+    var urlString: String?
 }
 
 class SettingsViewController: UITableViewController {
     
     var listData: SettingsTableList!
     
-    var defaultList: SettingsTableList {
+    var rootList: SettingsTableList {
         [
             [
                 SettingsTableItem(title: "Auto Refresh Bus Timing", accessoryView: UISwitch()),
                 SettingsTableItem(title: "Update Bus Data", accessoryView: UISwitch()),
-                
             ],
             [
 //                SettingsTableItem(title: "History", pushViewController: UIViewController()),
-                SettingsTableItem(title: "Share with a Friend", accessoryView: UISwitch()),
-                SettingsTableItem(title: "Rate on App Store", accessoryView: UISwitch()),
-                SettingsTableItem(title: "Open Sourced Repository", action: {
-                    if let url = URL(string: "https://github.com/theboi/BuSG") {
-                        UIApplication.shared.open(url, options: [:])
-                    }
+                SettingsTableItem(title: "Share with a Friend", presentViewController: {
+                    return UIActivityViewController(activityItems: ["Check out BuSG, a smart bus tracker app!"], applicationActivities: [])
+                }()),
+                SettingsTableItem(title: "Rate on App Store", action: {
+                    //URL.open(webURL: "itms-apps://itunes.apple.com/app/\(Bundle.main.bundleIdentifier)")
                 }),
+                SettingsTableItem(title: "Open-Sourced Repository", urlString: "https://github.com/theboi/BuSG"),
                 SettingsTableItem(title: "Report an Issue", accessoryView: UISwitch()),
             ],
         ]
@@ -50,7 +51,7 @@ class SettingsViewController: UITableViewController {
         self.title = "Settings"
         self.tableView = UITableView(frame: CGRect(), style: .insetGrouped)
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.identifiers.settings)
-        self.listData = list ?? defaultList
+        self.listData = list ?? rootList
     }
     
     required init?(coder: NSCoder) {
@@ -80,9 +81,11 @@ class SettingsViewController: UITableViewController {
         if let accessoryView = cellData.accessoryView {
             cell.accessoryView = accessoryView
             cell.selectionStyle = .none
-        } else if cellData.pushViewController != nil || cellData.presentViewController != nil {
+        } else if cellData.pushViewController != nil || cellData.presentViewController != nil || cellData.action != nil {
             cell.accessoryType = .disclosureIndicator
-        } else if cellData.action != nil {
+        } else if cellData.urlString != nil {
+            cell.accessoryView = UIImageView(image: UIImage(systemName: "arrow.up.forward.app", withConfiguration: UIImage.SymbolConfiguration(weight: .medium)))
+            cell.tintColor = .tertiaryLabel
         } else {
             cell.selectionStyle = .none
         }
@@ -94,13 +97,16 @@ class SettingsViewController: UITableViewController {
     // MARK: UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return listData[indexPath.section][indexPath.row].height ?? tableView.rowHeight
+        return listData[indexPath.section][indexPath.row].height ?? K.cellHeight
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellData = listData[indexPath.section][indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         cellData.action?()
+        if let urlString = cellData.urlString {
+            URL.open(webURL: urlString)
+        }
         if let nextViewController = cellData.pushViewController {
             nextViewController.title = cellData.title
             self.navigationController?.pushViewController(nextViewController, animated: true)
