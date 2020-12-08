@@ -161,40 +161,6 @@ class ApiProvider {
         } // BusRoutes
     }
     
-    public func mapStaticData() {
-        print("MAPP")
-        DispatchQueue(label: "com.ryanthe.background").async {
-            do {
-                let req: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
-                
-                for busRoute in try self.backgroundContext.fetch(req) {
-                    
-                    if let _ = busRoute.busService, let _ = busRoute.busStop { continue }
-                    
-                    let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-                    busStopReq.predicate = NSPredicate(format: "busStopCode == %@", argumentArray: [busRoute.busStopCode])
-                    let busStop = try self.backgroundContext.fetch(busStopReq).first
-                    
-                    let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
-                    busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", argumentArray: [busRoute.serviceNo])
-                    let busService = try self.backgroundContext.fetch(busServiceReq).first
-                    
-                    // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
-                    if let busStop = busStop, let busService = busService {
-                        busRoute.busStop = busStop
-                        busRoute.busService = busService
-                    } else {
-                        self.backgroundContext.delete(busRoute)
-                    }
-                }
-                try self.backgroundContext.save()
-                print("DONE MAPP")
-            } catch {
-                fatalError(error.localizedDescription)
-            }
-        }
-    }
-    
     public func getBusStop(for busStopCode: String) -> BusStop? {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
