@@ -20,8 +20,7 @@ class ApiProvider {
     
     private var apiKey: String {
         guard let apiKey = ProcessInfo.processInfo.environment[K.datamallEnvVar] else {
-            assertionFailure("DataMall API Key missing. Get a key at https://www.mytransport.sg/content/mytransport/home/dataMall.html")
-            return "ERROR"
+            fatalError("DataMall API Key missing. Get a key at https://www.mytransport.sg/content/mytransport/home/dataMall.html")
         }
         return apiKey
     }
