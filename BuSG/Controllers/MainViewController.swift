@@ -108,7 +108,7 @@ class MainViewController: UIViewController {
         UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
         
         // FIX: MAPPING CAUSING CRASH EXC_BAD_ACCESS
-        //ApiProvider.shared.mapBusData()
+        ApiProvider.shared.mapStaticData()
     }
     
     override func viewDidAppear(_ animated: Bool) {

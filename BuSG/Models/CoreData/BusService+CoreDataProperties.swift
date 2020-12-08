@@ -27,7 +27,6 @@ extension BusService {
     @NSManaged public var rawCategory: String
     @NSManaged public var rawServiceOperator: String
     @NSManaged public var serviceNo: String
-    @NSManaged public var timestamp: Date
     @NSManaged public var busRoutes: NSSet?
 
 }
