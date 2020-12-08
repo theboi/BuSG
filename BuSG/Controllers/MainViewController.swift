@@ -35,7 +35,7 @@ class MainViewController: UIViewController {
                 self.present(UINavigationController(rootViewController: SettingsViewController()), animated: true)
             })),
             UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
-                print("CLICK")
+                LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
             }))
         ]
         
@@ -74,6 +74,16 @@ class MainViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             stackView.widthAnchor.constraint(equalToConstant: 50),
             stackView.heightAnchor.constraint(equalToConstant: 100),
+        ])
+        
+        /// Move compass below stackview
+        mapView.showsCompass = false
+        let compassButton = MKCompassButton(mapView: mapView)
+        mapView.addSubview(compassButton)
+        compassButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            compassButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large),
+            compassButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: K.margin.large),
         ])
         
     }
@@ -121,10 +131,6 @@ class MainViewController: UIViewController {
         } else {
             LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
         }
-        
-        /// Show Apple Maps logo and legal notice when sheet at min state
-        mapView.layoutMargins.bottom = 40
-        mapView.layoutMargins.top = 120
         
         checkForUpdates()
     }
