@@ -16,14 +16,13 @@ extension UIViewController {
         
         if let parent = parent {
             parentViewController = parent
-            (parent as! MainViewController).currentlyPresentingSheetController = sheetControllerToPresent
         } else {
             parentViewController = self
-            (parentViewController as! MainViewController).currentlyPresentingSheetController = sheetControllerToPresent
         }
         
         if let presentingSheetController = self as? SheetController {
             sheetControllerToPresent.presentingSheetController = presentingSheetController
+            presentingSheetController.presentedSheetController = sheetControllerToPresent
             presentingSheetController.isHidden = true
         }
         

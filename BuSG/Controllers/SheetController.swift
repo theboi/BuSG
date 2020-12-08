@@ -24,8 +24,11 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     /// Delegate to handle all changes in sheet
     weak var delegate: SheetControllerDelegate?
     
-    /// Contains presenting `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
+    /// `SheetController` that presented the current `SheetController`. If the current `SheetController` was not presented by a sheet, this value is `nil`
     var presentingSheetController: SheetController?
+    
+    /// `SheetController` that the current `SheetController` presented. If the current `SheetController` was not presented by a sheet, this value is `nil`
+    var presentedSheetController: SheetController?
     
     /// Holds information about current sheet's state. **Never directly set this**.
     private var state: SheetState = .mid
@@ -181,7 +184,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     public func dismissSheet() {
         if let presentingSheetController = presentingSheetController {
             presentingSheetController.isHidden = false
-            (parent as! MainViewController).currentlyPresentingSheetController = presentingSheetController
+            //(parent as! MainViewController).currentlyPresentingSheetController = presentingSheetController
             presentingSheetController.didReturnFromDismissalBy(dismissingSheetController: self)
             self.isHidden = true
             // Clean up container view controller

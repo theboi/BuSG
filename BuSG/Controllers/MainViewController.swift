@@ -16,7 +16,15 @@ class MainViewController: UIViewController {
         LocationProvider.shared.locationManager
     }
     
-    var currentlyPresentingSheetController: SheetController?
+    var currentlyPresentingSheetController: SheetController? {
+        var topSheetController: SheetController = sheetController
+        while let sheetController = topSheetController.presentedSheetController {
+            topSheetController = sheetController
+        }
+        return topSheetController
+    }
+    
+    var sheetController = HomeSheetController()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -100,15 +108,12 @@ class MainViewController: UIViewController {
         
         if lastOpenedEpoch == 0 {
             print("First Timer!")
-            // First time using app
-            let launchViewController = UIViewController()
-            launchViewController.view.backgroundColor = .systemBackground
-            launchViewController.isModalInPresentation = true
-            self.present(launchViewController, animated: true)
+            /// First time using app
+            self.present(LaunchViewController(), animated: true)
         }
         
         if lastUpdatedEpoch+604800 < nowEpoch { // 1 week = 604800 seconds
-            // Requires update of bus data
+            /// Requires update of bus data
             print("Updating Bus Data...")
             ApiProvider.shared.updateStaticData() {
                 UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastUpdatedEpoch)
@@ -119,8 +124,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let homeSheetController = HomeSheetController()
-        self.present(homeSheetController, animated: true, completion: nil)
+        self.present(sheetController, animated: true)
         
         guard CLLocationManager.locationServicesEnabled() else {
             return
