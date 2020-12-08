@@ -50,19 +50,17 @@ class ApiProvider {
     
     /// Update static bus data from DataMall servers such as available Bus Services, Bus Stops and Bus Routes. Runs asynchronous.
     public func updateStaticData(completion: CompletionHandler<Void> = nil) {
-        let timestamp = Date()
-        self.fetchStaticData(BusStopMapperRoot.self) { (busStopServiceValues: [BusStopMapperValue]) in
+        self.fetchStaticData(BusStopMapperRoot.self) { (busStopMapperValues: [BusStopMapperValue]) in
             self.backgroundContext.performAndWait {
                 do {
                     try self.backgroundContext.execute(NSBatchDeleteRequest(fetchRequest: BusStop.fetchRequest()))
-                    try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusStop.entity(), objects: busStopServiceValues.map({ (service) -> [String : Any] in
+                    try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusStop.entity(), objects: busStopMapperValues.map({ (service) -> [String : Any] in
                         [
                             "busStopCode": service.busStopCode,
                             "roadName": service.roadName ?? K.nilStr,
                             "roadDesc": service.roadDesc ?? K.nilStr,
                             "latitude": service.latitude ?? 0,
                             "longitude": service.longitude ?? 0,
-                            "timestamp": timestamp,
                         ]
                     })))
                 } catch {
@@ -72,11 +70,11 @@ class ApiProvider {
             // TODO: ADD ENUMS FOR RAW CONVERSION
             
             // Fetch BusServices from API
-            self.fetchStaticData(BusServiceMapperRoot.self) { (busServiceServiceValues: [BusServiceMapperValue]) in
+            self.fetchStaticData(BusServiceMapperRoot.self) { (busServiceMapperValues: [BusServiceMapperValue]) in
                 self.backgroundContext.performAndWait {
                     do {
                         try self.backgroundContext.execute(NSBatchDeleteRequest(fetchRequest: BusService.fetchRequest()))
-                        try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusService.entity(), objects: busServiceServiceValues.map({ (service) -> [String : Any] in
+                        try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusService.entity(), objects: busServiceMapperValues.map({ (service) -> [String : Any] in
                             [
                                 "serviceNo": service.serviceNo,
                                 "rawServiceOperator": service.serviceOperator?.rawValue ?? K.nilStr,
@@ -89,7 +87,6 @@ class ApiProvider {
                                 "pmPeakFreq": service.pmPeakFreq ?? K.nilStr,
                                 "pmOffpeakFreq": service.pmOffpeakFreq ?? K.nilStr,
                                 "loopDesc": service.loopDesc ?? K.nilStr,
-                                "timestamp": timestamp,
                             ]
                         })))
                     } catch {
@@ -98,11 +95,11 @@ class ApiProvider {
                 }
                 
                 // Fetch BusRoutes from API
-                self.fetchStaticData(BusRouteMapperRoot.self) { (busServiceServiceValues: [BusRouteMapperValue]) in
+                self.fetchStaticData(BusRouteMapperRoot.self) { (busServiceMapperValues: [BusRouteMapperValue]) in
                     self.backgroundContext.performAndWait {
                         do {
                             try self.backgroundContext.execute(NSBatchDeleteRequest(fetchRequest: BusRoute.fetchRequest()))
-                            try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusRoute.entity(), objects: busServiceServiceValues.map({ (service) -> [String : Any] in
+                            try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusRoute.entity(), objects: busServiceMapperValues.map({ (service) -> [String : Any] in
                                 [
                                     "serviceNo": service.serviceNo,
                                     "rawServiceOperator": service.serviceOperator?.rawValue ?? K.nilStr,
@@ -116,7 +113,6 @@ class ApiProvider {
                                     "satLastBus": service.satLastBus ?? K.nilStr,
                                     "sunFirstBus": service.sunFirstBus ?? K.nilStr,
                                     "sunLastBus": service.sunLastBus ?? K.nilStr,
-                                    "timestamp": timestamp,
                                 ]
                             })))
                             print("Done Updating Bus Data")
@@ -131,6 +127,7 @@ class ApiProvider {
     }
     
     public func mapStaticData() {
+        print("MAPP")
         DispatchQueue(label: "com.ryanthe.background").async {
             do {
                 let req: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
@@ -140,11 +137,11 @@ class ApiProvider {
                     if let _ = busRoute.busService, let _ = busRoute.busStop { continue }
                     
                     let busStopReq = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-                    busStopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute.busStopCode)
+                    busStopReq.predicate = NSPredicate(format: "busStopCode == %@", argumentArray: [busRoute.busStopCode])
                     let busStop = try self.backgroundContext.fetch(busStopReq).first
                     
                     let busServiceReq = BusService.fetchRequest() as NSFetchRequest<BusService>
-                    busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", busRoute.serviceNo)
+                    busServiceReq.predicate = NSPredicate(format: "serviceNo == %@", argumentArray: [busRoute.serviceNo])
                     let busService = try self.backgroundContext.fetch(busServiceReq).first
                     
                     // If busStop or busService are invalid (such as CTE for bus 670), ignore that entry and remove it
@@ -156,6 +153,7 @@ class ApiProvider {
                     }
                 }
                 try self.backgroundContext.save()
+                print("DONE MAPP")
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -166,9 +164,7 @@ class ApiProvider {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             req.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
-            let x = try context.fetch(req)
-            print("count", x.count)
-            return x.first
+            return try context.fetch(req).first
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
@@ -178,9 +174,7 @@ class ApiProvider {
         do {
             let req = BusService.fetchRequest() as NSFetchRequest<BusService>
             req.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
-            let x = try context.fetch(req)
-            print("count", x.count)
-            return x.first
+            return try context.fetch(req).first
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
@@ -195,7 +189,6 @@ class ApiProvider {
             
             let predicate = NSPredicate(format: "latitude <= %@ && latitude >= %@ && longitude <= %@ && longitude >= %@", argumentArray: [cur.latitude+rad, cur.latitude-rad, cur.longitude+rad, cur.longitude-rad])
             req.predicate = predicate
-            print("CALL")
             return try context.fetch(req).sorted(by: { (prevBusStop, nextBusStop) -> Bool in
                 let prevBusStopDistance = CLLocation.distance(CLLocation(latitude: prevBusStop.latitude, longitude: prevBusStop.longitude))(from: LocationProvider.shared.currentLocation)
                 let nextBusStopDistance = CLLocation.distance(CLLocation(latitude: nextBusStop.latitude, longitude: nextBusStop.longitude))(from: LocationProvider.shared.currentLocation)

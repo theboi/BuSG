@@ -48,7 +48,7 @@ struct BusServiceMapperValue: Codable {
     let serviceOperator: BusServiceOperator?
     
     /// The direction in which the bus travels (1 or 2), loop services only have 1 direction. Sample: `1`
-    let direction: Int?
+    let direction: Int
     
     /// Category of the SBS bus service: EXPRESS, FEEDER, INDUSTRIAL, TOWNLINK, TRUNK, 2 TIER FLAT FEE, FLAT FEE $1.10 (or $1.90, $3.50, $3.80). Sample: `"TRUNK"`
     let category: BusServiceCategory?
