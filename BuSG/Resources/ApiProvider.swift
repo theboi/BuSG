@@ -160,7 +160,7 @@ class ApiProvider {
         } // BusRoutes
     }
     
-    public func getBusStop(for busStopCode: String) -> BusStop? {
+    public func getBusStop(with busStopCode: String) -> BusStop? {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             req.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
@@ -170,7 +170,7 @@ class ApiProvider {
         }
     }
     
-    public func getBusService(for serviceNo: String) -> BusService? {
+    public func getBusService(with serviceNo: String) -> BusService? {
         do {
             let req = BusService.fetchRequest() as NSFetchRequest<BusService>
             req.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
@@ -180,14 +180,13 @@ class ApiProvider {
         }
     }
     
-    public func getNearbyBusStops() -> [BusStop] {
+    public func getBusStops(nearby coordinate: CLLocationCoordinate2D) -> [BusStop] {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             
-            let cur = LocationProvider.shared.currentLocation.coordinate
             let rad = K.nearbyCoordRadius
             
-            let predicate = NSPredicate(format: "latitude <= %@ && latitude >= %@ && longitude <= %@ && longitude >= %@", argumentArray: [cur.latitude+rad, cur.latitude-rad, cur.longitude+rad, cur.longitude-rad])
+            let predicate = NSPredicate(format: "latitude <= %@ && latitude >= %@ && longitude <= %@ && longitude >= %@", argumentArray: [coordinate.latitude+rad, coordinate.latitude-rad, coordinate.longitude+rad, coordinate.longitude-rad])
             req.predicate = predicate
             return try context.fetch(req).sorted(by: { (prevBusStop, nextBusStop) -> Bool in
                 let prevBusStopDistance = CLLocation.distance(CLLocation(latitude: prevBusStop.latitude, longitude: prevBusStop.longitude))(from: LocationProvider.shared.currentLocation)
@@ -197,11 +196,6 @@ class ApiProvider {
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
-    }
-    
-    public func getSuggestedServices() -> [BusService] {
-        //self.getBusStop(for: "10079")?.busServices ?? []
-        return []
     }
     
     public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrival> = nil) {
@@ -218,6 +212,11 @@ class ApiProvider {
                 fatalError("Failure to decode JSON into Objects: \(error)")
             }
         }.resume()
+    }
+    
+    public func getSuggestedServices() -> [BusService] {
+        //self.getBusStop(for: "10079")?.busServices ?? []
+        return []
     }
     
     private func handleApiError(res: URLResponse?, err: Error?) {

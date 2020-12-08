@@ -62,7 +62,7 @@ class BusStopSheetController: SheetController {
         
         delegate = self
         
-        busStop = ApiProvider.shared.getBusStop(for: busStopCode ?? "00000")
+        busStop = ApiProvider.shared.getBusStop(with: busStopCode ?? "00000")
         
         headerView.titleText = busStop.roadName
         headerView.detailText = busStop.roadDesc
