@@ -44,7 +44,7 @@ class BusServiceSheetController: SheetController {
         
         super.init()
         
-        self.busService = ApiProvider.shared.getBusService(for: serviceNo ?? "1")
+        self.busService = ApiProvider.shared.getBusService(with: serviceNo ?? "1")
         self.headerView.titleText = busService.serviceNo
         self.headerView.detailText = busService.destinationCode
         
