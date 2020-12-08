@@ -50,80 +50,115 @@ class ApiProvider {
     
     /// Update static bus data from DataMall servers such as available Bus Services, Bus Stops and Bus Routes. Runs asynchronous.
     public func updateStaticData(completion: CompletionHandler<Void> = nil) {
-        self.fetchStaticData(BusStopMapperRoot.self) { (busStopMapperValues: [BusStopMapperValue]) in
+        var busRoutesDictForBusStops = [String : [BusRoute]]()
+        var busRoutesDictForBusServices = [String : [BusRoute]]()
+
+        /// Fetch BusRoutes from API
+        self.fetchStaticData(BusRouteMapperRoot.self) { (busServiceMapperValues: [BusRouteMapperValue]) in
             self.backgroundContext.performAndWait {
                 do {
-                    try self.backgroundContext.execute(NSBatchDeleteRequest(fetchRequest: BusStop.fetchRequest()))
-                    try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusStop.entity(), objects: busStopMapperValues.map({ (service) -> [String : Any] in
-                        [
-                            "busStopCode": service.busStopCode,
-                            "roadName": service.roadName ?? K.nilStr,
-                            "roadDesc": service.roadDesc ?? K.nilStr,
-                            "latitude": service.latitude ?? 0,
-                            "longitude": service.longitude ?? 0,
-                        ]
-                    })))
+                    var busRoutesDict = [String : BusRoute]()
+                    try self.backgroundContext.fetch(BusRoute.fetchRequest()).forEach({ (busRoute: BusRoute) in
+                        busRoutesDict["\(busRoute.serviceNo),\(busRoute.direction),\(busRoute.busStopCode)"] = busRoute
+                    })
+                    for mapper in busServiceMapperValues {
+                        var data: BusRoute
+                        if let result = busRoutesDict["\(mapper.serviceNo),\(mapper.direction!),\(mapper.busStopCode)"] {
+                            data = result
+                        } else {
+                            data = BusRoute(context: self.backgroundContext)
+                        }
+                        data.serviceNo = mapper.serviceNo
+                        data.rawServiceOperator = mapper.serviceOperator?.rawValue ?? K.nilStr
+                        data.direction = Int64(truncatingIfNeeded: mapper.direction ?? 0)
+                        data.stopSequence = Int64(truncatingIfNeeded: mapper.stopSequence ?? 0)
+                        data.busStopCode = mapper.busStopCode
+                        data.distance = mapper.distance ?? 0
+                        data.wdFirstBus = mapper.wdFirstBus ?? K.nilStr
+                        data.wdLastBus = mapper.wdLastBus ?? K.nilStr
+                        data.satFirstBus = mapper.satFirstBus ?? K.nilStr
+                        data.satLastBus = mapper.satLastBus ?? K.nilStr
+                        data.sunFirstBus = mapper.sunFirstBus ?? K.nilStr
+                        data.sunLastBus = mapper.sunLastBus ?? K.nilStr
+                    }
+                    try self.backgroundContext.save()
+
+                    try self.backgroundContext.fetch(BusRoute.fetchRequest()).forEach({ (busRoute: BusRoute) in
+                        busRoutesDictForBusStops[busRoute.busStopCode, default: []].append(busRoute)
+                        busRoutesDictForBusServices[busRoute.serviceNo, default: []].append(busRoute)
+                    })
                 } catch {
                     fatalError("Failure to save context: \(error)")
                 }
             }
-            // TODO: ADD ENUMS FOR RAW CONVERSION
-            
-            // Fetch BusServices from API
-            self.fetchStaticData(BusServiceMapperRoot.self) { (busServiceMapperValues: [BusServiceMapperValue]) in
+            self.fetchStaticData(BusStopMapperRoot.self) { (busStopMapperValues: [BusStopMapperValue]) in
                 self.backgroundContext.performAndWait {
                     do {
-                        try self.backgroundContext.execute(NSBatchDeleteRequest(fetchRequest: BusService.fetchRequest()))
-                        try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusService.entity(), objects: busServiceMapperValues.map({ (service) -> [String : Any] in
-                            [
-                                "serviceNo": service.serviceNo,
-                                "rawServiceOperator": service.serviceOperator?.rawValue ?? K.nilStr,
-                                "direction": Int64(truncatingIfNeeded: service.direction ?? 0),
-                                "rawCategory": service.category?.rawValue ?? K.nilStr,
-                                "originCode": service.originCode ?? K.nilStr,
-                                "destinationCode": service.destinationCode ?? K.nilStr,
-                                "amPeakFreq": service.amPeakFreq ?? K.nilStr,
-                                "amOffpeakFreq": service.amOffpeakFreq ?? K.nilStr,
-                                "pmPeakFreq": service.pmPeakFreq ?? K.nilStr,
-                                "pmOffpeakFreq": service.pmOffpeakFreq ?? K.nilStr,
-                                "loopDesc": service.loopDesc ?? K.nilStr,
-                            ]
-                        })))
+                        var busStopDict = [String : BusStop]()
+
+                        try self.backgroundContext.fetch(BusStop.fetchRequest()).forEach({ (busStop: BusStop) in
+                            busStopDict[busStop.busStopCode] = busStop
+                        })
+                        for mapper in busStopMapperValues {
+                            var data: BusStop
+                            if let result = busStopDict[mapper.busStopCode] {
+                                data = result
+                            } else {
+                                data = BusStop(context: self.backgroundContext)
+                            }
+                            data.busStopCode = mapper.busStopCode
+                            data.roadName = mapper.roadName ?? K.nilStr
+                            data.roadDesc = mapper.roadDesc ?? K.nilStr
+                            data.latitude = mapper.latitude ?? 0
+                            data.longitude = mapper.longitude ?? 0
+                            data.busRoutes = NSSet(array: busRoutesDictForBusStops[mapper.busStopCode] ?? [])
+                        }
+                        try self.backgroundContext.save()
                     } catch {
                         fatalError("Failure to save context: \(error)")
                     }
                 }
+                // TODO: ADD ENUMS FOR RAW CONVERSION
                 
-                // Fetch BusRoutes from API
-                self.fetchStaticData(BusRouteMapperRoot.self) { (busServiceMapperValues: [BusRouteMapperValue]) in
+                // Fetch BusServices from API
+                self.fetchStaticData(BusServiceMapperRoot.self) { (busServiceMapperValues: [BusServiceMapperValue]) in
                     self.backgroundContext.performAndWait {
                         do {
-                            try self.backgroundContext.execute(NSBatchDeleteRequest(fetchRequest: BusRoute.fetchRequest()))
-                            try self.backgroundContext.execute(NSBatchInsertRequest(entity: BusRoute.entity(), objects: busServiceMapperValues.map({ (service) -> [String : Any] in
-                                [
-                                    "serviceNo": service.serviceNo,
-                                    "rawServiceOperator": service.serviceOperator?.rawValue ?? K.nilStr,
-                                    "direction": Int64(truncatingIfNeeded: service.direction ?? 0),
-                                    "stopSequence": Int64(truncatingIfNeeded: service.stopSequence ?? 0),
-                                    "busStopCode": service.busStopCode,
-                                    "distance": service.distance ?? 0,
-                                    "wdFirstBus": service.wdFirstBus ?? K.nilStr,
-                                    "wdLastBus": service.wdLastBus ?? K.nilStr,
-                                    "satFirstBus": service.satFirstBus ?? K.nilStr,
-                                    "satLastBus": service.satLastBus ?? K.nilStr,
-                                    "sunFirstBus": service.sunFirstBus ?? K.nilStr,
-                                    "sunLastBus": service.sunLastBus ?? K.nilStr,
-                                ]
-                            })))
-                            print("Done Updating Bus Data")
+                            var busServiceDict = [String : BusService]()
+
+                            try self.backgroundContext.fetch(BusService.fetchRequest()).forEach({ (busService: BusService) in
+                                busServiceDict["\(busService.serviceNo),\(busService.direction)"] = busService
+                            })
+                            for mapper in busServiceMapperValues {
+                                var data: BusService
+                                if let result = busServiceDict["\(mapper.serviceNo),\(mapper.direction)"] {
+                                    data = result
+                                } else {
+                                    data = BusService(context: self.backgroundContext)
+                                }
+                                data.serviceNo = mapper.serviceNo
+                                data.rawServiceOperator = mapper.serviceOperator?.rawValue ?? K.nilStr
+                                data.direction = Int64(truncatingIfNeeded: mapper.direction)
+                                data.rawCategory = mapper.category?.rawValue ?? K.nilStr
+                                data.originCode = mapper.originCode ?? K.nilStr
+                                data.destinationCode = mapper.destinationCode ?? K.nilStr
+                                data.amPeakFreq = mapper.amPeakFreq ?? K.nilStr
+                                data.amOffpeakFreq = mapper.amOffpeakFreq ?? K.nilStr
+                                data.pmPeakFreq = mapper.pmPeakFreq ?? K.nilStr
+                                data.pmOffpeakFreq = mapper.pmOffpeakFreq ?? K.nilStr
+                                data.loopDesc = mapper.loopDesc ?? K.nilStr
+                                data.busRoutes = NSSet(array: busRoutesDictForBusServices[mapper.serviceNo] ?? [])
+                            }
+                            try self.backgroundContext.save()
+                            print("DONE FETCH")
                             completion?(())
                         } catch {
                             fatalError("Failure to save context: \(error)")
                         }
                     }
-                } // BusRoutes
-            } // BusServices
-        } // BusStops
+                } // BusServices
+            } // BusStops
+        } // BusRoutes
     }
     
     public func mapStaticData() {
@@ -200,7 +235,8 @@ class ApiProvider {
     }
     
     public func getSuggestedServices() -> [BusService] {
-        self.getBusStop(for: "10079")?.busServices ?? []
+        //self.getBusStop(for: "10079")?.busServices ?? []
+        return []
     }
     
     public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrival> = nil) {

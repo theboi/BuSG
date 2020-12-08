@@ -48,7 +48,7 @@ class BusServiceSheetController: SheetController {
         self.headerView.titleText = busService.serviceNo
         self.headerView.detailText = busService.destinationCode
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 1)
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 2)
         
     }
     
