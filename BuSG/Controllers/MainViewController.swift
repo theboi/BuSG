@@ -108,7 +108,7 @@ class MainViewController: UIViewController {
         UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
         
         // FIX: MAPPING CAUSING CRASH EXC_BAD_ACCESS
-        ApiProvider.shared.mapStaticData()
+        //ApiProvider.shared.mapStaticData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -160,7 +160,7 @@ extension MainViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.systemGreen
+            polylineRenderer.strokeColor = .systemGreen
             polylineRenderer.lineWidth = 5
             return polylineRenderer
         }
