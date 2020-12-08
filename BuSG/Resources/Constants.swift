@@ -24,6 +24,7 @@ enum K {
     static let datamallEnvVar = "datamall_api_key"
     static let busStopRoutingSkip = 5
     static let nilStr = "-"
+    static let cellHeight: CGFloat = 50
     
     enum apiUrls {
         static let busArrivals = "\(apiUrlBase)/BusArrivalv2"
