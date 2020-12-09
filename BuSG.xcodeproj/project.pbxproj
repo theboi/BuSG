@@ -162,8 +162,8 @@
 		AA91D105257659DA003FAE6E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AA6E97BA257FA5F4004D585A /* EventProvider.swift */,
 				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
+				AA6E97BA257FA5F4004D585A /* EventProvider.swift */,
 				AA13B6FB2572571F006FD219 /* ApiProvider.swift */,
 				AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */,
 			);
@@ -203,13 +203,13 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		AAE490A3257CDA600010B483 /* Annotations */ = {
+		AAE490A3257CDA600010B483 /* MapAnnotations */ = {
 			isa = PBXGroup;
 			children = (
 				AA7F4CC6257A9D0900A4DD14 /* BusStopAnnotation.swift */,
 				AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */,
 			);
-			path = Annotations;
+			path = MapAnnotations;
 			sourceTree = "<group>";
 		};
 		AAF4A4EB25627D4F00FC51E7 = {
@@ -286,9 +286,9 @@
 		AAF4A5312562814D00FC51E7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				AAE490A3257CDA600010B483 /* Annotations */,
-				AAE490A2257CDA510010B483 /* Data */,
+				AAE490A3257CDA600010B483 /* MapAnnotations */,
 				AAE39B6B25793A4F0065CFF5 /* Mappers */,
+				AAE490A2257CDA510010B483 /* Data */,
 				AAE39B5825793A310065CFF5 /* CoreData */,
 			);
 			path = Models;
