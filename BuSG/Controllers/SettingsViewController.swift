@@ -27,7 +27,6 @@ struct SettingsTableSection {
     var headerText: String?
     var footerText: String?
     var headerTrailingButton: UIButton?
-    var wantsLargeTitle: Bool = false
 }
 
 class SettingsViewController: UITableViewController {
@@ -47,7 +46,7 @@ class SettingsViewController: UITableViewController {
                         SettingsTableItem(title: "Once per week"),
                         SettingsTableItem(title: "Once per month"),
                         SettingsTableItem(title: "Never"),
-                    ], headerText: "Update Frequency", footerText: "", wantsLargeTitle: true)
+                    ], headerText: "Update Frequency", footerText: "")
                 ])),
             ]),
             SettingsTableSection(tableItems: [
@@ -55,11 +54,9 @@ class SettingsViewController: UITableViewController {
                 SettingsTableItem(title: "Share with a Friend", presentViewController: {
                     return UIActivityViewController(activityItems: ["Check out BuSG, a smart bus tracker app!"], applicationActivities: [])
                 }()),
-                SettingsTableItem(title: "Rate on App Store", action: {
-                    //URL.open(webURL: "itms-apps://itunes.apple.com/app/\(Bundle.main.bundleIdentifier)")
-                }),
+                SettingsTableItem(title: "Rate on App Store", urlString: "itms-apps://itunes.apple.com/app/\(Bundle.main.bundleIdentifier)"),
                 SettingsTableItem(title: "Open-Sourced Repository", urlString: "https://github.com/theboi/BuSG"),
-                SettingsTableItem(title: "Report an Issue", accessoryView: UISwitch()),
+                SettingsTableItem(title: "Report an Issue", urlString: "https://github.com/theboi/BuSG"),
             ]),
         ]
     }
@@ -90,46 +87,12 @@ class SettingsViewController: UITableViewController {
     
     // MARK: UITableViewDataSource
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionData = listData[section]
-
-        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: K.identifiers.settingsHeader)!
-
-        let label = UILabel()
-        view.addSubview(label)
-        label.text = sectionData.headerText
-        label.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
-
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.small),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: K.margin.large),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large),
-        ])
-
-        if let button = sectionData.headerTrailingButton {
-            view.addSubview(button)
-
-            button.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
-                button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large),
-            ])
-        }
-
-        return nil
-    }
-    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         listData[section].headerText
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         listData[section].footerText
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        listData[section].headerText != nil ? 60 : 20
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
