@@ -40,7 +40,31 @@ class MainViewController: UIViewController {
         
         let stackButtons = [
             UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
-                self.present(UINavigationController(rootViewController: SettingsViewController()), animated: true)
+                self.present(UINavigationController(rootViewController: SettingsViewController(tableData: [
+                    SettingsTableSection(tableItems: [
+                        SettingsTableItem(title: "Bus Data", pushViewController: SettingsViewController(tableData: [
+                            SettingsTableSection(tableItems: [
+                                SettingsTableItem(title: "Update Now", action: {
+                                    // TODO
+                                })
+                            ]),
+                            SettingsTableSection(tableItems: [
+                                SettingsTableItem(title: "Once per week"),
+                                SettingsTableItem(title: "Once per month"),
+                                SettingsTableItem(title: "Never"),
+                            ], headerText: "Update Frequency", footerText: "")
+                        ])),
+                    ], headerText: "hello"),
+                    SettingsTableSection(tableItems: [
+                        //                SettingsTableItem(title: "History", pushViewController: UIViewController()),
+                        SettingsTableItem(title: "Share with a Friend", presentViewController: {
+                            return UIActivityViewController(activityItems: ["Check out BuSG, a smart bus tracker app!"], applicationActivities: [])
+                        }()),
+                        SettingsTableItem(title: "Rate on App Store", urlString: "itms-apps://itunes.apple.com/app/\(Bundle.main.bundleIdentifier!)"),
+                        SettingsTableItem(title: "Open-Sourced Repository", urlString: "https://github.com/theboi/BuSG"),
+                        SettingsTableItem(title: "Report an Issue", urlString: "https://github.com/theboi/BuSG"),
+                    ]),
+                ])), animated: true)
             })),
             UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
                 LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
@@ -101,6 +125,7 @@ class MainViewController: UIViewController {
     }
     
     private func checkForUpdates() {
+        //UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
         let nowEpoch = Date().timeIntervalSince1970
         let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
         let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
