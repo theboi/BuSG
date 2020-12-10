@@ -101,11 +101,12 @@ class MainViewController: UIViewController {
     }
     
     private func checkForUpdates() {
-        
+        UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
+
         let nowEpoch = Date().timeIntervalSince1970
         let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
         let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
-        
+
         if lastOpenedEpoch == 0 {
             print("First Timer!")
             /// First time using app
