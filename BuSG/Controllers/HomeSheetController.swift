@@ -22,7 +22,6 @@ class HomeSheetController: SheetController {
     var nearbyStops: [BusStop] = []
     
     private func reloadData() {
-        print("LOAD")
         self.nearbyStops = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate)
         self.suggestedServices = ApiProvider.shared.getSuggestedServices()
         self.tableView.reloadData()
