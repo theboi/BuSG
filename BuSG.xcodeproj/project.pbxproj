@@ -33,7 +33,6 @@
 		AA91D0F72576416C003FAE6E /* BusServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0F62576416C003FAE6E /* BusServiceTableViewCell.swift */; };
 		AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0FB257649A6003FAE6E /* BusArrival.swift */; };
 		AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */; };
-		AAA494F62580A6510073F360 /* PreferenceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA494F52580A6510073F360 /* PreferenceProvider.swift */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
 		AAE490B9257CEBCF0010B483 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE490B8257CEBCF0010B483 /* UIColor.swift */; };
 		AAE490BE257D20080010B483 /* BusSuggestedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE490BD257D20080010B483 /* BusSuggestedTableViewCell.swift */; };
@@ -97,7 +96,6 @@
 		AA91D0F62576416C003FAE6E /* BusServiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceTableViewCell.swift; sourceTree = "<group>"; };
 		AA91D0FB257649A6003FAE6E /* BusArrival.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrival.swift; sourceTree = "<group>"; };
 		AA91D10725765A10003FAE6E /* BusData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusData.xcdatamodel; sourceTree = "<group>"; };
-		AAA494F52580A6510073F360 /* PreferenceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceProvider.swift; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceAnnotation.swift; sourceTree = "<group>"; };
 		AAE490B8257CEBCF0010B483 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -168,7 +166,6 @@
 				AA6E97BA257FA5F4004D585A /* EventProvider.swift */,
 				AA13B6FB2572571F006FD219 /* ApiProvider.swift */,
 				AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */,
-				AAA494F52580A6510073F360 /* PreferenceProvider.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -468,7 +465,6 @@
 				AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */,
 				AA13B6FC2572571F006FD219 /* ApiProvider.swift in Sources */,
 				AA337D6B2577CECE001453D0 /* BusApiMapper.swift in Sources */,
-				AAA494F62580A6510073F360 /* PreferenceProvider.swift in Sources */,
 				AA91D0F72576416C003FAE6E /* BusServiceTableViewCell.swift in Sources */,
 				AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */,
 				AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */,

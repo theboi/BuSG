@@ -41,15 +41,18 @@ enum K {
     }
     
     enum identifiers {
-        static let busService = "busServiceIdentifier"
-        static let busStop = "busStopIdentifier"
-        static let busSuggested = "busSuggestedIdentifier"
-        static let settings = "settingsIdentifier"
+        static let busServiceCell = "busServiceCellIdentifier"
+        static let busStopCell = "busStopCellIdentifier"
+        static let busSuggestedCell = "busSuggestedCellIdentifier"
+        static let settingsCell = "settingsCellIdentifier"
+        static let settingsHeader = "settingsHeaderIdentifier"
+        static let settingsFooter = "settingsFooterIdentifier"
     }
     
     enum userDefaults {
         static let lastOpenedEpoch = "lastOpenedEpoch"
         static let lastUpdatedEpoch = "lastUpdatedEpoch"
+        static let autoRefreshBusTimings = "autoRefreshBusTimings"
     }
     
     enum mapView {
