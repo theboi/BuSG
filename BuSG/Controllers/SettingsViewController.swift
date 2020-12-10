@@ -51,6 +51,9 @@ class SettingsViewController: UITableViewController {
         self.title = "Settings"
         self.tableView = UITableView(frame: CGRect(), style: .insetGrouped)
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.identifiers.settings)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction(handler: { _ in
+            self.dismiss(animated: true)
+        }))
         self.listData = list ?? rootList
     }
     

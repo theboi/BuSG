@@ -19,4 +19,17 @@ class EventProvider {
         return store
     }()
     
+    public func presentDayCalendarEvents() -> [EKEvent] {
+        let calendar = Calendar.current
+        
+        var todayComponents = DateComponents()
+        todayComponents.day = 1
+        if let today = calendar.date(byAdding: todayComponents, to: Date(), wrappingComponents: false) {
+            let predicate = store.predicateForEvents(withStart: today, end: today, calendars: nil)
+            let events = store.events(matching: predicate)
+            return events
+        }
+        return []
+    }
+    
 }

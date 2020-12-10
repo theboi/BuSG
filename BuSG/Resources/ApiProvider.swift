@@ -215,7 +215,11 @@ class ApiProvider {
     }
     
     public func getSuggestedServices() -> [BusService] {
-        //self.getBusStop(for: "10079")?.busServices ?? []
+        let events = EventProvider.shared.presentDayCalendarEvents()
+        events.forEach { (event) in
+            event.structuredLocation?.geoLocation?.coordinate
+        }
+        self.getBusStop(with: "10079")?.busServices ?? []
         return []
     }
     
