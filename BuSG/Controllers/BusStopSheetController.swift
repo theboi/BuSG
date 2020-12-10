@@ -67,7 +67,7 @@ class BusStopSheetController: SheetController {
         headerView.titleText = busStop.roadName
         headerView.detailText = busStop.roadDesc
         
-        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStop)
+        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStopCell)
     }
     
     required init?(coder: NSCoder) {
@@ -81,7 +81,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStop, for: indexPath) as! BusStopTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStopCell, for: indexPath) as! BusStopTableViewCell
         cell.backgroundColor = .clear
         cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
         cell.serviceNoLabel.text = busStop.busServices[indexPath.row].serviceNo

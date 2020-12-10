@@ -53,8 +53,8 @@ class HomeSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
-        tableView.register(BusSuggestedTableViewCell.self, forCellReuseIdentifier: K.identifiers.busSuggested)
+        tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busServiceCell)
+        tableView.register(BusSuggestedTableViewCell.self, forCellReuseIdentifier: K.identifiers.busSuggestedCell)
 
         reloadData()
     }
@@ -88,14 +88,14 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggested, for: indexPath) as! BusSuggestedTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggestedCell, for: indexPath) as! BusSuggestedTableViewCell
             cell.backgroundColor = .clear
             cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
             cell.textLabel?.text = suggestedServices[indexPath.row].serviceNo
             return cell
         case 1: fallthrough
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService, for: indexPath) as! BusServiceTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
             cell.backgroundColor = .clear
             cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
             cell.textLabel?.text = nearbyStops[indexPath.row].busStopCode

@@ -215,11 +215,14 @@ class ApiProvider {
     }
     
     public func getSuggestedServices() -> [BusService] {
-        let events = EventProvider.shared.presentDayCalendarEvents()
-        events.forEach { (event) in
-            event.structuredLocation?.geoLocation?.coordinate
-        }
-        self.getBusStop(with: "10079")?.busServices ?? []
+//        let events = EventProvider.shared.presentDayCalendarEvents()
+//        let busStopTargets = events.map { (event) -> BusStop in
+//            if let coordinate = event.structuredLocation?.geoLocation?.coordinate {
+//                return ApiProvider.shared.getBusStops(nearby: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude))
+//                event.structuredLocation?.geoLocation?.coordinate
+//            }
+//        }
+//        self.getBusStop(with: "10079")?.busServices ?? []
         return []
     }
     

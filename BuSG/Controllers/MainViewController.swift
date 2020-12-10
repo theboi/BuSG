@@ -31,7 +31,7 @@ class MainViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         
         self.view = mapView
-        
+
         locationManager.delegate = self
         mapView.delegate = self
         LocationProvider.shared.delegate = self
@@ -101,8 +101,6 @@ class MainViewController: UIViewController {
     }
     
     private func checkForUpdates() {
-        UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
-
         let nowEpoch = Date().timeIntervalSince1970
         let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
         let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
