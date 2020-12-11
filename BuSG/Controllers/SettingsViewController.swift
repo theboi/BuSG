@@ -9,10 +9,11 @@ import UIKit
 import StoreKit
 
 struct SettingsTableItem {
-    var title: String
+    var title: String?
     var image: UIImage?
     var height: CGFloat?
     var customCell: UITableViewCell?
+    var textField: UITextField?
     var accessoryView: UIView?
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
@@ -71,7 +72,6 @@ class SettingsViewController: UITableViewController {
         
         if let button = sectionData.headerTrailingButton {
             view.addSubview(button)
-            
             button.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
@@ -103,7 +103,19 @@ class SettingsViewController: UITableViewController {
         let cellData = tableData[indexPath.section].tableItems[indexPath.row]
         let cell = cellData.customCell ?? tableView.dequeueReusableCell(withIdentifier: K.identifiers.settingsCell, for: indexPath)
         
-        cell.textLabel?.text = cellData.title
+        if let textField = cellData.textField {
+            cell.addSubview(textField)
+            dismissKeyboardWhenTapAround()
+            textField.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: K.margin.large),
+                textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -K.margin.large),
+                textField.topAnchor.constraint(equalTo: cell.topAnchor),
+                textField.bottomAnchor.constraint(equalTo: cell.bottomAnchor),
+            ])
+        } else {
+            cell.textLabel?.text = cellData.title
+        }
         if let accessoryView = cellData.accessoryView {
             cell.accessoryView = accessoryView
             cell.selectionStyle = .none
