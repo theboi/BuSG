@@ -46,13 +46,12 @@ enum K {
         static let busSuggestedCell = "busSuggestedCellIdentifier"
         static let settingsCell = "settingsCellIdentifier"
         static let settingsHeader = "settingsHeaderIdentifier"
-        static let settingsFooter = "settingsFooterIdentifier"
     }
     
     enum userDefaults {
         static let lastOpenedEpoch = "lastOpenedEpoch"
         static let lastUpdatedEpoch = "lastUpdatedEpoch"
-        static let autoRefreshBusTimings = "autoRefreshBusTimings"
+        static let connectToCalendar = "connectToCalendar"
     }
     
     enum mapView {
