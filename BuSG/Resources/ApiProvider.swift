@@ -198,6 +198,14 @@ class ApiProvider {
         }
     }
     
+    public func getBusServices(nearby coordinate: CLLocationCoordinate2D) -> [BusService] {
+        do {
+            return []
+        } catch {
+            fatalError("Failure to fetch context: \(error)")
+        }
+    }
+    
     public func getBusArrivals(for busStopCode: String, completion: CompletionHandler<BusArrival> = nil) {
         var req = URLRequest(url: URL(string: K.apiUrls.busArrivals, with: [
             URLQueryItem(name: K.apiQueries.busStopCode, value: busStopCode)
@@ -215,14 +223,19 @@ class ApiProvider {
     }
     
     public func getSuggestedServices() -> [BusService] {
-//        let events = EventProvider.shared.presentDayCalendarEvents()
-//        let busStopTargets = events.map { (event) -> BusStop in
-//            if let coordinate = event.structuredLocation?.geoLocation?.coordinate {
-//                return ApiProvider.shared.getBusStops(nearby: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude))
-//                event.structuredLocation?.geoLocation?.coordinate
-//            }
-//        }
-//        self.getBusStop(with: "10079")?.busServices ?? []
+        let events = EventProvider.shared.presentDayCalendarEvents()
+        let placeTargets = events.compactMap { (event) -> [[BusService]]? in
+            /// If location not stated, event is ignored
+            if let coordinate = event.structuredLocation?.geoLocation?.coordinate {
+                return ApiProvider.shared.getBusStops(nearby: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)).compactMap { (busRoute) -> [BusService] in
+                    return busRoute.busServices
+                }
+            }
+            return nil
+        }
+        placeTargets.forEach { (placeTarget: [[BusService]]) in
+            
+        }
         return []
     }
     
