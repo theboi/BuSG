@@ -63,10 +63,13 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        tableView.rowHeight = 56
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService, for: indexPath) as! BusServiceTableViewCell
+        cell.blockLabel.text = busService?.busStops[indexPath.row].busStopCode
+        cell.busStopCodeLabel.text = busService?.busStops[indexPath.row].busStopCode
+        cell.streetLabel.text = busService?.busStops[indexPath.row].busStopCode
         cell.backgroundColor = .clear
         cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell.textLabel?.text = busService?.busStops[indexPath.row].busStopCode
         return cell
     }
 

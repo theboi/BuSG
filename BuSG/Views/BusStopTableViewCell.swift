@@ -29,6 +29,9 @@ class BusStopTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             serviceNoLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            serviceNoLabel.heightAnchor.constraint(equalTo: heightAnchor, constant: -20),
+            serviceNoLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
+            serviceNoLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -309)
         ])
         
         stackView = UIStackView(arrangedSubviews: busTimingLabels)
