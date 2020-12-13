@@ -77,14 +77,22 @@ class BusStopSheetController: SheetController {
 
 extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tableView.rowHeight = 56
         return busStop.busServices.count
     }
+    
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStop, for: indexPath) as! BusStopTableViewCell
         cell.backgroundColor = .clear
         cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
         cell.serviceNoLabel.text = busStop.busServices[indexPath.row].serviceNo
+        cell.serviceNoLabel.clipsToBounds = true
+        cell.serviceNoLabel.textColor = .white
+        cell.serviceNoLabel.layer.cornerRadius = 8
+        cell.serviceNoLabel.backgroundColor = UIColor(red: 0.0 / 255.0, green: 122.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
+        cell.serviceNoLabel.textAlignment = .center
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -100,7 +108,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
                 let arrTime = Calendar.current.dateComponents([.minute], from: Date(), to: date).minute!
                 if arrTime <= 0 { label.text = "Arr" }
                 else { label.text = String(arrTime) }
-                if arrTime < 0 { label.textColor = UIColor.label.withAlphaComponent(0.3) }
+                if arrTime <= 0 { label.textColor = UIColor(red: 0.0 / 255.0, green: 150.0 / 255.0, blue: 14.0 / 255.0, alpha: 1) }
                 
             } else if optionalBusArrival == nil {
                 /// Bus Service not operating
