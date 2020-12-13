@@ -86,6 +86,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        tableView.rowHeight = 56
         switch indexPath.section {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggested, for: indexPath) as! BusSuggestedTableViewCell
@@ -95,7 +96,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case 1: fallthrough
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService, for: indexPath) as! BusServiceTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService, for: indexPath)
             cell.backgroundColor = .clear
             cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
             cell.textLabel?.text = nearbyStops[indexPath.row].busStopCode
