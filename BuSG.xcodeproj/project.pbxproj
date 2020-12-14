@@ -33,6 +33,7 @@
 		AA91D0F72576416C003FAE6E /* BusServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0F62576416C003FAE6E /* BusServiceTableViewCell.swift */; };
 		AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0FB257649A6003FAE6E /* BusArrival.swift */; };
 		AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */; };
+		AA995AF82587363400072557 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995AF72587363400072557 /* UIFont.swift */; };
 		AAA49517258270530073F360 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA49516258270530073F360 /* UITextField.swift */; };
 		AAA4951F25832A870073F360 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA4951E25832A870073F360 /* SettingsViewController.swift */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
@@ -98,6 +99,7 @@
 		AA91D0F62576416C003FAE6E /* BusServiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceTableViewCell.swift; sourceTree = "<group>"; };
 		AA91D0FB257649A6003FAE6E /* BusArrival.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrival.swift; sourceTree = "<group>"; };
 		AA91D10725765A10003FAE6E /* BusData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusData.xcdatamodel; sourceTree = "<group>"; };
+		AA995AF72587363400072557 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		AAA49516258270530073F360 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		AAA4951E25832A870073F360 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				AA8D0794257BDA2800BF3E3B /* MKMapView.swift */,
 				AAE490B8257CEBCF0010B483 /* UIColor.swift */,
 				AAA49516258270530073F360 /* UITextField.swift */,
+				AA995AF72587363400072557 /* UIFont.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 				AAE490B9257CEBCF0010B483 /* UIColor.swift in Sources */,
 				AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */,
 				AAF4A54525628DEF00FC51E7 /* Constants.swift in Sources */,
+				AA995AF82587363400072557 /* UIFont.swift in Sources */,
 				AA8D078D257B8E6C00BF3E3B /* CLLocationCoordinate2D.swift in Sources */,
 				AA13B732257346D6006FD219 /* BusServiceMapper.swift in Sources */,
 				AA13B72D2573469B006FD219 /* BusServiceSheetController.swift in Sources */,

@@ -41,7 +41,6 @@ class BusServiceSheetController: SheetController {
     }
     
     init(for serviceNo: String?) {
-        
         super.init()
         
         self.busService = ApiProvider.shared.getBusService(with: serviceNo ?? "1")
@@ -62,11 +61,15 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
         return busService?.busStops.count ?? 0
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        60
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
-        cell.backgroundColor = .clear
-        cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell.textLabel?.text = busService?.busStops[indexPath.row].busStopCode
+        cell.blockLabel.text = busService?.busStops[indexPath.row].roadDesc
+        cell.busStopCodeLabel.text = busService?.busStops[indexPath.row].busStopCode
+        cell.streetLabel.text = busService?.busStops[indexPath.row].roadName
         return cell
     }
 

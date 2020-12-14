@@ -85,19 +85,19 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
         40
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        60
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggestedCell, for: indexPath) as! BusSuggestedTableViewCell
-            cell.backgroundColor = .clear
-            cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
             cell.textLabel?.text = suggestedServices[indexPath.row].serviceNo
             return cell
         case 1: fallthrough
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
-            cell.backgroundColor = .clear
-            cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
             cell.textLabel?.text = nearbyStops[indexPath.row].roadDesc
             return cell
         }
