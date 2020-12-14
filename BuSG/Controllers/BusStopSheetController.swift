@@ -77,41 +77,35 @@ class BusStopSheetController: SheetController {
 
 extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return busStop.busServices.count
+        busStop.busServices.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStopCell, for: indexPath) as! BusStopTableViewCell
-        cell.backgroundColor = .clear
-        cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell.serviceNoLabel.text = busStop.busServices[indexPath.row].serviceNo
+        let busServiceData = busStop.busServices[indexPath.row]
+        cell.serviceNoLabel.text = busServiceData.serviceNo
+        cell.destinationLabel.text = ApiProvider.shared.getBusStop(with: busServiceData.destinationCode)?.roadDesc
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
-        cell.busTimingLabels.enumerated().forEach { (index, label) in
-            let optionalBusArrival = busArrival?.busServices[busStop.busServices[indexPath.row].serviceNo]
-            if let estimatedArrival = optionalBusArrival?.nextBuses[index].estimatedArrival, estimatedArrival != "" {
-                cell.stackView.isHidden = false
-                cell.errorLabel.text = ""
-                let date = dateFormatter.date(from: estimatedArrival)!
-                let arrTime = Calendar.current.dateComponents([.minute], from: Date(), to: date).minute!
-                if arrTime <= 0 { label.text = "Arr" }
-                else { label.text = String(arrTime) }
-                if arrTime < 0 { label.textColor = UIColor.label.withAlphaComponent(0.3) }
-                
-            } else if optionalBusArrival == nil {
-                /// Bus Service not operating
-                cell.stackView.isHidden = true
-                cell.errorLabel.text = "Not In Operation"
-            } else {
-                /// Bus service stopped due to night time etc.
-                label.text = "-"
-            }
+        if let nextBuses = busArrival?.busServices[busServiceData.serviceNo]?.nextBuses {
+            cell.busTimings = nextBuses.map({ (busArrivalBus) -> Int in
+                if let date = dateFormatter.date(from: busArrivalBus.estimatedArrival) {
+                    return Calendar.current.dateComponents([.minute], from: Date(), to: date).minute ?? -999
+                } else {
+                    return -999
+                }
+            })
+        } else {
+            cell.busTimings = nil
         }
-        
         return cell
     }
     
