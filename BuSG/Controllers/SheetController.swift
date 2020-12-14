@@ -101,7 +101,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         view.layer.cornerRadius = K.cornerRadius
         view.layer.masksToBounds = true
         if !UIAccessibility.isReduceTransparencyEnabled {
-            view.backgroundColor = .clear
+            view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
             
             let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
             

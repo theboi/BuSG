@@ -92,18 +92,31 @@ class BusStopTableViewCell: UITableViewCell {
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -2),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
             stackView.widthAnchor.constraint(equalToConstant: 180),
         ])
         
         busTimingLabels.forEach { (label) in
             label.textAlignment = .center
+            label.font = .medium
             label.layer.cornerRadius = K.cornerRadius
-            label.clipsToBounds = true
+            label.clipsToBounds = false
             label.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 label.heightAnchor.constraint(equalToConstant: 40)
+            ])
+            
+            let loadIndicatorView = UIView()
+            loadIndicatorView.backgroundColor = .systemGreen
+            label.insertSubview(loadIndicatorView, at: 100)
+            loadIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+            loadIndicatorView.layer.cornerRadius = 2
+            NSLayoutConstraint.activate([
+                loadIndicatorView.heightAnchor.constraint(equalToConstant: 3),
+                loadIndicatorView.widthAnchor.constraint(equalToConstant: 10),
+                loadIndicatorView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5),
+                loadIndicatorView.centerXAnchor.constraint(equalTo: label.centerXAnchor)
             ])
         }
         
@@ -112,8 +125,8 @@ class BusStopTableViewCell: UITableViewCell {
         insertSubview(errorLabel, aboveSubview: stackView)
         errorLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            errorLabel.topAnchor.constraint(equalTo: stackView.topAnchor),
-            errorLabel.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            errorLabel.topAnchor.constraint(equalTo: topAnchor),
+            errorLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             errorLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             errorLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
         ])
