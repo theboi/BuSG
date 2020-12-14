@@ -67,9 +67,9 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
-        cell.blockLabel.text = busService?.busStops[indexPath.row].roadDesc
+        cell.roadDescLabel.text = busService?.busStops[indexPath.row].roadDesc
         cell.busStopCodeLabel.text = busService?.busStops[indexPath.row].busStopCode
-        cell.streetLabel.text = busService?.busStops[indexPath.row].roadName
+        cell.roadNameLabel.text = busService?.busStops[indexPath.row].roadName
         return cell
     }
 
