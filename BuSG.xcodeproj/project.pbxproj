@@ -34,6 +34,7 @@
 		AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0FB257649A6003FAE6E /* BusArrival.swift */; };
 		AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */; };
 		AA995AF82587363400072557 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995AF72587363400072557 /* UIFont.swift */; };
+		AA995B002587671A00072557 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995AFF2587671A00072557 /* String.swift */; };
 		AAA49517258270530073F360 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA49516258270530073F360 /* UITextField.swift */; };
 		AAA4951F25832A870073F360 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA4951E25832A870073F360 /* SettingsViewController.swift */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
@@ -100,6 +101,7 @@
 		AA91D0FB257649A6003FAE6E /* BusArrival.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrival.swift; sourceTree = "<group>"; };
 		AA91D10725765A10003FAE6E /* BusData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusData.xcdatamodel; sourceTree = "<group>"; };
 		AA995AF72587363400072557 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		AA995AFF2587671A00072557 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		AAA49516258270530073F360 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		AAA4951E25832A870073F360 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				AAE490B8257CEBCF0010B483 /* UIColor.swift */,
 				AAA49516258270530073F360 /* UITextField.swift */,
 				AA995AF72587363400072557 /* UIFont.swift */,
+				AA995AFF2587671A00072557 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 			files = (
 				AA908429257A4012000A9D2B /* BusService+CoreDataClass.swift in Sources */,
 				AA13B6DC2572127E006FD219 /* HomeSheetController.swift in Sources */,
+				AA995B002587671A00072557 /* String.swift in Sources */,
 				AAE490C9257E07EA0010B483 /* ListViewController.swift in Sources */,
 				AAE49103257E6F020010B483 /* BusService+CoreDataProperties.swift in Sources */,
 				AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */,

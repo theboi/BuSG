@@ -15,23 +15,19 @@ enum BusStopData {
 
 class BusServiceTableViewCell: UITableViewCell {
     
-    public lazy var blockLabel = UILabel()
-    public lazy var streetLabel = UILabel()
     public lazy var busStopCodeLabel = UILabel()
-    public lazy var blockImage = UIImageView()
-    public var stackView: UIStackView!
-    public lazy var errorLabel = UILabel()
+    public lazy var roadDescLabel = UILabel()
+    public lazy var roadNameLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
                 
-        addSubview(blockLabel)
-        blockLabel.font = .detail
-        blockLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(roadDescLabel)
+        roadDescLabel.font = .medium
+        roadDescLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            blockLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            blockLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            blockLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26)
+            roadDescLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            roadDescLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
         ])
         
         addSubview(busStopCodeLabel)
@@ -39,15 +35,15 @@ class BusServiceTableViewCell: UITableViewCell {
         busStopCodeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             busStopCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            busStopCodeLabel.topAnchor.constraint(equalTo: blockLabel.bottomAnchor, constant: 2)
+            busStopCodeLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
         ])
-
-        addSubview(streetLabel)
-        streetLabel.font = streetLabel.font.withSize(12)
-        streetLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(roadNameLabel)
+        roadNameLabel.font = .detail
+        roadNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            streetLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: 7),
-            streetLabel.topAnchor.constraint(equalTo: blockLabel.bottomAnchor, constant: 2)
+            roadNameLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: 7),
+            roadNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
         ])
 
         backgroundColor = .clear

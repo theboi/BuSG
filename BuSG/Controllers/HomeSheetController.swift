@@ -98,7 +98,9 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
         case 1: fallthrough
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
-            cell.textLabel?.text = nearbyStops[indexPath.row].roadDesc
+            cell.roadDescLabel.text = nearbyStops[indexPath.row].roadDesc
+            cell.busStopCodeLabel.text = nearbyStops[indexPath.row].busStopCode
+            cell.roadNameLabel.text = nearbyStops[indexPath.row].roadName
             return cell
         }
         
