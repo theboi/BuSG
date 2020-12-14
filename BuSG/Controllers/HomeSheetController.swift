@@ -22,10 +22,10 @@ class HomeSheetController: SheetController {
     var nearbyStops: [BusStop] = []
     
     private func reloadData() {
-        self.nearbyStops = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate)
-        self.suggestedServices = ApiProvider.shared.getSuggestedServices()
-        self.tableView.reloadData()
-        self.refreshControl.endRefreshing()
+        nearbyStops = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate)
+        suggestedServices = ApiProvider.shared.getSuggestedServices()
+        tableView.reloadData()
+        refreshControl.endRefreshing()
     }
     
     override func viewDidLoad() {
@@ -98,7 +98,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
             cell.backgroundColor = .clear
             cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-            cell.textLabel?.text = nearbyStops[indexPath.row].busStopCode
+            cell.textLabel?.text = nearbyStops[indexPath.row].roadDesc
             return cell
         }
         
