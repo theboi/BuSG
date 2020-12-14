@@ -234,9 +234,8 @@ class ApiProvider {
     private func handleApiError(res: URLResponse?, err: Error?) {
         if let err = err {
             DispatchQueue.main.async {
-                (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "No Internet Connection")
+                (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "No Internet Connection", image: UIImage(systemName: "wifi.exclamationmark"), style: .danger)
             }
-            print(err)
         }
         
         guard let httpResponse = res as? HTTPURLResponse,
@@ -245,7 +244,8 @@ class ApiProvider {
             return
         }
         
-        let mimeType = httpResponse.mimeType
-        assert(mimeType == "application/json")
+        DispatchQueue.main.async {
+            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "Unknown Error Occured", image: UIImage(systemName: "exclamationmark.circle"), style: .danger)
+        }
     }
 }
