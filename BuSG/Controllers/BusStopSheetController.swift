@@ -90,12 +90,6 @@ class BusStopSheetController: SheetController {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("HELLo")
-        (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "Hello")
-    }
 }
 
 extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {

@@ -13,7 +13,8 @@ enum ToastStyle {
 
 extension UIWindow {
     
-    func presentToast(message: String, image: UIImage? = UIImage(systemName: "wifi.exclamationmark"), style: ToastStyle = .danger, duration: Double = 0.5, delay: Double = 4.0) {
+    func presentToast(message: String, image: UIImage? = nil, style: ToastStyle = .regular, duration: Double = 7) {
+        if subviews.count > 1 { return }
         let toast = UIView()
         
         var imageView: UIImageView? = nil
@@ -61,8 +62,9 @@ extension UIWindow {
         }
         
         func animateAway() {
-            UIView.animate(withDuration: duration, delay: 0, options: [.curveEaseInOut], animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut], animations: {
                 toast.transform = CGAffineTransform(translationX: 0, y: 200).scaledBy(x: 0.8, y: 0.8)
+                toast.removeFromSuperview()
             })
         }
         
@@ -72,10 +74,10 @@ extension UIWindow {
             animateAway()
         }
         
-        UIView.animate(withDuration: duration, delay: 0, options: [.curveEaseInOut], animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut], animations: {
             toast.transform = CGAffineTransform(translationX: 0, y: 0).scaledBy(x: 1.0, y: 1.0)
         }, completion: {_ in
-            Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { _ in animateAway()}
+            Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { _ in animateAway()}
         })
     }
 }
