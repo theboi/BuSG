@@ -234,7 +234,7 @@ class ApiProvider {
     private func handleApiError(res: URLResponse?, err: Error?) {
         if let err = err {
             DispatchQueue.main.async {
-                (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "No Internet Connection", image: UIImage(systemName: "wifi.exclamationmark"), style: .danger)
+                (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(toast: Toast(message: "No Internet Connection", image: UIImage(systemName: "wifi.exclamationmark"), style: .danger))
             }
         }
         
@@ -245,7 +245,7 @@ class ApiProvider {
         }
         
         DispatchQueue.main.async {
-            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "Unknown Error Occured", image: UIImage(systemName: "exclamationmark.circle"), style: .danger)
+            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(toast: Toast(message: "Unknown Error Occured", image: UIImage(systemName: "exclamationmark.circle"), style: .danger))
         }
     }
 }
