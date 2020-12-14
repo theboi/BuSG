@@ -206,8 +206,10 @@ class ApiProvider {
         URLSession.shared.dataTask(with: req) { (data, res, err) in
             self.handleApiError(res: res, err: err)
             do {
-                let busArrivalMapperRoot = try JSONDecoder().decode(BusArrival.self, from: data!)
-                completion?(busArrivalMapperRoot)
+                if let data = data {
+                    let busArrivalMapperRoot = try JSONDecoder().decode(BusArrival.self, from: data)
+                    completion?(busArrivalMapperRoot)
+                }
             } catch {
                 fatalError("Failure to decode JSON into Objects: \(error)")
             }
@@ -231,7 +233,10 @@ class ApiProvider {
     
     private func handleApiError(res: URLResponse?, err: Error?) {
         if let err = err {
-            fatalError(err.localizedDescription)
+            DispatchQueue.main.async {
+                (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "No Internet Connection")
+            }
+            print(err)
         }
         
         guard let httpResponse = res as? HTTPURLResponse,

@@ -20,6 +20,12 @@ class BusStopSheetController: SheetController {
         self.reloadData()
     }))
     
+    var timer: Timer? {
+        didSet {
+            timer?.fire()
+        }
+    }
+    
     private func reloadData() {
         ApiProvider.shared.getBusArrivals(for: busStop.busStopCode) {busArrival in
             self.busArrival = busArrival
@@ -54,7 +60,18 @@ class BusStopSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        reloadData()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.reloadData() }
+    }
+    
+    override func dismissSheet() {
+        super.dismissSheet()
+        timer?.invalidate()
+    }
+    
+    override var isHidden: Bool {
+        didSet {
+            isHidden ? timer?.invalidate() : (timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.reloadData() })
+        }
     }
     
     init(for busStopCode: String?) {
@@ -72,6 +89,12 @@ class BusStopSheetController: SheetController {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("HELLo")
+        (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "Hello")
     }
 }
 
