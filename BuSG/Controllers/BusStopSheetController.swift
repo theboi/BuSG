@@ -89,6 +89,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
         let busServiceData = busStop.busServices[indexPath.row]
         cell.serviceNoLabel.text = busServiceData.serviceNo
         cell.destinationLabel.text = ApiProvider.shared.getBusStop(with: busServiceData.destinationCode)?.roadDesc
+        cell.busService = busStop.busServices[indexPath.row]
         cell.busTimings = busArrival?.busServices[busServiceData.serviceNo]?.nextBuses
         return cell
     }
