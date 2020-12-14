@@ -53,7 +53,7 @@ class MainViewController: UIViewController {
             }
             
             if !UIAccessibility.isReduceTransparencyEnabled {
-                button.backgroundColor = .clear
+                button.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
                 
                 let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
                 blurEffectView.isUserInteractionEnabled = false // allows button to be clicked
@@ -152,6 +152,7 @@ extension MainViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // TODO
         fatalError(error.localizedDescription)
     }
     
