@@ -15,33 +15,11 @@ class SettingsViewController: ListViewController {
             ListSection(tableItems: [
                 ListItem(title: "Bus Data", pushViewController: ListViewController(tableData: [
                     ListSection(tableItems: [
-                        ListItem(title: "Update Now", presentViewController: {
-                            let alert = UIAlertController(title: nil, message: "Updating Bus Data", preferredStyle: .alert)
-                            let activityIndicator = UIActivityIndicatorView()
-                            //                            let rect = CGRect(x: K.margin.large, y: 72.0, width: alert.view.frame.width - K.margin.large * 2.0, height: 2.0)
-                            //                            let progressView = UIProgressView(frame: rect)
-                            //                            alert.view.addSubview(progressView)
-                            //                            for i in 1...45 {
-                            //                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1*Double(i)) {
-                            //                                    progressView.setProgress(0.02*Float(i), animated: true)
-                            //                                }
-                            //                            }
-                            
-                            alert.view.addSubview(activityIndicator)
-                            activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-                            NSLayoutConstraint.activate([
-                                activityIndicator.leadingAnchor.constraint(equalTo: alert.view.leadingAnchor, constant: K.margin.extraLarge),
-                                activityIndicator.centerYAnchor.constraint(equalTo: alert.view.centerYAnchor),
-                            ])
-                            activityIndicator.startAnimating()
-                            ApiProvider.shared.updateStaticData { _ in
-                                DispatchQueue.main.async {
-                                    //                                    progressView.setProgress(1, animated: true)
-                                    alert.dismiss(animated: true)
-                                }
-                            }
-                            return alert
-                        }())
+                        ListItem(title: "Update Now", action: {
+//                            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "Began Bus Data Update", image: UIImage(systemName: "square.and.arrow.down"), duration: 3)
+                            print("HELLOO")
+                            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(toast: Toast(message: "No Internet Connection", image: UIImage(systemName: "wifi.exclamationmark"), style: .danger))
+                        })
                     ]),
                     ListSection(tableItems: [
                         ListItem(title: "Once per week"),

@@ -13,36 +13,11 @@ enum ToastStyle {
 
 extension UIWindow {
     
-    func presentToast(message: String, image: UIImage? = nil, style: ToastStyle = .regular, duration: Double = 7) {
-        if subviews.count > 1 { return }
-        let toast = UIView()
-        
-        var imageView: UIImageView? = nil
-        if let image = image {
-            imageView = UIImageView(image: image)
-            toast.addSubview(imageView!)
-            imageView?.translatesAutoresizingMaskIntoConstraints = false
-            imageView?.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-            NSLayoutConstraint.activate([
-                imageView!.leadingAnchor.constraint(equalTo: toast.leadingAnchor, constant: K.margin.large),
-                imageView!.centerYAnchor.constraint(equalTo: toast.centerYAnchor),
-            ])
-        }
-        
-        let label = UILabel()
-        toast.addSubview(label)
-        label.text = message
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: imageView?.trailingAnchor ?? toast.leadingAnchor, constant: K.margin.large),
-            label.trailingAnchor.constraint(equalTo: toast.trailingAnchor, constant: -K.margin.large),
-            label.centerYAnchor.constraint(equalTo: toast.centerYAnchor),
-        ])
+    func presentToast(toast: Toast, duration: Double = 5) {
+        if subviews.filter({ $0 is Toast }).count > 0 { return }
         
         addSubview(toast)
-        toast.layer.cornerRadius = K.cornerRadius
-        toast.backgroundColor = .secondarySystemBackground
+        
         toast.transform = CGAffineTransform(translationX: 0, y: 200).scaledBy(x: 0.8, y: 0.8)
         toast.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -52,20 +27,12 @@ extension UIWindow {
             toast.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
         ])
         
-        switch style {
-        case .danger:
-            toast.backgroundColor = .systemRed
-            label.textColor = .white
-            imageView?.tintColor = .white
-        case .regular: fallthrough
-        default: break
-        }
-        
         func animateAway() {
             UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut], animations: {
                 toast.transform = CGAffineTransform(translationX: 0, y: 200).scaledBy(x: 0.8, y: 0.8)
+            }) { _ in
                 toast.removeFromSuperview()
-            })
+            }
         }
         
         let swipeGestureRecogniser = UISwipeGestureRecognizer()
@@ -80,4 +47,54 @@ extension UIWindow {
             Timer.scheduledTimer(withTimeInterval: duration, repeats: false) { _ in animateAway()}
         })
     }
+}
+
+class Toast: UIView {
+    
+    lazy var imageView: UIImageView? = nil
+    lazy var label = UILabel()
+    
+    init(message: String, image: UIImage? = nil, style: ToastStyle = .regular) {
+        super.init(frame: CGRect())
+        
+        var imageView: UIImageView? = nil
+        if let image = image {
+            imageView = UIImageView(image: image)
+            addSubview(imageView!)
+            imageView?.translatesAutoresizingMaskIntoConstraints = false
+            imageView?.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+            NSLayoutConstraint.activate([
+                imageView!.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+                imageView!.centerYAnchor.constraint(equalTo: centerYAnchor),
+            ])
+        }
+        
+        let label = UILabel()
+        addSubview(label)
+        label.text = message
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: imageView?.trailingAnchor ?? leadingAnchor, constant: K.margin.large),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+        
+        layer.cornerRadius = K.cornerRadius
+        backgroundColor = .secondarySystemBackground
+        
+        switch style {
+        case .danger:
+            backgroundColor = .systemRed
+            label.textColor = .white
+            imageView?.tintColor = .white
+        case .regular: fallthrough
+        default: break
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
 }
