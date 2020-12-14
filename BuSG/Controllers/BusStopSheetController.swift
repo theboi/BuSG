@@ -89,23 +89,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
         let busServiceData = busStop.busServices[indexPath.row]
         cell.serviceNoLabel.text = busServiceData.serviceNo
         cell.destinationLabel.text = ApiProvider.shared.getBusStop(with: busServiceData.destinationCode)?.roadDesc
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
-        if let nextBuses = busArrival?.busServices[busServiceData.serviceNo]?.nextBuses {
-            cell.busTimings = nextBuses.map({ (busArrivalBus) -> Int in
-                if let date = dateFormatter.date(from: busArrivalBus.estimatedArrival) {
-                    return Calendar.current.dateComponents([.minute], from: Date(), to: date).minute ?? -999
-                } else {
-                    return -999
-                }
-            })
-        } else {
-            cell.busTimings = nil
-        }
+        cell.busTimings = busArrival?.busServices[busServiceData.serviceNo]?.nextBuses
         return cell
     }
     

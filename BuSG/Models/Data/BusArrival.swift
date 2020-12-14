@@ -5,6 +5,8 @@
 //  Created by Ryan The on 1/12/20.
 //
 
+import Foundation
+
 enum BusArrivalLoad: String, Codable {
     /// SEA (for Seats Available)
     case sea = "SEA"
@@ -42,6 +44,19 @@ struct BusArrivalBus: Decodable {
     
     /// Date-time of this bus’ estimated time of arrival, expressed in the UTC standard, GMT+8 for Singapore Standard Time (SST). Sample: `"2017-04-29T07:20:24+08:00"`
     let estimatedArrival: String
+    
+    var estimatedMinsToArrival: Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        if let date = dateFormatter.date(from: estimatedArrival) {
+            return Calendar.current.dateComponents([.minute], from: Date(), to: date).minute ?? -999
+        } else {
+            return -999
+        }
+    }
     
     /// Current estimated location coordinates of this bus at point of published data. Sample: `1.42117943692586, 103.831477233098`
     let latitude: String

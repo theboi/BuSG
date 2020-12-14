@@ -22,7 +22,7 @@ extension UIFont {
     }
     
     class var detail: UIFont {
-        UIFont.systemFont(ofSize: 12)
+        UIFont.systemFont(ofSize: 13)
     }
     
 }
