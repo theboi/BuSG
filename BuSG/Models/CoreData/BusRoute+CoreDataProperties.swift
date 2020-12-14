@@ -2,7 +2,7 @@
 //  BusRoute+CoreDataProperties.swift
 //  BuSG
 //
-//  Created by Ryan The on 7/12/20.
+//  Created by Ryan The on 14/12/20.
 //
 //
 
@@ -20,14 +20,14 @@ extension BusRoute {
     @NSManaged public var direction: Int64
     @NSManaged public var distance: Double
     @NSManaged public var rawServiceOperator: String
-    @NSManaged public var satFirstBus: String
-    @NSManaged public var satLastBus: String
+    @NSManaged public var rawSatFirstBus: String
+    @NSManaged public var rawSatLastBus: String
     @NSManaged public var serviceNo: String
     @NSManaged public var stopSequence: Int64
-    @NSManaged public var sunFirstBus: String
-    @NSManaged public var sunLastBus: String
-    @NSManaged public var wdFirstBus: String
-    @NSManaged public var wdLastBus: String
+    @NSManaged public var rawSunFirstBus: String
+    @NSManaged public var rawSunLastBus: String
+    @NSManaged public var rawWdFirstBus: String
+    @NSManaged public var rawWdLastBus: String
     @NSManaged public var busService: BusService?
     @NSManaged public var busStop: BusStop?
 

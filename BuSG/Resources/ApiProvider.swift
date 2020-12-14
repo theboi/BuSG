@@ -73,12 +73,12 @@ class ApiProvider {
                         data.stopSequence = Int64(truncatingIfNeeded: mapper.stopSequence ?? 0)
                         data.busStopCode = mapper.busStopCode
                         data.distance = mapper.distance ?? 0
-                        data.wdFirstBus = mapper.wdFirstBus ?? K.nilStr
-                        data.wdLastBus = mapper.wdLastBus ?? K.nilStr
-                        data.satFirstBus = mapper.satFirstBus ?? K.nilStr
-                        data.satLastBus = mapper.satLastBus ?? K.nilStr
-                        data.sunFirstBus = mapper.sunFirstBus ?? K.nilStr
-                        data.sunLastBus = mapper.sunLastBus ?? K.nilStr
+                        data.rawWdFirstBus = mapper.wdFirstBus ?? K.nilStr
+                        data.rawWdLastBus = mapper.wdLastBus ?? K.nilStr
+                        data.rawSatFirstBus = mapper.satFirstBus ?? K.nilStr
+                        data.rawSatLastBus = mapper.satLastBus ?? K.nilStr
+                        data.rawSunFirstBus = mapper.sunFirstBus ?? K.nilStr
+                        data.rawSunLastBus = mapper.sunLastBus ?? K.nilStr
                     }
                     try self.backgroundContext.save()
 
@@ -106,8 +106,8 @@ class ApiProvider {
                                 data = BusStop(context: self.backgroundContext)
                             }
                             data.busStopCode = mapper.busStopCode
-                            data.roadName = mapper.roadName ?? K.nilStr
-                            data.roadDesc = mapper.roadDesc ?? K.nilStr
+                            data.rawRoadName = mapper.roadName ?? K.nilStr
+                            data.rawRoadDesc = mapper.roadDesc ?? K.nilStr
                             data.latitude = mapper.latitude ?? 0
                             data.longitude = mapper.longitude ?? 0
                             data.busRoutes = NSSet(array: busRoutesDictForBusStops[mapper.busStopCode] ?? [])
@@ -141,11 +141,11 @@ class ApiProvider {
                                 data.rawCategory = mapper.category?.rawValue ?? K.nilStr
                                 data.originCode = mapper.originCode ?? K.nilStr
                                 data.destinationCode = mapper.destinationCode ?? K.nilStr
-                                data.amPeakFreq = mapper.amPeakFreq ?? K.nilStr
-                                data.amOffpeakFreq = mapper.amOffpeakFreq ?? K.nilStr
-                                data.pmPeakFreq = mapper.pmPeakFreq ?? K.nilStr
-                                data.pmOffpeakFreq = mapper.pmOffpeakFreq ?? K.nilStr
-                                data.loopDesc = mapper.loopDesc ?? K.nilStr
+                                data.rawAmPeakFreq = mapper.amPeakFreq ?? K.nilStr
+                                data.rawAmOffpeakFreq = mapper.amOffpeakFreq ?? K.nilStr
+                                data.rawPmPeakFreq = mapper.pmPeakFreq ?? K.nilStr
+                                data.rawPmOffpeakFreq = mapper.pmOffpeakFreq ?? K.nilStr
+                                data.rawLoopDesc = mapper.loopDesc ?? K.nilStr
                                 data.busRoutes = NSSet(array: busRoutesDictForBusServices[mapper.serviceNo] ?? [])
                             }
                             try self.backgroundContext.save()
