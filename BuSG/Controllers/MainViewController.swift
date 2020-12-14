@@ -53,7 +53,7 @@ class MainViewController: UIViewController {
             }
             
             if !UIAccessibility.isReduceTransparencyEnabled {
-                button.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.8)
+                button.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.7)
                 
                 let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
                 blurEffectView.isUserInteractionEnabled = false // allows button to be clicked
