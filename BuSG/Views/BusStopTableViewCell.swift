@@ -13,11 +13,14 @@ class BusStopTableViewCell: UITableViewCell {
     private lazy var busTimingLabels = [UILabel(), UILabel(), UILabel()]
     
     public lazy var serviceNoLabel = UILabel()
+    public lazy var destinationDirectionImageView = UIImageView()
     public lazy var destinationLabel = UILabel()
     public lazy var errorLabel = UILabel()
     
+    public var busService: BusService?
     public var busTimings: [BusArrivalBus]? {
         didSet {
+            destinationDirectionImageView.image = UIImage(systemName: busService?.originCode == busService?.destinationCode ? "arrow.clockwise" : "arrow.right")
             if let busTimings = busTimings {
                 errorLabel.text = nil
                 stackView.isHidden = false
@@ -75,13 +78,22 @@ class BusStopTableViewCell: UITableViewCell {
             serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
         ])
         
+        addSubview(destinationDirectionImageView)
+        destinationDirectionImageView.preferredSymbolConfiguration = .init(font: .detail)
+        destinationDirectionImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            destinationDirectionImageView.heightAnchor.constraint(equalToConstant: 15),
+            destinationDirectionImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
+            destinationDirectionImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+        ])
+        
         addSubview(destinationLabel)
         destinationLabel.font = .detail
         destinationLabel.textColor = .secondaryLabel
         destinationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            destinationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
-            destinationLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            destinationLabel.leadingAnchor.constraint(equalTo: destinationDirectionImageView.trailingAnchor, constant: K.margin.small),
+            destinationLabel.centerYAnchor.constraint(equalTo: destinationDirectionImageView.centerYAnchor),
         ])
         
         stackView = UIStackView(arrangedSubviews: busTimingLabels)
