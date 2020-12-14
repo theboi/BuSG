@@ -57,4 +57,11 @@ public class BusStop: NSManagedObject {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
+    public var roadDesc: String {
+        rawRoadDesc.capitalized
+    }
+    
+    public var roadName: String {
+        rawRoadName.capitalized
+    }
 }
