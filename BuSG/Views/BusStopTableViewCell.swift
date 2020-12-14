@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum BusArrivalTiming {
-    case arr
-    case left
-    case mins(Int)
-}
-
 class BusStopTableViewCell: UITableViewCell {
     
     private var stackView: UIStackView!
@@ -22,17 +16,20 @@ class BusStopTableViewCell: UITableViewCell {
     public lazy var destinationLabel = UILabel()
     public lazy var errorLabel = UILabel()
     
-    public var busTimings: [Int]? {
+    public var busTimings: [BusArrivalBus]? {
         didSet {
             if let busTimings = busTimings {
                 errorLabel.text = nil
                 stackView.isHidden = false
-                busTimings.enumerated().forEach { (index, time) in
+                busTimings.enumerated().forEach { (index, bus) in
+                    let time = bus.estimatedMinsToArrival
                     let label = busTimingLabels[index]
+                    let loadIndicator = label.subviews[0]
                     label.layer.borderWidth = 0
                     label.textColor = .label
                     label.backgroundColor = .clear
                     label.layer.opacity = 1
+                    
                     if index == 0 {
                         label.backgroundColor = UIColor.label.withAlphaComponent(0.1)
                     } else {
@@ -56,6 +53,8 @@ class BusStopTableViewCell: UITableViewCell {
                         /// Valid timing
                         label.text = String(time)
                     }
+                    loadIndicator.isHidden = !(bus.load == .sda || bus.load == .lsd)
+                    loadIndicator.backgroundColor = bus.load == .sda ? .systemYellow : .systemRed
                 }
             } else {
                 /// Bus Service not operating
@@ -92,7 +91,7 @@ class BusStopTableViewCell: UITableViewCell {
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -2),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
             stackView.widthAnchor.constraint(equalToConstant: 180),
         ])
@@ -101,7 +100,7 @@ class BusStopTableViewCell: UITableViewCell {
             label.textAlignment = .center
             label.font = .medium
             label.layer.cornerRadius = K.cornerRadius
-            label.clipsToBounds = false
+            label.clipsToBounds = true
             label.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 label.heightAnchor.constraint(equalToConstant: 40)
@@ -109,14 +108,16 @@ class BusStopTableViewCell: UITableViewCell {
             
             let loadIndicatorView = UIView()
             loadIndicatorView.backgroundColor = .systemGreen
-            label.insertSubview(loadIndicatorView, at: 100)
+            label.addSubview(loadIndicatorView)
             loadIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-            loadIndicatorView.layer.cornerRadius = 2
+            loadIndicatorView.layer.cornerRadius = 3
+            loadIndicatorView.layer.borderWidth = 1
+            loadIndicatorView.layer.borderColor = UIColor.systemFill.cgColor
             NSLayoutConstraint.activate([
-                loadIndicatorView.heightAnchor.constraint(equalToConstant: 3),
-                loadIndicatorView.widthAnchor.constraint(equalToConstant: 10),
-                loadIndicatorView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5),
-                loadIndicatorView.centerXAnchor.constraint(equalTo: label.centerXAnchor)
+                loadIndicatorView.heightAnchor.constraint(equalToConstant: 5),
+                loadIndicatorView.widthAnchor.constraint(equalToConstant: 5),
+                loadIndicatorView.topAnchor.constraint(equalTo: label.topAnchor, constant: 5),
+                loadIndicatorView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: -5),
             ])
         }
         
