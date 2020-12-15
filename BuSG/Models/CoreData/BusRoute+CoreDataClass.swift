@@ -1,6 +1,6 @@
 //
 //  BusRoute+CoreDataClass.swift
-//  Navigem
+// BuSG
 //
 //  Created by Ryan The on 4/12/20.
 //

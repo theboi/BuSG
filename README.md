@@ -1,3 +1,3 @@
-# Navigem
+# BuSG
 
 Singapore Bus Transport App
