@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import EventKit
 
 typealias CompletionHandler<T> = ((T) -> Void)?
 
@@ -216,36 +217,66 @@ class ApiProvider {
         }.resume()
     }
     
-    public func getSuggestedServices() -> [BusService] {
+    public func getSuggestedServices(completion: CompletionHandler<[BusSuggestion]> = nil) {
+
         let events = EventProvider.shared.presentDayCalendarEvents()
-        let placeTargets = events.compactMap { (event) -> [[BusService]]? in
+        let nearbyBusStops = events.compactMap { (event) -> ([BusStop], EKEvent)? in
             /// If location not stated, event is ignored
             if let coordinate = event.structuredLocation?.geoLocation?.coordinate {
-                ApiProvider.shared.getBusStops(nearby: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)).flatMap { $0.busServices }
+                return (ApiProvider.shared.getBusStops(nearby: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)), event)
             }
             return nil
         }
-        placeTargets.forEach { (placeTarget: [[BusService]]) in
-            
+        let commonBusSuggestions = nearbyBusStops.flatMap { (busStops: [BusStop], event: EKEvent) -> [BusSuggestion] in
+            let uniqueBusServices = busStops.flatMap { (busStop: BusStop) -> [(BusStop, BusService, EKEvent)] in
+                return busStop.busServices.map { (busStop, $0, event) }
+            }.uniqued { (busStop, busService, event) -> String in
+                busService.serviceNo
+            }
+            let currentNearbyBusServices = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate).flatMap { (busStop: BusStop) -> [(BusStop, BusService)] in
+                return busStop.busServices.map { (busStop, $0) }
+            }.uniqued { $1.serviceNo }
+            let commonBusSuggestions = uniqueBusServices.filter { (busStop, busService, event) -> Bool in
+                currentNearbyBusServices.contains { $1.serviceNo == busService.serviceNo }
+            }.map { BusSuggestion(busService: $1, originBusStop: $0, event: $2) }
+            return commonBusSuggestions
         }
-        return []
+        completion?(commonBusSuggestions)
     }
     
     private func handleApiError(res: URLResponse?, err: Error?) {
+        print(URLError.networkConnectionLost.rawValue)
         if let err = err {
+            if let urlError = err as? URLError {
+                var message: String
+                var imageName: String
+                switch urlError {
+                case URLError.notConnectedToInternet:
+                    message = "No Internet Connection"
+                    imageName = "wifi.exclamationmark"
+                case URLError.networkConnectionLost: //-1004
+                    message = "No Internet Connection2"
+                    imageName = "wifi.exclamationmark"
+                default:
+                    message = "Unknown Error Occured2"
+                    imageName = "exclamationmark.circle"
+                }
+                DispatchQueue.main.async {
+                    (UIApplication.shared.delegate as! AppDelegate).window?.present(Toast(message: message, image: UIImage(systemName: imageName), style: .danger))
+                }
+                return
+            }
             DispatchQueue.main.async {
-                (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(toast: Toast(message: "No Internet Connection", image: UIImage(systemName: "wifi.exclamationmark"), style: .danger))
+                (UIApplication.shared.delegate as! AppDelegate).window?.present(Toast(message: "Unknown Error Occured", image: UIImage(systemName: "exclamationmark.circle"), style: .danger))
             }
         }
         
-        guard let httpResponse = res as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            // TODO: HANDLE SERVER ERROR (TRY AGAIN)
-            return
-        }
-        
-        DispatchQueue.main.async {
-            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(toast: Toast(message: "Unknown Error Occured", image: UIImage(systemName: "exclamationmark.circle"), style: .danger))
+        if let httpResponse = res as? HTTPURLResponse,
+           !(200...299).contains(httpResponse.statusCode) {
+            print("OOOOOOO \(httpResponse.statusCode)")
+            DispatchQueue.main.async {
+                (UIApplication.shared.delegate as! AppDelegate).window?.present(Toast(message: "Server Error", image: UIImage(systemName: "server.rack"), style: .danger))
+            }
         }
     }
 }

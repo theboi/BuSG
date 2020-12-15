@@ -7,10 +7,10 @@
 
 import UIKit
 
-class BusSuggestedTableViewCell: UITableViewCell {
+class BusSuggestionTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
         selectedBackgroundView = FillView(solidWith: UIColor.label.withAlphaComponent(0.1))
     }

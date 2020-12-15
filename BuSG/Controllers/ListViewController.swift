@@ -8,6 +8,10 @@
 import UIKit
 import StoreKit
 
+enum CheckmarkState {
+    case none, on, off
+}
+
 struct ListItem {
     var title: String?
     var image: UIImage?
@@ -17,15 +21,53 @@ struct ListItem {
     var accessoryView: UIView?
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
-    var action: (() -> Void)?
+    var action: ((UITableView) -> Void)?
     var urlString: String?
+    var isClickable: Bool = true
+    var checkmark: CheckmarkState = .none
 }
 
-struct ListSection {
+class ListSection {
+    
     var tableItems: [ListItem]
     var headerText: String?
     var footerText: String?
     var headerTrailingButton: UIButton?
+    
+    init(tableItems: [ListItem] = [], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil) {
+        self.tableItems = tableItems
+        self.headerText = headerText
+        self.footerText = footerText
+        self.headerTrailingButton = headerTrailingButton
+    }
+    
+}
+
+class SelectListSection: ListSection {
+        
+    init(tableItems: [ListItem] = [], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil, onSelected: ((ListSection) -> Void)? = nil) {
+        super.init(tableItems: tableItems, headerText: headerText, footerText: footerText, headerTrailingButton: headerTrailingButton)
+        
+        func selectItem(at index: Int, for tableView: UITableView? = nil) {
+            for j in 0...tableItems.count-1 {
+                self.tableItems[j].checkmark = .off
+            }
+            self.tableItems[index].checkmark = .on
+            tableView?.reloadData()
+        }
+        
+        selectItem(at: 0)
+        
+        for i in 0...tableItems.count-1 {
+            let oldAction = self.tableItems[i].action
+            self.tableItems[i].action = {tableView in
+                oldAction?(tableView)
+                onSelected?(self)
+                selectItem(at: i, for: tableView)
+            }
+        }
+    }
+    
 }
 
 class ListViewController: UITableViewController {
@@ -59,8 +101,8 @@ class ListViewController: UITableViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: K.margin.large+K.margin.small),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large-K.margin.small),
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: K.margin.extraLarge),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
         ])
         
         if let button = sectionData.headerTrailingButton {
@@ -68,7 +110,7 @@ class ListViewController: UITableViewController {
             button.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
-                button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large-K.margin.small),
+                button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
             ])
         }
         
@@ -109,9 +151,9 @@ class ListViewController: UITableViewController {
         } else {
             cell.textLabel?.text = cellData.title
         }
+        cell.selectionStyle = cellData.isClickable ? .default : .none
         if let accessoryView = cellData.accessoryView {
             cell.accessoryView = accessoryView
-            cell.selectionStyle = .none
         } else if cellData.pushViewController != nil || cellData.presentViewController != nil || cellData.action != nil {
             cell.accessoryType = .disclosureIndicator
         } else if cellData.urlString != nil {
@@ -121,7 +163,11 @@ class ListViewController: UITableViewController {
             cell.selectionStyle = .none
         }
         cell.imageView?.image = cellData.image
-        
+        if cellData.checkmark == .on {
+            cell.accessoryType = .checkmark
+        } else if cellData.checkmark == .off {
+            cell.accessoryType = .none
+        }
         return cell
     }
     
@@ -134,7 +180,7 @@ class ListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellData = listData[indexPath.section].tableItems[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
-        cellData.action?()
+        cellData.action?(tableView)
         if let urlString = cellData.urlString {
             URL.open(webURL: urlString)
         }
