@@ -1,6 +1,6 @@
 //
 //  Constants.swift
-//  Navigem
+// BuSG
 //
 //  Created by Ryan The on 16/11/20.
 //

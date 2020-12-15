@@ -1,6 +1,6 @@
 //
 //  SettingsViewController.swift
-//  Navigem
+// BuSG
 //
 //  Created by Ryan The on 7/12/20.
 //

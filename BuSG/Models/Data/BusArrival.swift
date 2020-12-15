@@ -1,6 +1,6 @@
 //
 //  BusArrival.swift
-//  Navigem
+// BuSG
 //
 //  Created by Ryan The on 1/12/20.
 //

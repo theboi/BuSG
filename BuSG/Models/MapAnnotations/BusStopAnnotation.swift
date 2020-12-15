@@ -1,6 +1,6 @@
 //
 //  BusStopAnnotation.swift
-//  Navigem
+// BuSG
 //
 //  Created by Ryan The on 5/12/20.
 //
