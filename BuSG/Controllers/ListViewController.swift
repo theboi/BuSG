@@ -21,7 +21,7 @@ struct ListItem {
     var accessoryView: UIView?
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
-    var action: ((UITableView) -> Void)?
+    var action: ((UITableView, IndexPath) -> Void)?
     var urlString: String?
     var isClickable: Bool = true
     var checkmark: CheckmarkState = .none
@@ -44,9 +44,9 @@ class ListSection {
 }
 
 class SelectListSection: ListSection {
-        
-    init(tableItems: [ListItem] = [], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil, onSelected: ((ListSection) -> Void)? = nil) {
-        super.init(tableItems: tableItems, headerText: headerText, footerText: footerText, headerTrailingButton: headerTrailingButton)
+    
+    init(tableItems: [ListItem] = [], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil, defaultIndex: Int, onSelected: ((ListSection, UITableView, IndexPath) -> Void)? = nil) {
+        super.init(tableItems: tableItems, headerText: headerText, footerText: footerText, headerTrailingButton: headerTrailingButton) // TODO: shouldCheckElement instead of controlling checkmarks from view (set from model)
         
         func selectItem(at index: Int, for tableView: UITableView? = nil) {
             for j in 0...tableItems.count-1 {
@@ -56,13 +56,13 @@ class SelectListSection: ListSection {
             tableView?.reloadData()
         }
         
-        selectItem(at: 0)
+        selectItem(at: defaultIndex)
         
         for i in 0...tableItems.count-1 {
             let oldAction = self.tableItems[i].action
-            self.tableItems[i].action = {tableView in
-                oldAction?(tableView)
-                onSelected?(self)
+            self.tableItems[i].action = {tableView, indexPath in
+                oldAction?(tableView, indexPath)
+                onSelected?(self, tableView, indexPath)
                 selectItem(at: i, for: tableView)
             }
         }
@@ -91,30 +91,34 @@ class ListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionData = listData[section]
         
-        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: K.identifiers.settingsHeader)!
-        
-        let label = UILabel()
-        view.addSubview(label)
-        label.text = sectionData.headerText
-        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: K.margin.extraLarge),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
-        ])
-        
-        if let button = sectionData.headerTrailingButton {
-            view.addSubview(button)
-            button.translatesAutoresizingMaskIntoConstraints = false
+        if let headerText = sectionData.headerText {
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: K.identifiers.settingsHeader)!
+            
+            let label = UILabel()
+            view.addSubview(label)
+            label.text = headerText
+            label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+            
+            label.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
-                button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
+                label.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
+                label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: K.margin.extraLarge),
+                label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
             ])
+            
+            if let button = sectionData.headerTrailingButton {
+                view.addSubview(button)
+                button.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
+                    button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
+                ])
+            }
+            
+            return view
         }
         
-        return view
+        return nil
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -180,7 +184,7 @@ class ListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellData = listData[indexPath.section].tableItems[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
-        cellData.action?(tableView)
+        cellData.action?(tableView, indexPath)
         if let urlString = cellData.urlString {
             URL.open(webURL: urlString)
         }

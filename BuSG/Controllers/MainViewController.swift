@@ -111,8 +111,14 @@ class MainViewController: UIViewController {
             /// First time using app
             self.present(UINavigationController(rootViewController: LaunchViewController()), animated: true)
         }
-        
-        if lastUpdatedEpoch+604800 < nowEpoch { // 1 week = 604800 seconds
+        let updateFrequency: Double = { () -> Double in
+            switch UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency) {
+            case 0: return 604800 // 1 week
+            case 1: return 2629743 // 1 month
+            default: return -999
+            }
+        }()
+        if lastUpdatedEpoch+updateFrequency < nowEpoch && updateFrequency != -999 {
             /// Requires update of bus data
             print("Updating Bus Data...")
             ApiProvider.shared.updateStaticData() {
