@@ -17,22 +17,24 @@ class HomeSheetController: SheetController {
     
     var searchText: String = ""
     
-    var suggestedServices: [BusService] = []
+    var suggestedServices: [BusSuggestion] = []
     
     var nearbyStops: [BusStop] = []
     
     private func reloadData() {
         nearbyStops = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate)
-        suggestedServices = ApiProvider.shared.getSuggestedServices()
-        tableView.reloadData()
-        refreshControl.endRefreshing()
+        ApiProvider.shared.getSuggestedServices { busData in
+            self.suggestedServices = busData
+            self.tableView.reloadData()
+            self.refreshControl.endRefreshing()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         delegate = self
-                
+        
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "Search for a bus stop or service"
@@ -54,7 +56,7 @@ class HomeSheetController: SheetController {
         ])
         
         tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busServiceCell)
-        tableView.register(BusSuggestedTableViewCell.self, forCellReuseIdentifier: K.identifiers.busSuggestedCell)
+        tableView.register(BusSuggestionTableViewCell.self, forCellReuseIdentifier: K.identifiers.busSuggestedCell)
 
         reloadData()
     }
@@ -63,7 +65,7 @@ class HomeSheetController: SheetController {
 extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0: return suggestedServices.count
+        case 0: return suggestedServices.isEmpty ? nearbyStops.count : suggestedServices.count
         case 1: fallthrough
         default: return nearbyStops.count
         }
@@ -75,7 +77,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0: return "Suggested"
+        case 0: return suggestedServices.isEmpty ? "Nearby" : "Suggested"
         case 1: fallthrough
         default: return "Nearby"
         }
@@ -90,25 +92,36 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggestedCell, for: indexPath) as! BusSuggestedTableViewCell
-            cell.textLabel?.text = suggestedServices[indexPath.row].serviceNo
+        let suggestedCell = { () -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggestedCell, for: indexPath) as! BusSuggestionTableViewCell
+            cell.textLabel?.text = self.suggestedServices[indexPath.row].busService.serviceNo
+            cell.detailTextLabel?.text = self.suggestedServices[indexPath.row].originBusStop.rawRoadDesc
             return cell
-        case 1: fallthrough
-        default:
+        }
+        let nearbyCell = { () -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
-            cell.roadDescLabel.text = nearbyStops[indexPath.row].roadDesc
-            cell.busStopCodeLabel.text = nearbyStops[indexPath.row].busStopCode
-            cell.roadNameLabel.text = nearbyStops[indexPath.row].roadName
+            cell.roadDescLabel.text = self.nearbyStops[indexPath.row].roadDesc
+            cell.busStopCodeLabel.text = self.nearbyStops[indexPath.row].busStopCode
+            cell.roadNameLabel.text = self.nearbyStops[indexPath.row].roadName
             return cell
+        }
+        switch indexPath.section {
+        case 0: return suggestedServices.isEmpty ? nearbyCell() : suggestedCell()
+        case 1: fallthrough
+        default: return nearbyCell()
         }
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusStopSheetController(for: nearbyStops[indexPath.row].busStopCode), animated: true)
+        switch indexPath.section {
+        case 0:
+            present(BusStopSheetController(for: suggestedServices.isEmpty ? nearbyStops[indexPath.row].busStopCode : suggestedServices[indexPath.row].originBusStop.busStopCode), animated: true)
+        case 1: fallthrough
+        default:
+            present(BusStopSheetController(for: nearbyStops[indexPath.row].busStopCode), animated: true)
+        }
     }
 }
 

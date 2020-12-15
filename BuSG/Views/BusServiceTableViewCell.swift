@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum BusStopData {
-    case arr
-    case left
-    case mins(Int)
-}
-
 class BusServiceTableViewCell: UITableViewCell {
     
     public lazy var busStopCodeLabel = UILabel()
@@ -32,6 +26,7 @@ class BusServiceTableViewCell: UITableViewCell {
         
         addSubview(busStopCodeLabel)
         busStopCodeLabel.font = .detail
+        busStopCodeLabel.textColor = .secondaryLabel
         busStopCodeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             busStopCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
@@ -40,6 +35,7 @@ class BusServiceTableViewCell: UITableViewCell {
         
         addSubview(roadNameLabel)
         roadNameLabel.font = .detail
+        roadNameLabel.textColor = .secondaryLabel
         roadNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             roadNameLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: 7),

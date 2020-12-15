@@ -15,17 +15,17 @@ class SettingsViewController: ListViewController {
             ListSection(tableItems: [
                 ListItem(title: "Bus Data", pushViewController: ListViewController(tableData: [
                     ListSection(tableItems: [
-                        ListItem(title: "Update Now", action: {
-//                            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(message: "Began Bus Data Update", image: UIImage(systemName: "square.and.arrow.down"), duration: 3)
-                            print("HELLOO")
-                            (UIApplication.shared.delegate as! AppDelegate).window?.presentToast(toast: Toast(message: "No Internet Connection", image: UIImage(systemName: "wifi.exclamationmark"), style: .danger))
+                        ListItem(title: "Update Now", action: {_ in 
+                            (UIApplication.shared.delegate as! AppDelegate).window?.present(Toast(message: "Began Bus Data Update", image: UIImage(systemName: "square.and.arrow.down")), duration: 3)
                         })
                     ]),
-                    ListSection(tableItems: [
+                    SelectListSection(tableItems: [
                         ListItem(title: "Once per week"),
                         ListItem(title: "Once per month"),
                         ListItem(title: "Never"),
-                    ], headerText: "Update Frequency", footerText: "")
+                    ], headerText: "Update Frequency", onSelected: { (section) in
+                        print("HELO")
+                    }),
                 ])),
             ]),
             ListSection(tableItems: [
