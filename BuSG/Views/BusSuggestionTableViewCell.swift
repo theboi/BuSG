@@ -9,6 +9,14 @@ import UIKit
 
 class BusSuggestionTableViewCell: UITableViewCell {
     
+    public var eventImage: UIImage? {
+        didSet {
+            eventImageView.image = eventImage
+        }
+    }
+    
+    private var eventImageView = UIImageView()
+    
     public lazy var serviceNoLabel = UILabel()
     public lazy var eventLabel = UILabel()
     public lazy var destinationLabel = UILabel()
@@ -16,11 +24,18 @@ class BusSuggestionTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        addSubview(eventImageView)
+        eventImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            eventImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            eventImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+        
         addSubview(serviceNoLabel)
         serviceNoLabel.font = .medium
         serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            serviceNoLabel.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: K.margin.large),
             serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
         ])
         
@@ -29,7 +44,7 @@ class BusSuggestionTableViewCell: UITableViewCell {
         destinationLabel.textColor = .secondaryLabel
         destinationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            destinationLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            destinationLabel.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: K.margin.large),
             destinationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
         ])
         
