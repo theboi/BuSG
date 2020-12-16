@@ -13,9 +13,17 @@ class BusServiceTableViewCell: UITableViewCell {
     public lazy var roadDescLabel = UILabel()
     public lazy var roadNameLabel = UILabel()
     
+    private lazy var busServicesLabel = UILabel()
+    
+    public var busServices: [BusService] = [] {
+        didSet {
+            busServicesLabel.text = busServices.map({ $0.serviceNo }).joined(separator: " • ")
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-                
+        
         addSubview(roadDescLabel)
         roadDescLabel.font = .medium
         roadDescLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +38,7 @@ class BusServiceTableViewCell: UITableViewCell {
         busStopCodeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             busStopCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            busStopCodeLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
+            busStopCodeLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.margin.small),
         ])
         
         addSubview(roadNameLabel)
@@ -38,8 +46,16 @@ class BusServiceTableViewCell: UITableViewCell {
         roadNameLabel.textColor = .secondaryLabel
         roadNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            roadNameLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: 7),
-            roadNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
+            roadNameLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: K.margin.small),
+            roadNameLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.margin.small),
+        ])
+        
+        addSubview(busServicesLabel)
+        busServicesLabel.font = .detail
+        busServicesLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            busServicesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            busServicesLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
         ])
 
         backgroundColor = .clear
