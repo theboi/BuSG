@@ -152,6 +152,7 @@ class ApiProvider {
                             }
                             try self.backgroundContext.save()
                             print("DONE FETCH")
+                            UserDefaults.standard.setValue(Date().timeIntervalSince1970, forKey: K.userDefaults.lastUpdatedEpoch)
                             completion?(())
                         } catch {
                             fatalError("Failure to save context: \(error)")
