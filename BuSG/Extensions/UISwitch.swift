@@ -11,7 +11,6 @@ extension UISwitch {
     
     convenience init(frame: CGRect, isOn: Bool, primaryAction: UIAction?) {
         self.init(frame: frame, primaryAction: primaryAction)
-        print(isOn)
         setOn(isOn, animated: false)
     }
     

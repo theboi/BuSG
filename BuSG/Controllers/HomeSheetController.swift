@@ -89,7 +89,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
-        case 0: return suggestedServices.isEmpty ? 85 : 65
+        case 0: return suggestedServices.isEmpty ? 85 : 55
         case 1: fallthrough
         default: return 85
         }
@@ -98,6 +98,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let suggestedCell = { () -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggestedCell, for: indexPath) as! BusSuggestionTableViewCell
+            cell.eventImage = UIImage(systemName: "calendar")
             cell.serviceNoLabel.text = self.suggestedServices[indexPath.row].busService.serviceNo
             cell.destinationLabel.text = self.suggestedServices[indexPath.row].originBusStop.rawRoadDesc
             cell.eventLabel.text = self.suggestedServices[indexPath.row].event.title

@@ -17,7 +17,7 @@ class BusServiceTableViewCell: UITableViewCell {
     
     public var busServices: [BusService] = [] {
         didSet {
-            busServicesLabel.text = busServices.map({ $0.serviceNo }).joined(separator: " • ")
+            busServicesLabel.text = busServices.map({ $0.serviceNo }).joined(separator: "  ")
         }
     }
     
@@ -52,6 +52,7 @@ class BusServiceTableViewCell: UITableViewCell {
         
         addSubview(busServicesLabel)
         busServicesLabel.font = .detail
+        busServicesLabel.textColor = .accent
         busServicesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             busServicesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
