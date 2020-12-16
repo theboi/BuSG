@@ -21,7 +21,8 @@ struct ListItem {
     var accessoryView: UIView?
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
-    var action: ((UITableViewController, IndexPath) -> Void)?
+    /// Hello
+    var action: ((UITableViewController, [ListSection], IndexPath) -> Void)?
     var urlString: String?
     var isClickable: Bool = true
     var checkmark: CheckmarkState = .none
@@ -60,8 +61,8 @@ class SelectListSection: ListSection {
         
         for i in 0...tableItems.count-1 {
             let oldAction = self.tableItems[i].action
-            self.tableItems[i].action = {tableViewController, indexPath in
-                oldAction?(tableViewController, indexPath)
+            self.tableItems[i].action = {tableViewController, listData, indexPath in
+                oldAction?(tableViewController, listData, indexPath)
                 onSelected?(self, tableViewController.tableView, indexPath)
                 selectItem(at: i, for: tableViewController.tableView)
             }
@@ -184,7 +185,7 @@ class ListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellData = listData[indexPath.section].tableItems[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
-        cellData.action?(self, indexPath)
+        cellData.action?(self, listData, indexPath)
         if let urlString = cellData.urlString {
             URL.open(webURL: urlString)
         }

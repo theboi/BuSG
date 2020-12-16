@@ -11,11 +11,14 @@ import MessageUI
 class SettingsViewController: ListViewController {
     
     func reloadData() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en-SG")
+        dateFormatter.dateFormat = "MMMM d, y (hh:mm a)"
         listData = [
             ListSection(tableItems: [
                 ListItem(title: "Bus Data", pushViewController: ListViewController(tableData: [
                     ListSection(tableItems: [
-                        ListItem(title: "Update Now", action: { (tableViewController, _) in
+                        ListItem(title: "Update Now", action: { tableViewController,listData,indexPath in
                             let alert = UIAlertController(title: nil, message: "Updating Bus Data", preferredStyle: .alert)
                             tableViewController.present(alert, animated: true)
                             let activityIndicator = UIActivityIndicatorView()
@@ -26,19 +29,22 @@ class SettingsViewController: ListViewController {
                                 activityIndicator.centerYAnchor.constraint(equalTo: alert.view.centerYAnchor),
                             ])
                             activityIndicator.startAnimating()
-                            ApiProvider.shared.updateStaticData { _ in
+                            ApiProvider.shared.updateStaticData {_ in
+                                listData[indexPath.section].footerText = "Last Updated: \(dateFormatter.string(from: Date(timeIntervalSince1970: Double(UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)))))"
                                 DispatchQueue.main.async {
                                     alert.dismiss(animated: true)
+                                    tableViewController.tableView.reloadData()
                                 }
                             }
-                        })
-                    ]),
+                        }),
+                    ], footerText: "Last Updated: \(dateFormatter.string(from: Date(timeIntervalSince1970: Double(UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)))))"),
                     SelectListSection(tableItems: [
                         ListItem(title: "Once per month"),
                         ListItem(title: "Once per week"),
                         ListItem(title: "Manually"),
-                    ], headerText: "Update Frequency", defaultIndex: UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency), onSelected: { UserDefaults.standard.setValue($2.row, forKey: K.userDefaults.updateFrequency) }),
+                    ], headerText: "Auto Update Frequency", defaultIndex: UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency), onSelected: { UserDefaults.standard.setValue($2.row, forKey: K.userDefaults.updateFrequency) }),
                 ])),
+                ListItem(title: "Connect To Calendar", accessoryView: UISwitch(frame: CGRect(), isOn: UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar), primaryAction: UIAction(handler: { UserDefaults.standard.setValue(($0.sender as! UISwitch).isOn, forKey: K.userDefaults.connectToCalendar) }))),
             ]),
             ListSection(tableItems: [
                 //                SettingsTableItem(title: "History", pushViewController: UIViewController()),
