@@ -201,7 +201,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         case .max: return UIScreen.main.bounds.height-50
         case .min: return 100
         case .mid: fallthrough
-        default: return 400
+        default: return 600
         }
     }
     
