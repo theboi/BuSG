@@ -8,6 +8,12 @@
 import UIKit
 
 extension UIViewController {
+    
+    convenience init(completion: CompletionHandler<UIViewController>) {
+        self.init()
+        completion?(self)
+    }
+    
     // TODO: Move present(_:animted:completion:) to SheetController
     /// Extension method to present `SheetController`s
     func present(_ sheetControllerToPresent: SheetController, animated flag: Bool, completion: (() -> Void)? = nil) {

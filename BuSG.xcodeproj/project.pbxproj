@@ -17,6 +17,7 @@
 		AA13B737257346E4006FD219 /* BusStopMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B736257346E4006FD219 /* BusStopMapper.swift */; };
 		AA13B73F257369B9006FD219 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B73E257369B9006FD219 /* URL.swift */; };
 		AA337D6B2577CECE001453D0 /* BusApiMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA337D6A2577CECE001453D0 /* BusApiMapper.swift */; };
+		AA37ECD325890C3E00E60786 /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA37ECD225890C3E00E60786 /* UIAlertController.swift */; };
 		AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */; };
 		AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4C6E2A256A541D00DDD32F /* UIViewController.swift */; };
 		AA51A3392588AE76002EB6A2 /* BusSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA51A3382588AE76002EB6A2 /* BusSuggestion.swift */; };
@@ -88,6 +89,7 @@
 		AA13B736257346E4006FD219 /* BusStopMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopMapper.swift; sourceTree = "<group>"; };
 		AA13B73E257369B9006FD219 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		AA337D6A2577CECE001453D0 /* BusApiMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusApiMapper.swift; sourceTree = "<group>"; };
+		AA37ECD225890C3E00E60786 /* UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
 		AA45B6472578BD3D00EBCCE1 /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
 		AA4C6E2A256A541D00DDD32F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		AA51A3382588AE76002EB6A2 /* BusSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusSuggestion.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				AA995B16258794F000072557 /* UIWindow.swift */,
 				AA995B1B258795E900072557 /* UIView.swift */,
 				AA995B25258873BB00072557 /* Sequence.swift */,
+				AA37ECD225890C3E00E60786 /* UIAlertController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				AA995B1C258795E900072557 /* UIView.swift in Sources */,
 				AA7F4CC2257A81B200A4DD14 /* BusStopTableViewCell.swift in Sources */,
 				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
+				AA37ECD325890C3E00E60786 /* UIAlertController.swift in Sources */,
 				AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */,
 				AA995B26258873BB00072557 /* Sequence.swift in Sources */,
 				AA808A8725793DA90060547F /* BusRouteMapper.swift in Sources */,
