@@ -15,8 +15,22 @@ class SettingsViewController: ListViewController {
             ListSection(tableItems: [
                 ListItem(title: "Bus Data", pushViewController: ListViewController(tableData: [
                     ListSection(tableItems: [
-                        ListItem(title: "Update Now", action: {_,_ in
-                            (UIApplication.shared.delegate as! AppDelegate).window?.present(Toast(message: "Began Bus Data Update", image: UIImage(systemName: "square.and.arrow.down")), duration: 3)
+                        ListItem(title: "Update Now", action: { (tableViewController, _) in
+                            let alert = UIAlertController(title: nil, message: "Updating Bus Data", preferredStyle: .alert)
+                            tableViewController.present(alert, animated: true)
+                            let activityIndicator = UIActivityIndicatorView()
+                            alert.view.addSubview(activityIndicator)
+                            activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+                            NSLayoutConstraint.activate([
+                                activityIndicator.leadingAnchor.constraint(equalTo: alert.view.leadingAnchor, constant: K.margin.extraLarge),
+                                activityIndicator.centerYAnchor.constraint(equalTo: alert.view.centerYAnchor),
+                            ])
+                            activityIndicator.startAnimating()
+                            ApiProvider.shared.updateStaticData { _ in
+                                DispatchQueue.main.async {
+                                    alert.dismiss(animated: true)
+                                }
+                            }
                         })
                     ]),
                     SelectListSection(tableItems: [

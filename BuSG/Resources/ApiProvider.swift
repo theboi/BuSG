@@ -50,6 +50,7 @@ class ApiProvider {
     
     /// Update static bus data from DataMall servers such as available Bus Services, Bus Stops and Bus Routes. Runs asynchronous.
     public func updateStaticData(completion: CompletionHandler<Void> = nil) {
+        print("START FETCH")
         var busRoutesDictForBusStops = [String : [BusRoute]]()
         var busRoutesDictForBusServices = [String : [BusRoute]]()
 
@@ -245,20 +246,16 @@ class ApiProvider {
     }
     
     private func handleApiError(res: URLResponse?, err: Error?) {
-        print(URLError.networkConnectionLost.rawValue)
         if let err = err {
             if let urlError = err as? URLError {
                 var message: String
                 var imageName: String
                 switch urlError {
-                case URLError.notConnectedToInternet:
+                case URLError.notConnectedToInternet, URLError.networkConnectionLost:
                     message = "No Internet Connection"
                     imageName = "wifi.exclamationmark"
-                case URLError.networkConnectionLost: //-1004
-                    message = "No Internet Connection2"
-                    imageName = "wifi.exclamationmark"
                 default:
-                    message = "Unknown Error Occured2"
+                    message = "Unknown Error Occured"
                     imageName = "exclamationmark.circle"
                 }
                 DispatchQueue.main.async {
