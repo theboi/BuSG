@@ -88,18 +88,24 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        65
+        switch indexPath.section {
+        case 0: return suggestedServices.isEmpty ? 85 : 65
+        case 1: fallthrough
+        default: return 85
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let suggestedCell = { () -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggestedCell, for: indexPath) as! BusSuggestionTableViewCell
-            cell.textLabel?.text = self.suggestedServices[indexPath.row].busService.serviceNo
-            cell.detailTextLabel?.text = self.suggestedServices[indexPath.row].originBusStop.rawRoadDesc
+            cell.serviceNoLabel.text = self.suggestedServices[indexPath.row].busService.serviceNo
+            cell.destinationLabel.text = self.suggestedServices[indexPath.row].originBusStop.rawRoadDesc
+            cell.eventLabel.text = self.suggestedServices[indexPath.row].event.title
             return cell
         }
         let nearbyCell = { () -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
+            cell.busServices = self.nearbyStops[indexPath.row].busServices
             cell.roadDescLabel.text = self.nearbyStops[indexPath.row].roadDesc
             cell.busStopCodeLabel.text = self.nearbyStops[indexPath.row].busStopCode
             cell.roadNameLabel.text = self.nearbyStops[indexPath.row].roadName
