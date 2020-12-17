@@ -21,7 +21,7 @@ public class BusStop: NSManagedObject {
             routeReq.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
             do {
                 let busRoutes = try context.fetch(routeReq)
-                return try busRoutes.map({ (busRoute) -> BusService in
+                return busRoutes.map({ (busRoute) -> BusService in
                     let stopReq: NSFetchRequest<BusService> = BusService.fetchRequest()
                     stopReq.predicate = NSPredicate(format: "serviceNo == %@", busRoute.serviceNo)
                     do {

@@ -21,7 +21,7 @@ struct ListItem {
     var accessoryView: UIView?
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
-    var action: ((UITableViewController, ListData, IndexPath) -> Void)?
+    var action: ((ListViewController, ListData, IndexPath) -> Void)?
     var urlString: String?
     var isClickable: Bool = true
     var checkmark: CheckmarkState = .none
@@ -39,18 +39,10 @@ class ListSection {
         self.footerText = footerText
         self.headerTrailingButton = headerTrailingButton
     }
-    
 }
 
-class ListData {
+struct ListData {
     var sections: [ListSection]
-    var headerView: UIView?
-    var footerView: UIView?
-    
-    init(sections: [ListSection], headerView: UIView? = nil, footerView: UIView? = nil) {
-        self.sections = sections
-    }
-    
 }
 
 class SelectListSection: ListSection {
@@ -70,24 +62,72 @@ class SelectListSection: ListSection {
         
         for i in 0...items.count-1 {
             let oldAction = self.items[i].action
-            self.items[i].action = {tableViewController, listData, indexPath in
-                oldAction?(tableViewController, listData, indexPath)
-                onSelected?(self, tableViewController.tableView, indexPath)
-                selectItem(at: i, for: tableViewController.tableView)
+            self.items[i].action = {listViewController, listData, indexPath in
+                oldAction?(listViewController, listData, indexPath)
+                onSelected?(self, listViewController.tableView, indexPath)
+                selectItem(at: i, for: listViewController.tableView)
             }
         }
     }
     
 }
 
-class ListViewController: UITableViewController {
+class ListViewController: UIViewController {
+    
+    var headerView: UIView?
+    var footerView: UIView?
+    
+    let tableView = UITableView(frame: CGRect(), style: .insetGrouped)
+    var tableViewHeightConstraint: NSLayoutConstraint!
     
     var data: ListData!
     
-    init(data: ListData) {
+    override func updateViewConstraints() {
+//        tableViewHeightConstraint.constant =
+        super.updateViewConstraints()
+    }
+    
+    init(data: ListData, headerView: UIView? = nil, footerView: UIView? = nil) {
         super.init(nibName: nil, bundle: nil)
         self.data = data
-        tableView = UITableView(frame: CGRect(), style: .insetGrouped)
+        self.headerView = headerView
+        self.footerView = footerView
+        
+        view.backgroundColor = .systemBackground
+        
+        if let headerView = self.headerView {
+            view.addSubview(headerView)
+            headerView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                headerView.heightAnchor.constraint(equalToConstant: headerView.frame.height),
+            ])
+        }
+        
+        if let footerView = self.footerView {
+            view.addSubview(footerView)
+            footerView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                footerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                footerView.heightAnchor.constraint(equalToConstant: footerView.frame.height),
+            ])
+        }
+
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: headerView?.bottomAnchor ?? view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: footerView?.topAnchor ?? view.bottomAnchor)
+        ])
+        
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.identifiers.settingsCell)
         tableView.register(ListViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: K.identifiers.listViewHeader)
     }
@@ -96,9 +136,11 @@ class ListViewController: UITableViewController {
         super.init(coder: coder)
     }
     
-    // MARK: UITableViewDataSource
+}
+
+extension ListViewController: UITableViewDataSource {
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionData = data.sections[section]
         
         if let headerText = sectionData.headerText {
@@ -111,23 +153,23 @@ class ListViewController: UITableViewController {
         return nil
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         data.sections[section].headerText != nil ? 60 : 20
     }
     
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         data.sections[section].footerText
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return data.sections.count
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.sections[section].items.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellData = data.sections[indexPath.section].items[indexPath.row]
         let cell = cellData.customCell ?? tableView.dequeueReusableCell(withIdentifier: K.identifiers.settingsCell, for: indexPath)
@@ -165,13 +207,15 @@ class ListViewController: UITableViewController {
         return cell
     }
     
-    // MARK: UITableViewDelegate
+}
+
+extension ListViewController: UITableViewDelegate {
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return data.sections[indexPath.section].items[indexPath.row].height ?? K.cellHeight
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellData = data.sections[indexPath.section].items[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         cellData.action?(self, data, indexPath)
@@ -185,4 +229,5 @@ class ListViewController: UITableViewController {
             self.navigationController?.present(nextViewController, animated: true)
         }
     }
+    
 }
