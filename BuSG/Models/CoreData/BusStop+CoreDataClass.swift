@@ -15,14 +15,13 @@ public class BusStop: NSManagedObject {
     public var accessorBusRoute: BusRoute?
 
     public var busServices: [BusService] {
-        
         func fetch() -> [BusService] {
             let context = managedObjectContext!
             let routeReq: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
             routeReq.predicate = NSPredicate(format: "busStopCode == %@", busStopCode)
             do {
                 let busRoutes = try context.fetch(routeReq)
-                return busRoutes.map({ (busRoute) -> BusService in
+                return try busRoutes.map({ (busRoute) -> BusService in
                     let stopReq: NSFetchRequest<BusService> = BusService.fetchRequest()
                     stopReq.predicate = NSPredicate(format: "serviceNo == %@", busRoute.serviceNo)
                     do {
@@ -35,7 +34,9 @@ public class BusStop: NSManagedObject {
                     } catch {
                         fatalError(error.localizedDescription)
                     }
-                })
+                }).sorted {
+                    $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
+                }
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -49,8 +50,11 @@ public class BusStop: NSManagedObject {
                     busServices.append(busService)
                 } else { return fetch() }
             }
-            return busServices
-        } else { return fetch() }
+            return busServices.sorted {
+                $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
+            }
+        }
+        return fetch()
     }
     
     public var coordinate: CLLocationCoordinate2D {

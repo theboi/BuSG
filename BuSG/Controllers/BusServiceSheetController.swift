@@ -67,9 +67,18 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
-        cell.roadDescLabel.text = busService?.busStops[indexPath.row].roadDesc
-        cell.busStopCodeLabel.text = busService?.busStops[indexPath.row].busStopCode
-        cell.roadNameLabel.text = busService?.busStops[indexPath.row].roadName
+        let busStopData = self.busService.busStops[indexPath.row]
+        cell.busServices = busStopData.busServices
+        cell.roadDescLabel.text = busStopData.roadDesc
+        cell.busStopCodeLabel.text = busStopData.busStopCode
+        cell.roadNameLabel.text = busStopData.roadName
+        let distance = LocationProvider.shared.distanceFromCurrentLocation(to: CLLocation(latitude: busStopData.latitude, longitude: busStopData.longitude))
+        if distance > 100 {
+            cell.distanceLabel.text = "\(String(format: "%.2f", distance/1000)) km"
+        } else {
+            cell.distanceLabel.text = "\(String(format: "%.1f", distance)) m"
+        }
+        
         return cell
     }
 

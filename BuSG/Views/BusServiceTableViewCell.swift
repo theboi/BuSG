@@ -57,11 +57,13 @@ class BusServiceTableViewCell: UITableViewCell {
         busServicesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             busServicesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            busServicesLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
             busServicesLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
         ])
         
         addSubview(distanceLabel)
         distanceLabel.font = .detail
+        distanceLabel.textColor = .secondaryLabel
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             distanceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),

@@ -53,7 +53,7 @@ class ApiProvider {
         print("START FETCH")
         var busRoutesDictForBusStops = [String : [BusRoute]]()
         var busRoutesDictForBusServices = [String : [BusRoute]]()
-
+        
         /// Fetch BusRoutes from API
         self.fetchStaticData(BusRouteMapperRoot.self) { (busServiceMapperValues: [BusRouteMapperValue]) in
             self.backgroundContext.performAndWait {
@@ -83,7 +83,7 @@ class ApiProvider {
                         data.rawSunLastBus = mapper.sunLastBus ?? K.nilStr
                     }
                     try self.backgroundContext.save()
-
+                    
                     try self.backgroundContext.fetch(BusRoute.fetchRequest()).forEach({ (busRoute: BusRoute) in
                         busRoutesDictForBusStops[busRoute.busStopCode, default: []].append(busRoute)
                         busRoutesDictForBusServices[busRoute.serviceNo, default: []].append(busRoute)
@@ -96,7 +96,7 @@ class ApiProvider {
                 self.backgroundContext.performAndWait {
                     do {
                         var busStopDict = [String : BusStop]()
-
+                        
                         try self.backgroundContext.fetch(BusStop.fetchRequest()).forEach({ (busStop: BusStop) in
                             busStopDict[busStop.busStopCode] = busStop
                         })
@@ -126,7 +126,7 @@ class ApiProvider {
                     self.backgroundContext.performAndWait {
                         do {
                             var busServiceDict = [String : BusService]()
-
+                            
                             try self.backgroundContext.fetch(BusService.fetchRequest()).forEach({ (busService: BusService) in
                                 busServiceDict["\(busService.serviceNo),\(busService.direction)"] = busService
                             })
@@ -191,10 +191,8 @@ class ApiProvider {
             
             let predicate = NSPredicate(format: "latitude <= %@ && latitude >= %@ && longitude <= %@ && longitude >= %@", argumentArray: [coordinate.latitude+rad, coordinate.latitude-rad, coordinate.longitude+rad, coordinate.longitude-rad])
             req.predicate = predicate
-            return try context.fetch(req).sorted(by: { (prevBusStop, nextBusStop) -> Bool in
-                let prevBusStopDistance = CLLocation.distance(CLLocation(latitude: prevBusStop.latitude, longitude: prevBusStop.longitude))(from: LocationProvider.shared.currentLocation)
-                let nextBusStopDistance = CLLocation.distance(CLLocation(latitude: nextBusStop.latitude, longitude: nextBusStop.longitude))(from: LocationProvider.shared.currentLocation)
-                return prevBusStopDistance < nextBusStopDistance
+            return try context.fetch(req).sorted(by: {
+                LocationProvider.shared.distanceFromCurrentLocation(to: CLLocation(coordinate: $0.coordinate)) < LocationProvider.shared.distanceFromCurrentLocation(to: CLLocation(coordinate: $1.coordinate))
             })
         } catch {
             fatalError("Failure to fetch context: \(error)")
@@ -220,7 +218,7 @@ class ApiProvider {
     }
     
     public func getSuggestedServices(completion: CompletionHandler<[BusSuggestion]> = nil) {
-
+        
         let events = EventProvider.shared.presentDayCalendarEvents()
         let nearbyBusStops = events.compactMap { (event) -> ([BusStop], EKEvent)? in
             /// If location not stated, event is ignored
