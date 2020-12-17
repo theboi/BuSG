@@ -2,7 +2,7 @@
 //  BusStop+CoreDataProperties.swift
 //  BuSG
 //
-//  Created by Ryan The on 14/12/20.
+//  Created by Ryan The on 18/12/20.
 //
 //
 

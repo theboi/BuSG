@@ -15,11 +15,16 @@ public class BusStop: NSManagedObject {
     public var accessorBusRoute: BusRoute?
 
     public var busServices: [BusService] {
-        if let busRoutes = busRoutes, busRoutes.count > 0 {
+        if let busRoutes = busRoutes?.allObjects as? [BusRoute] {
             var busServices: [BusService] = []
-            for busRoute in (busRoutes.allObjects as! [BusRoute]) {
+            for busRoute in busRoutes {
+                let busServiceBusRoutes = busRoute.busService?.busRoutes?.allObjects as! [BusRoute]
+                if busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 1 }).count || busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 2 }).count {
+                    continue
+                }
+                
                 if let busService = busRoute.busService {
-                    busService.accessorBusRoute = busRoute
+//                    busService.accessorBusRoute = busRoute
                     busServices.append(busService)
                 }
             }

@@ -82,8 +82,8 @@ class BusStopSheetController: SheetController {
         busStop = ApiProvider.shared.getBusStop(with: busStopCode)
         
         headerView.titleText = busStop.roadName
-        headerView.detailText = busStop.roadDesc
-        
+        headerView.detailText = "\(busStop.busStopCode)  \(busStop.roadDesc)"
+                
         tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStopCell)
     }
     
