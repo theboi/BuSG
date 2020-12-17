@@ -160,7 +160,7 @@ extension HomeSheetController: SheetControllerDelegate {
     func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
         UIView.animate(withDuration: 0.3) {
             switch state {
-            case .min:
+            case .minimized:
                 self.tableView.layer.opacity = 0
             default:
                 self.tableView.layer.opacity = 1

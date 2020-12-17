@@ -19,7 +19,7 @@ class BusServiceSheetController: SheetController {
         
         delegate = self
         
-        let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
+        let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: {_ in
             self.dismissSheet()
         }))
         headerView.trailingButton = trailingButton
@@ -84,7 +84,7 @@ extension BusServiceSheetController: SheetControllerDelegate {
     func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
         UIView.animate(withDuration: 0.3) {
             switch state {
-            case .min:
+            case .minimized:
                 self.tableView.layer.opacity = 0
             default:
                 self.tableView.layer.opacity = 1
