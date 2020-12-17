@@ -21,7 +21,6 @@ struct ListItem {
     var accessoryView: UIView?
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
-    /// Hello
     var action: ((UITableViewController, [ListSection], IndexPath) -> Void)?
     var urlString: String?
     var isClickable: Bool = true
@@ -80,7 +79,7 @@ class ListViewController: UITableViewController {
         self.listData = tableData
         tableView = UITableView(frame: CGRect(), style: .insetGrouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.identifiers.settingsCell)
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: K.identifiers.settingsHeader)
+        tableView.register(ListViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: K.identifiers.listViewHeader)
     }
     
     required init?(coder: NSCoder) {
@@ -93,30 +92,10 @@ class ListViewController: UITableViewController {
         let sectionData = listData[section]
         
         if let headerText = sectionData.headerText {
-            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: K.identifiers.settingsHeader)!
-            
-            let label = UILabel()
-            view.addSubview(label)
-            label.text = headerText
-            label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            
-            label.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                label.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
-                label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: K.margin.extraLarge),
-                label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
-            ])
-            
-            if let button = sectionData.headerTrailingButton {
-                view.addSubview(button)
-                button.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -K.margin.large),
-                    button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.extraLarge),
-                ])
-            }
-            
-            return view
+            let headerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: K.identifiers.listViewHeader) ?? ListViewHeaderFooterView(reuseIdentifier: K.identifiers.listViewHeader)) as! ListViewHeaderFooterView
+            headerView.header.text = headerText
+            headerView.trailingButton = sectionData.headerTrailingButton
+            return headerView
         }
         
         return nil
