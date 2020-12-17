@@ -18,9 +18,9 @@ public class BusService: NSManagedObject {
         if let busRoutes = busRoutes {
             var busStops: [BusStop] = []
             for busRoute in (busRoutes.allObjects as! [BusRoute]) {
-                if busRoute.direction != accessorBusRoute!.direction { continue }
+                if busRoute.direction != accessorBusRoute?.direction ?? 1 { continue }
                 if let busStop = busRoute.busStop {
-                    busStop.accessorBusRoute = busRoute
+//                    busStop.accessorBusRoute = busRoute
                     busStops.append(busStop)
                 }
             }

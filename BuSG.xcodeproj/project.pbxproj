@@ -40,13 +40,13 @@
 		AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91D0FB257649A6003FAE6E /* BusArrival.swift */; };
 		AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AA91D10625765A10003FAE6E /* BusData.xcdatamodeld */; };
 		AA995AF82587363400072557 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995AF72587363400072557 /* UIFont.swift */; };
-		AA995B0A2587694400072557 /* BusStop+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995B072587694400072557 /* BusStop+CoreDataProperties.swift */; };
-		AA995B0B2587694400072557 /* BusRoute+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995B082587694400072557 /* BusRoute+CoreDataProperties.swift */; };
-		AA995B0C2587694400072557 /* BusService+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995B092587694400072557 /* BusService+CoreDataProperties.swift */; };
 		AA995B17258794F000072557 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995B16258794F000072557 /* UIWindow.swift */; };
 		AA995B1C258795E900072557 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995B1B258795E900072557 /* UIView.swift */; };
 		AA995B212587BA4D00072557 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995B202587BA4C00072557 /* Toast.swift */; };
 		AA995B26258873BB00072557 /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA995B25258873BB00072557 /* Sequence.swift */; };
+		AA9C4A9E258BB9270042C1C3 /* BusService+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4A9B258BB9270042C1C3 /* BusService+CoreDataProperties.swift */; };
+		AA9C4A9F258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4A9C258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift */; };
+		AA9C4AA0258BB9270042C1C3 /* BusStop+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4A9D258BB9270042C1C3 /* BusStop+CoreDataProperties.swift */; };
 		AAA49517258270530073F360 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA49516258270530073F360 /* UITextField.swift */; };
 		AAA4951F25832A870073F360 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA4951E25832A870073F360 /* SettingsViewController.swift */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
@@ -116,13 +116,13 @@
 		AA91D0FB257649A6003FAE6E /* BusArrival.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrival.swift; sourceTree = "<group>"; };
 		AA91D10725765A10003FAE6E /* BusData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusData.xcdatamodel; sourceTree = "<group>"; };
 		AA995AF72587363400072557 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
-		AA995B072587694400072557 /* BusStop+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		AA995B082587694400072557 /* BusRoute+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusRoute+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		AA995B092587694400072557 /* BusService+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA995B16258794F000072557 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
 		AA995B1B258795E900072557 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		AA995B202587BA4C00072557 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		AA995B25258873BB00072557 /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		AA9C4A9B258BB9270042C1C3 /* BusService+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AA9C4A9C258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusRoute+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AA9C4A9D258BB9270042C1C3 /* BusStop+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AAA49516258270530073F360 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		AAA4951E25832A870073F360 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -207,9 +207,9 @@
 		AAE39B5825793A310065CFF5 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				AA995B092587694400072557 /* BusService+CoreDataProperties.swift */,
-				AA995B072587694400072557 /* BusStop+CoreDataProperties.swift */,
-				AA995B082587694400072557 /* BusRoute+CoreDataProperties.swift */,
+				AA9C4A9B258BB9270042C1C3 /* BusService+CoreDataProperties.swift */,
+				AA9C4A9D258BB9270042C1C3 /* BusStop+CoreDataProperties.swift */,
+				AA9C4A9C258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift */,
 				AA908423257A4012000A9D2B /* BusService+CoreDataClass.swift */,
 				AA908427257A4012000A9D2B /* BusStop+CoreDataClass.swift */,
 				AA908425257A4012000A9D2B /* BusRoute+CoreDataClass.swift */,
@@ -475,7 +475,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA995B0C2587694400072557 /* BusService+CoreDataProperties.swift in Sources */,
 				AA908429257A4012000A9D2B /* BusService+CoreDataClass.swift in Sources */,
 				AA13B6DC2572127E006FD219 /* HomeSheetController.swift in Sources */,
 				AAE490C9257E07EA0010B483 /* ListViewController.swift in Sources */,
@@ -487,12 +486,10 @@
 				AAA4951F25832A870073F360 /* SettingsViewController.swift in Sources */,
 				AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */,
 				AA90842B257A4012000A9D2B /* BusRoute+CoreDataClass.swift in Sources */,
-				AA995B0A2587694400072557 /* BusStop+CoreDataProperties.swift in Sources */,
 				AAA49517258270530073F360 /* UITextField.swift in Sources */,
 				AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */,
 				AA6E97BB257FA5F4004D585A /* EventProvider.swift in Sources */,
 				AA710A18258B0F8900B59E4F /* CLLocation.swift in Sources */,
-				AA995B0B2587694400072557 /* BusRoute+CoreDataProperties.swift in Sources */,
 				AA90842D257A4012000A9D2B /* BusStop+CoreDataClass.swift in Sources */,
 				AA87B999257F8816002F322D /* LaunchViewController.swift in Sources */,
 				AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */,
@@ -502,6 +499,7 @@
 				AA7F4CC7257A9D0900A4DD14 /* BusStopAnnotation.swift in Sources */,
 				AA13B737257346E4006FD219 /* BusStopMapper.swift in Sources */,
 				AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */,
+				AA9C4AA0258BB9270042C1C3 /* BusStop+CoreDataProperties.swift in Sources */,
 				AA995B1C258795E900072557 /* UIView.swift in Sources */,
 				AA7F4CC2257A81B200A4DD14 /* BusStopTableViewCell.swift in Sources */,
 				AA710A132589FC5400B59E4F /* UISwitch.swift in Sources */,
@@ -510,12 +508,14 @@
 				AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */,
 				AA995B26258873BB00072557 /* Sequence.swift in Sources */,
 				AA808A8725793DA90060547F /* BusRouteMapper.swift in Sources */,
+				AA9C4A9F258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift in Sources */,
 				AAF4A5342562840500FC51E7 /* MainViewController.swift in Sources */,
 				AA13B6FC2572571F006FD219 /* ApiProvider.swift in Sources */,
 				AA337D6B2577CECE001453D0 /* BusApiMapper.swift in Sources */,
 				AA91D0F72576416C003FAE6E /* BusServiceTableViewCell.swift in Sources */,
 				AA710A22258B530300B59E4F /* CGRect.swift in Sources */,
 				AA51A3392588AE76002EB6A2 /* BusSuggestion.swift in Sources */,
+				AA9C4A9E258BB9270042C1C3 /* BusService+CoreDataProperties.swift in Sources */,
 				AA91D0DC25763BCA003FAE6E /* FillView.swift in Sources */,
 				AA995B17258794F000072557 /* UIWindow.swift in Sources */,
 				AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */,
