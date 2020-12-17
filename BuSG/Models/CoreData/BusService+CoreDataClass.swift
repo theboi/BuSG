@@ -15,46 +15,20 @@ public class BusService: NSManagedObject {
     public var accessorBusRoute: BusRoute?
     
     public var busStops: [BusStop] {
-        func fetch() -> [BusStop] {
-            let context = managedObjectContext!
-            let routeReq: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
-            routeReq.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
-            do {
-                let busRoutes = try context.fetch(routeReq)
-                return busRoutes.map({ (busRoute) -> BusStop in
-                    let stopReq: NSFetchRequest<BusStop> = BusStop.fetchRequest()
-                    stopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute.busStopCode)
-                    do {
-                        let busStop = try context.fetch(stopReq).first!
-                        busStop.accessorBusRoute = busRoute
-                        busRoute.busService = self
-                        busRoute.busStop = busStop
-                        try context.save()
-                        return busStop
-                    } catch {
-                        fatalError(error.localizedDescription)
-                    }
-                }).sorted {
-                    $0.accessorBusRoute?.stopSequence ?? 0 > $1.accessorBusRoute?.stopSequence ?? 0
-                }
-            } catch {
-                fatalError(error.localizedDescription)
-            }
-        }
-        
-        if let busRoutes = busRoutes, busRoutes.count > 0 {
+        if let busRoutes = busRoutes {
             var busStops: [BusStop] = []
             for busRoute in (busRoutes.allObjects as! [BusRoute]) {
+                if busRoute.direction != accessorBusRoute!.direction { continue }
                 if let busStop = busRoute.busStop {
                     busStop.accessorBusRoute = busRoute
                     busStops.append(busStop)
-                } else { return fetch() }
+                }
             }
             return busStops.sorted {
-                $0.accessorBusRoute?.stopSequence ?? 0 > $1.accessorBusRoute?.stopSequence ?? 0
+                return $0.accessorBusRoute!.stopSequence < $1.accessorBusRoute!.stopSequence
             }
         }
-        return fetch()
+        return []
     }
     
     public var originBusStop: BusStop? {

@@ -70,23 +70,23 @@ class ApiProvider {
                             data = BusRoute(context: self.backgroundContext)
                         }
                         data.serviceNo = mapper.serviceNo
-                        data.rawServiceOperator = mapper.serviceOperator?.rawValue ?? K.nilStr
-                        data.direction = Int64(truncatingIfNeeded: mapper.direction ?? 0)
-                        data.stopSequence = Int64(truncatingIfNeeded: mapper.stopSequence ?? 0)
+                        data.rawServiceOperator = mapper.serviceOperator!.rawValue
+                        data.direction = Int64(truncatingIfNeeded: mapper.direction!)
+                        data.stopSequence = Int64(truncatingIfNeeded: mapper.stopSequence!)
                         data.busStopCode = mapper.busStopCode
-                        data.distance = mapper.distance ?? 0
-                        data.rawWdFirstBus = mapper.wdFirstBus ?? K.nilStr
-                        data.rawWdLastBus = mapper.wdLastBus ?? K.nilStr
-                        data.rawSatFirstBus = mapper.satFirstBus ?? K.nilStr
-                        data.rawSatLastBus = mapper.satLastBus ?? K.nilStr
-                        data.rawSunFirstBus = mapper.sunFirstBus ?? K.nilStr
-                        data.rawSunLastBus = mapper.sunLastBus ?? K.nilStr
+                        data.distance = mapper.distance ?? 0 /// When API returns null, distance = 0
+                        data.rawWdFirstBus = mapper.wdFirstBus!
+                        data.rawWdLastBus = mapper.wdLastBus!
+                        data.rawSatFirstBus = mapper.satFirstBus!
+                        data.rawSatLastBus = mapper.satLastBus!
+                        data.rawSunFirstBus = mapper.sunFirstBus!
+                        data.rawSunLastBus = mapper.sunLastBus!
                     }
                     try self.backgroundContext.save()
                     
                     try self.backgroundContext.fetch(BusRoute.fetchRequest()).forEach({ (busRoute: BusRoute) in
                         busRoutesDictForBusStops[busRoute.busStopCode, default: []].append(busRoute)
-                        busRoutesDictForBusServices[busRoute.serviceNo, default: []].append(busRoute)
+                        busRoutesDictForBusServices["\(busRoute.serviceNo),\(busRoute.direction)", default: []].append(busRoute)
                     })
                 } catch {
                     fatalError("Failure to save context: \(error)")
@@ -108,11 +108,11 @@ class ApiProvider {
                                 data = BusStop(context: self.backgroundContext)
                             }
                             data.busStopCode = mapper.busStopCode
-                            data.rawRoadName = mapper.roadName ?? K.nilStr
-                            data.rawRoadDesc = mapper.roadDesc ?? K.nilStr
-                            data.latitude = mapper.latitude ?? 0
-                            data.longitude = mapper.longitude ?? 0
-                            data.busRoutes = NSSet(array: busRoutesDictForBusStops[mapper.busStopCode] ?? [])
+                            data.rawRoadName = mapper.roadName!
+                            data.rawRoadDesc = mapper.roadDesc!
+                            data.latitude = mapper.latitude!
+                            data.longitude = mapper.longitude!
+                            data.busRoutes = NSSet(array: busRoutesDictForBusStops[mapper.busStopCode]!)
                         }
                         try self.backgroundContext.save()
                     } catch {
@@ -138,17 +138,17 @@ class ApiProvider {
                                     data = BusService(context: self.backgroundContext)
                                 }
                                 data.serviceNo = mapper.serviceNo
-                                data.rawServiceOperator = mapper.serviceOperator?.rawValue ?? K.nilStr
+                                data.rawServiceOperator = mapper.serviceOperator!.rawValue
                                 data.direction = Int64(truncatingIfNeeded: mapper.direction)
-                                data.rawCategory = mapper.category?.rawValue ?? K.nilStr
-                                data.originCode = mapper.originCode ?? K.nilStr
-                                data.destinationCode = mapper.destinationCode ?? K.nilStr
-                                data.rawAmPeakFreq = mapper.amPeakFreq ?? K.nilStr
-                                data.rawAmOffpeakFreq = mapper.amOffpeakFreq ?? K.nilStr
-                                data.rawPmPeakFreq = mapper.pmPeakFreq ?? K.nilStr
-                                data.rawPmOffpeakFreq = mapper.pmOffpeakFreq ?? K.nilStr
-                                data.rawLoopDesc = mapper.loopDesc ?? K.nilStr
-                                data.busRoutes = NSSet(array: busRoutesDictForBusServices[mapper.serviceNo] ?? [])
+                                data.rawCategory = mapper.category!.rawValue
+                                data.originCode = mapper.originCode!
+                                data.destinationCode = mapper.destinationCode!
+                                data.rawAmPeakFreq = mapper.amPeakFreq!
+                                data.rawAmOffpeakFreq = mapper.amOffpeakFreq!
+                                data.rawPmPeakFreq = mapper.pmPeakFreq!
+                                data.rawPmOffpeakFreq = mapper.pmOffpeakFreq!
+                                data.rawLoopDesc = mapper.loopDesc!
+                                data.busRoutes = NSSet(array: busRoutesDictForBusServices["\(mapper.serviceNo),\(mapper.direction)"] ?? []) /// For some reason data on 36B does not exist
                             }
                             try self.backgroundContext.save()
                             print("DONE FETCH")
@@ -173,10 +173,10 @@ class ApiProvider {
         }
     }
     
-    public func getBusService(with serviceNo: String) -> BusService? {
+    public func getBusService(with serviceNo: String, in direction: Int64) -> BusService? {
         do {
             let req = BusService.fetchRequest() as NSFetchRequest<BusService>
-            req.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
+            req.predicate = NSPredicate(format: "serviceNo == %@ && direction == %@", argumentArray: [serviceNo, direction])
             return try context.fetch(req).first
         } catch {
             fatalError("Failure to fetch context: \(error)")
@@ -269,7 +269,6 @@ class ApiProvider {
         
         if let httpResponse = res as? HTTPURLResponse,
            !(200...299).contains(httpResponse.statusCode) {
-            print("OOOOOOO \(httpResponse.statusCode)")
             DispatchQueue.main.async {
                 (UIApplication.shared.delegate as! AppDelegate).window?.present(Toast(message: "Server Error", image: UIImage(systemName: "server.rack"), style: .danger))
             }
