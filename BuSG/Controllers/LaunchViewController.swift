@@ -23,7 +23,7 @@ class LaunchViewController: ListViewController {
                         }
                         self.reloadData()
                     })))
-                ], footerText: "Enter a descriptive name and its nearest bus stop.")
+                ], footerText: "Enter a descriptive name and it's nearest bus stop.")
             ]))
         }
         
@@ -32,9 +32,7 @@ class LaunchViewController: ListViewController {
                 // TODO
             }))),
             ListSection(tableItems: [
-                ListItem(title: "Connect to Calendar", accessoryView: UISwitch(frame: CGRect(), primaryAction: UIAction(handler: { action in
-                    UserDefaults.standard.setValue(action.state == .on, forKey: K.userDefaults.connectToCalendar)
-                })))
+                ListItem(title: "Connect To Calendar", accessoryView: UISwitch(frame: CGRect(), isOn: UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar), primaryAction: UIAction(handler: { UserDefaults.standard.setValue(($0.sender as! UISwitch).isOn, forKey: K.userDefaults.connectToCalendar) }))),
             ], headerText: "Events", footerText: "Enabling this allows BuSG to suggest buses based on your Calendar events.")
         ]
         tableView.reloadData()

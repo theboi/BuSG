@@ -46,7 +46,7 @@ enum K {
         static let busStopCell = "busStopCellIdentifier"
         static let busSuggestedCell = "busSuggestedCellIdentifier"
         static let settingsCell = "settingsCellIdentifier"
-        static let settingsHeader = "settingsHeaderIdentifier"
+        static let listViewHeader = "settingsHeaderIdentifier"
     }
     
     enum userDefaults {

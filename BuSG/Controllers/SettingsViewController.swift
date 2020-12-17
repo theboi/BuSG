@@ -16,7 +16,10 @@ class SettingsViewController: ListViewController {
         dateFormatter.dateFormat = "MMMM d, y (hh:mm a)"
         listData = [
             ListSection(tableItems: [
-                ListItem(title: "Bus Data", pushViewController: ListViewController(tableData: [
+                ListItem(title: "Favourite Places", image: UIImage(systemName: "heart.fill"), pushViewController: ListViewController(tableData: [
+                    
+                ])),
+                ListItem(title: "Bus Data", image: UIImage(systemName: "bus.fill"), pushViewController: ListViewController(tableData: [
                     ListSection(tableItems: [
                         ListItem(title: "Update Now", action: { tableViewController,listData,indexPath in
                             let alert = UIAlertController(title: nil, message: "Updating Bus Data", preferredStyle: .alert)
@@ -44,7 +47,7 @@ class SettingsViewController: ListViewController {
                         ListItem(title: "Manually"),
                     ], headerText: "Auto Update Frequency", defaultIndex: UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency), onSelected: { UserDefaults.standard.setValue($2.row, forKey: K.userDefaults.updateFrequency) }),
                 ])),
-                ListItem(title: "Connect To Calendar", accessoryView: UISwitch(frame: CGRect(), isOn: UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar), primaryAction: UIAction(handler: { UserDefaults.standard.setValue(($0.sender as! UISwitch).isOn, forKey: K.userDefaults.connectToCalendar) }))),
+                ListItem(title: "Connect To Calendar", image: UIImage(systemName: "calendar"), accessoryView: UISwitch(frame: CGRect(), isOn: UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar), primaryAction: UIAction(handler: { UserDefaults.standard.setValue(($0.sender as! UISwitch).isOn, forKey: K.userDefaults.connectToCalendar) }))),
             ]),
             ListSection(tableItems: [
                 //                SettingsTableItem(title: "History", pushViewController: UIViewController()),
