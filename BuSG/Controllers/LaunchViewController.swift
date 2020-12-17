@@ -12,6 +12,10 @@ class LaunchViewController: ListViewController {
     var favouritePlaces = ["Home", "Work", "School"]
         
     func reloadData() {
+        let favouritePlacesLocationPickerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 100))
+        favouritePlacesLocationPickerView.backgroundColor = .red
+//        favouritePlacesLocationPickerView.addSubview(UISegmentedControl(items: ["Hello"]))
+        
         let favouritePlacesTableItems = favouritePlaces.enumerated().map { (index, name) -> ListItem in
             ListItem(title: name, pushViewController: ListViewController(data: ListData(sections: [
                 ListSection(items: [
@@ -24,7 +28,7 @@ class LaunchViewController: ListViewController {
                         self.reloadData()
                     })))
                 ], footerText: "Enter a descriptive name and it's nearest bus stop.")
-            ])))
+            ]), headerView: favouritePlacesLocationPickerView))
         }
         
         data = ListData(sections: [
@@ -39,10 +43,29 @@ class LaunchViewController: ListViewController {
     }
     
     init() {
-        super.init(data: ListData(sections: []))
+        super.init(data: ListData(sections: []), footerView: UIView(frame: CGRect(height: 50+K.margin.large*2)))
         isModalInPresentation = true
         title = "Setup"
+        
         reloadData()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let doneButton = UIButton(frame: CGRect(), primaryAction: UIAction(handler: { _ in
+            self.dismiss(animated: true)
+        }))
+        doneButton.backgroundColor = .accent
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.layer.cornerRadius = K.cornerRadius
+        footerView.addSubview(doneButton)
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            doneButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: K.margin.large),
+            doneButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -K.margin.large),
+            doneButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -K.margin.large),
+            doneButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: K.margin.large),
+        ])
     }
     
     required init?(coder: NSCoder) {

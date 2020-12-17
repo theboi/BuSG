@@ -74,57 +74,24 @@ class SelectListSection: ListSection {
 
 class ListViewController: UIViewController {
     
-    var headerView: UIView?
-    var footerView: UIView?
+    var headerView = UIView()
+    var footerView = UIView()
     
     let tableView = UITableView(frame: CGRect(), style: .insetGrouped)
-    var tableViewHeightConstraint: NSLayoutConstraint!
     
     var data: ListData!
-    
-    override func updateViewConstraints() {
-//        tableViewHeightConstraint.constant =
-        super.updateViewConstraints()
-    }
     
     init(data: ListData, headerView: UIView? = nil, footerView: UIView? = nil) {
         super.init(nibName: nil, bundle: nil)
         self.data = data
-        self.headerView = headerView
-        self.footerView = footerView
         
-        view.backgroundColor = .systemBackground
-        
-        if let headerView = self.headerView {
-            view.addSubview(headerView)
-            headerView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                headerView.heightAnchor.constraint(equalToConstant: headerView.frame.height),
-            ])
+        if let headerView = headerView {
+            self.headerView = headerView
         }
         
-        if let footerView = self.footerView {
-            view.addSubview(footerView)
-            footerView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                footerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                footerView.heightAnchor.constraint(equalToConstant: footerView.frame.height),
-            ])
+        if let footerView = footerView {
+            self.footerView = footerView
         }
-
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: headerView?.bottomAnchor ?? view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: footerView?.topAnchor ?? view.bottomAnchor)
-        ])
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -134,6 +101,37 @@ class ListViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func viewDidLoad() {
+        view.backgroundColor = .systemBackground
+        
+        view.addSubview(headerView)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: headerView.frame.height),
+        ])
+        
+        view.addSubview(footerView)
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            footerView.heightAnchor.constraint(equalToConstant: footerView.frame.height),
+        ])
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: footerView.topAnchor)
+        ])
     }
     
 }
