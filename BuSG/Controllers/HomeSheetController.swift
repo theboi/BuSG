@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class HomeSheetController: SheetController {
 
@@ -106,10 +107,18 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
         }
         let nearbyCell = { () -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
-            cell.busServices = self.nearbyStops[indexPath.row].busServices
-            cell.roadDescLabel.text = self.nearbyStops[indexPath.row].roadDesc
-            cell.busStopCodeLabel.text = self.nearbyStops[indexPath.row].busStopCode
-            cell.roadNameLabel.text = self.nearbyStops[indexPath.row].roadName
+            let nearbyStopData = self.nearbyStops[indexPath.row]
+            cell.busServices = nearbyStopData.busServices
+            cell.roadDescLabel.text = nearbyStopData.roadDesc
+            cell.busStopCodeLabel.text = nearbyStopData.busStopCode
+            cell.roadNameLabel.text = nearbyStopData.roadName
+            let distance = LocationProvider.shared.distanceFromCurrentLocation(to: CLLocation(latitude: nearbyStopData.latitude, longitude: nearbyStopData.longitude))
+            if distance > 100 {
+                cell.distanceLabel.text = "\(String(format: "%.2f", distance/1000)) km"
+            } else {
+                cell.distanceLabel.text = "\(String(format: "%.1f", distance)) m"
+            }
+            
             return cell
         }
         switch indexPath.section {

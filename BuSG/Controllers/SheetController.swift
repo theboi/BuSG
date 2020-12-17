@@ -146,10 +146,6 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
                         
             let goal = self.view.frame.height
             let states: [SheetState] = [.minimized, .small, .regular, .full]
-
-//            let closest = states.map{ self.getSheetHeight(for: $0) }.reduce(0) { (prev, curr) -> CGFloat in
-//              return (abs(curr - goal) < abs(prev - goal) ? curr : prev)
-//            }
             
             var closest: (Int, CGFloat)?
             for (index, state) in states.map({ self.getSheetHeight(for: $0) }).enumerated() {
@@ -159,13 +155,14 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 closest = abs(state - goal) < abs(closestUnwrapped.1 - goal) ? (index, state) : closest
             }
-            print(velocity)
+
             var nextStateIndex = closest!.0
             if velocity > 20, closest!.0 - 1 >= 0 {
                 nextStateIndex = closest!.0 - 1
             } else if velocity < -20, closest!.0 + 1 <= states.count-1 {
                 nextStateIndex = closest!.0 + 1
             }
+            
             updateView(for: states[nextStateIndex], velocity: velocity)
 
         }
