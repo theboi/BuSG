@@ -12,6 +12,7 @@ class BusServiceTableViewCell: UITableViewCell {
     public lazy var busStopCodeLabel = UILabel()
     public lazy var roadDescLabel = UILabel()
     public lazy var roadNameLabel = UILabel()
+    public lazy var distanceLabel = UILabel()
     
     private lazy var busServicesLabel = UILabel()
     
@@ -57,6 +58,14 @@ class BusServiceTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             busServicesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
             busServicesLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
+        ])
+        
+        addSubview(distanceLabel)
+        distanceLabel.font = .detail
+        distanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            distanceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
+            distanceLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
         ])
 
         backgroundColor = .clear

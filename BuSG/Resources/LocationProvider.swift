@@ -32,4 +32,8 @@ class LocationProvider: NSObject {
         locationManager.location ?? CLLocation(latitude: 0, longitude: 0)
     }
     
+    public func distanceFromCurrentLocation(to location: CLLocation) -> CLLocationDistance {
+        CLLocation.distance(location)(from: currentLocation)
+    }
+    
 }
