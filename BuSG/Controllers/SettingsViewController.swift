@@ -14,13 +14,11 @@ class SettingsViewController: ListViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en-SG")
         dateFormatter.dateFormat = "MMMM d, y (hh:mm a)"
-        listData = [
-            ListSection(tableItems: [
-                ListItem(title: "Favourite Places", image: UIImage(systemName: "heart.fill"), pushViewController: ListViewController(tableData: [
-                    
-                ])),
-                ListItem(title: "Bus Data", image: UIImage(systemName: "bus.fill"), pushViewController: ListViewController(tableData: [
-                    ListSection(tableItems: [
+        data = ListData(sections: [
+            ListSection(items: [
+                ListItem(title: "Favourite Places", image: UIImage(systemName: "heart.fill")),
+                ListItem(title: "Bus Data", image: UIImage(systemName: "bus.fill"), pushViewController: ListViewController(data: ListData(sections: [
+                    ListSection(items: [
                         ListItem(title: "Update Now", action: { tableViewController,listData,indexPath in
                             let alert = UIAlertController(title: nil, message: "Updating Bus Data", preferredStyle: .alert)
                             tableViewController.present(alert, animated: true)
@@ -33,7 +31,7 @@ class SettingsViewController: ListViewController {
                             ])
                             activityIndicator.startAnimating()
                             ApiProvider.shared.updateStaticData {_ in
-                                listData[indexPath.section].footerText = "Last Updated: \(dateFormatter.string(from: Date(timeIntervalSince1970: Double(UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)))))"
+                                listData.sections[indexPath.section].footerText = "Last Updated: \(dateFormatter.string(from: Date(timeIntervalSince1970: Double(UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)))))"
                                 DispatchQueue.main.async {
                                     alert.dismiss(animated: true)
                                     tableViewController.tableView.reloadData()
@@ -41,15 +39,15 @@ class SettingsViewController: ListViewController {
                             }
                         }),
                     ], footerText: "Last Updated: \(dateFormatter.string(from: Date(timeIntervalSince1970: Double(UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)))))"),
-                    SelectListSection(tableItems: [
+                    SelectListSection(items: [
                         ListItem(title: "Once per month"),
                         ListItem(title: "Once per week"),
                         ListItem(title: "Manually"),
                     ], headerText: "Auto Update Frequency", defaultIndex: UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency), onSelected: { UserDefaults.standard.setValue($2.row, forKey: K.userDefaults.updateFrequency) }),
-                ])),
+                ]))),
                 ListItem(title: "Connect To Calendar", image: UIImage(systemName: "calendar"), accessoryView: UISwitch(frame: CGRect(), isOn: UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar), primaryAction: UIAction(handler: { UserDefaults.standard.setValue(($0.sender as! UISwitch).isOn, forKey: K.userDefaults.connectToCalendar) }))),
             ]),
-            ListSection(tableItems: [
+            ListSection(items: [
                 //                SettingsTableItem(title: "History", pushViewController: UIViewController()),
                 ListItem(title: "Share with a Friend", presentViewController: {
                     return UIActivityViewController(activityItems: ["Check out BuSG, a smart bus tracker app!"], applicationActivities: [])
@@ -67,12 +65,12 @@ class SettingsViewController: ListViewController {
                 ListItem(title: "Rate on App Store", urlString: "itms-apps://itunes.apple.com/app/\(Bundle.main.bundleIdentifier!)"),
                 ListItem(title: "Open-Sourced on GitHub", urlString: "https://github.com/theboi/BuSG"),
             ]),
-        ]
+        ])
         tableView.reloadData()
     }
     
     init() {
-        super.init()
+        super.init(data: ListData(sections: []))
         title = "Settings"
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction(handler: { _ in
             self.dismiss(animated: true)

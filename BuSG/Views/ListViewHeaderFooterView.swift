@@ -1,5 +1,5 @@
 //
-//  ListViewHeaderFooterswift
+//  ListViewHeaderFooter.swift
 //  BuSG
 //
 //  Created by Ryan The on 17/12/20.
