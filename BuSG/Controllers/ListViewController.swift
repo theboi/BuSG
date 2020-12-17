@@ -94,7 +94,7 @@ class ListViewController: UITableViewController {
         if let headerText = sectionData.headerText {
             let headerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: K.identifiers.listViewHeader) ?? ListViewHeaderFooterView(reuseIdentifier: K.identifiers.listViewHeader)) as! ListViewHeaderFooterView
             headerView.header.text = headerText
-            headerView.trailingButton = sectionData.headerTrailingButton
+            headerView.trailingButton = sectionData.headerTrailingButton ?? UIButton(frame: .zero)
             return headerView
         }
         

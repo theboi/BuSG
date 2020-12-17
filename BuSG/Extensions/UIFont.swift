@@ -17,6 +17,10 @@ extension UIFont {
         UIFont.systemFont(ofSize: 20, weight: .medium)
     }
     
+    class var regularHeader: UIFont {
+        UIFont.systemFont(ofSize: 17, weight: .semibold)
+    }
+    
     class var regular: UIFont {
         UIFont.systemFont(ofSize: 17)
     }

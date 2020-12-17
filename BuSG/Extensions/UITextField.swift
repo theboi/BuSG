@@ -9,9 +9,10 @@ import UIKit
 
 extension UITextField {
     
-    convenience init(frame: CGRect, placeholder: String? = nil, primaryAction: UIAction?) {
+    convenience init(frame: CGRect, placeholder: String? = nil, text: String? = nil, primaryAction: UIAction?) {
         self.init(frame: frame, primaryAction: primaryAction)
         self.placeholder = placeholder
+        self.text = text
     }
     
     func addToolbarWithDoneButton() {
