@@ -40,14 +40,21 @@ class BusServiceSheetController: SheetController {
         tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busServiceCell)
     }
     
-    init(for serviceNo: String?) {
+    init(for serviceNo: String, in direction: Int64) {
         super.init()
+
+        self.busService = ApiProvider.shared.getBusService(with: serviceNo, in: direction)
         
-        self.busService = ApiProvider.shared.getBusService(with: serviceNo ?? "1")
         self.headerView.titleText = busService.serviceNo
-        self.headerView.detailText = busService.destinationCode
+        if let originDesc = busService.originBusStop?.roadDesc, let destinationDesc = busService.destinationBusStop?.roadDesc {
+            if originDesc != destinationDesc {
+                self.headerView.detailText = "\(originDesc) → \(destinationDesc)"
+            } else {
+                self.headerView.detailText = originDesc
+            }
+        }
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 2)
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: direction)
         
     }
     

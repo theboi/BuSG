@@ -131,13 +131,19 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let suggestedSheetController = {
+            BusStopSheetController(for: self.suggestedServices[indexPath.row].originBusStop.busStopCode)
+        }
+        let nearbySheetController = {
+            BusStopSheetController(for: self.nearbyStops[indexPath.row].busStopCode)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.section {
         case 0:
-            present(BusStopSheetController(for: suggestedServices.isEmpty ? nearbyStops[indexPath.row].busStopCode : suggestedServices[indexPath.row].originBusStop.busStopCode), animated: true)
+            present(suggestedServices.isEmpty ? nearbySheetController() : suggestedSheetController(), animated: true)
         case 1: fallthrough
         default:
-            present(BusStopSheetController(for: nearbyStops[indexPath.row].busStopCode), animated: true)
+            present(nearbySheetController(), animated: true)
         }
     }
 }

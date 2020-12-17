@@ -74,12 +74,12 @@ class BusStopSheetController: SheetController {
         }
     }
     
-    init(for busStopCode: String?) {
+    init(for busStopCode: String) {
         super.init()
         
         delegate = self
         
-        busStop = ApiProvider.shared.getBusStop(with: busStopCode ?? "00000")
+        busStop = ApiProvider.shared.getBusStop(with: busStopCode)
         
         headerView.titleText = busStop.roadName
         headerView.detailText = busStop.roadDesc
@@ -113,7 +113,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusServiceSheetController(for: busStop.busServices[indexPath.row].serviceNo), animated: true)
+        present(BusServiceSheetController(for: busStop.busServices[indexPath.row].serviceNo, in: busStop.busServices[indexPath.row].accessorBusRoute!.direction), animated: true)
     }
 
 }
