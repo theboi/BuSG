@@ -1,6 +1,6 @@
 //
 //  BusSuggestedTableViewCell.swift
-// BuSG
+//   BuSG
 //
 //  Created by Ryan The on 6/12/20.
 //

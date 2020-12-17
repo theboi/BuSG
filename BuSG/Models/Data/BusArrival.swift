@@ -1,6 +1,6 @@
 //
 //  BusArrival.swift
-// BuSG
+//   BuSG
 //
 //  Created by Ryan The on 1/12/20.
 //
