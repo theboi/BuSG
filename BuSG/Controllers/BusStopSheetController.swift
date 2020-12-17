@@ -16,7 +16,7 @@ class BusStopSheetController: SheetController {
     
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
-    lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: { _ in
+    lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: {_ in
         self.reloadData()
     }))
     
@@ -123,7 +123,7 @@ extension BusStopSheetController: SheetControllerDelegate {
     func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
         UIView.animate(withDuration: 0.3) {
             switch state {
-            case .min:
+            case .minimized:
                 self.tableView.layer.opacity = 0
             default:
                 self.tableView.layer.opacity = 1

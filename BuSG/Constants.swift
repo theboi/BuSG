@@ -57,7 +57,7 @@ enum K {
     }
     
     enum mapView {
-        static let edgePadding = UIEdgeInsets(top: 100, left: 10, bottom: 400, right: 10)
-        static let span: CLLocationDistance = 400
+        static let edgePadding = UIEdgeInsets(top: 0, left: 10, bottom: 500, right: 10)
+        static let span: CLLocationDistance = 500
     }
 }
