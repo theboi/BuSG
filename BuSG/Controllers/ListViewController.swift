@@ -21,21 +21,20 @@ struct ListItem {
     var accessoryView: UIView?
     var pushViewController: UIViewController?
     var presentViewController: UIViewController?
-    var action: ((UITableViewController, [ListSection], IndexPath) -> Void)?
+    var action: ((UITableViewController, ListData, IndexPath) -> Void)?
     var urlString: String?
     var isClickable: Bool = true
     var checkmark: CheckmarkState = .none
 }
 
 class ListSection {
-    
-    var tableItems: [ListItem]
+    var items: [ListItem]
     var headerText: String?
     var footerText: String?
     var headerTrailingButton: UIButton?
     
-    init(tableItems: [ListItem] = [], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil) {
-        self.tableItems = tableItems
+    init(items: [ListItem] = [], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil) {
+        self.items = items
         self.headerText = headerText
         self.footerText = footerText
         self.headerTrailingButton = headerTrailingButton
@@ -43,24 +42,35 @@ class ListSection {
     
 }
 
+class ListData {
+    var sections: [ListSection]
+    var headerView: UIView?
+    var footerView: UIView?
+    
+    init(sections: [ListSection], headerView: UIView? = nil, footerView: UIView? = nil) {
+        self.sections = sections
+    }
+    
+}
+
 class SelectListSection: ListSection {
     
-    init(tableItems: [ListItem] = [], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil, defaultIndex: Int, onSelected: ((ListSection, UITableView, IndexPath) -> Void)? = nil) {
-        super.init(tableItems: tableItems, headerText: headerText, footerText: footerText, headerTrailingButton: headerTrailingButton) // TODO: shouldCheckElement instead of controlling checkmarks from view (set from model)
+    init(items: [ListItem], headerText: String? = nil, footerText: String? = nil, headerTrailingButton: UIButton? = nil, defaultIndex: Int, onSelected: ((ListSection, UITableView, IndexPath) -> Void)? = nil) {
+        super.init(items: items, headerText: headerText, footerText: footerText, headerTrailingButton: headerTrailingButton) // TODO: shouldCheckElement instead of controlling checkmarks from view (set from model)
         
         func selectItem(at index: Int, for tableView: UITableView? = nil) {
-            for j in 0...tableItems.count-1 {
-                self.tableItems[j].checkmark = .off
+            for j in 0...items.count-1 {
+                self.items[j].checkmark = .off
             }
-            self.tableItems[index].checkmark = .on
+            self.items[index].checkmark = .on
             tableView?.reloadData()
         }
         
         selectItem(at: defaultIndex)
         
-        for i in 0...tableItems.count-1 {
-            let oldAction = self.tableItems[i].action
-            self.tableItems[i].action = {tableViewController, listData, indexPath in
+        for i in 0...items.count-1 {
+            let oldAction = self.items[i].action
+            self.items[i].action = {tableViewController, listData, indexPath in
                 oldAction?(tableViewController, listData, indexPath)
                 onSelected?(self, tableViewController.tableView, indexPath)
                 selectItem(at: i, for: tableViewController.tableView)
@@ -72,11 +82,11 @@ class SelectListSection: ListSection {
 
 class ListViewController: UITableViewController {
     
-    var listData: [ListSection]!
+    var data: ListData!
     
-    init(tableData: [ListSection] = []) {
+    init(data: ListData) {
         super.init(nibName: nil, bundle: nil)
-        self.listData = tableData
+        self.data = data
         tableView = UITableView(frame: CGRect(), style: .insetGrouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: K.identifiers.settingsCell)
         tableView.register(ListViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: K.identifiers.listViewHeader)
@@ -89,7 +99,7 @@ class ListViewController: UITableViewController {
     // MARK: UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionData = listData[section]
+        let sectionData = data.sections[section]
         
         if let headerText = sectionData.headerText {
             let headerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: K.identifiers.listViewHeader) ?? ListViewHeaderFooterView(reuseIdentifier: K.identifiers.listViewHeader)) as! ListViewHeaderFooterView
@@ -102,24 +112,24 @@ class ListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        listData[section].headerText != nil ? 60 : 20
+        data.sections[section].headerText != nil ? 60 : 20
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        listData[section].footerText
+        data.sections[section].footerText
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return listData.count
+        return data.sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listData[section].tableItems.count
+        return data.sections[section].items.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellData = listData[indexPath.section].tableItems[indexPath.row]
+        let cellData = data.sections[indexPath.section].items[indexPath.row]
         let cell = cellData.customCell ?? tableView.dequeueReusableCell(withIdentifier: K.identifiers.settingsCell, for: indexPath)
         
         if let textField = cellData.textField {
@@ -158,13 +168,13 @@ class ListViewController: UITableViewController {
     // MARK: UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return listData[indexPath.section].tableItems[indexPath.row].height ?? K.cellHeight
+        return data.sections[indexPath.section].items[indexPath.row].height ?? K.cellHeight
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellData = listData[indexPath.section].tableItems[indexPath.row]
+        let cellData = data.sections[indexPath.section].items[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
-        cellData.action?(self, listData, indexPath)
+        cellData.action?(self, data, indexPath)
         if let urlString = cellData.urlString {
             URL.open(webURL: urlString)
         }
