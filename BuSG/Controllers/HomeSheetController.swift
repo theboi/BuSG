@@ -99,10 +99,11 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let suggestedCell = { () -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busSuggestedCell, for: indexPath) as! BusSuggestionTableViewCell
+            let suggestedBusData = self.suggestedServices[indexPath.row]
             cell.eventImage = UIImage(systemName: "calendar")
-            cell.serviceNoLabel.text = self.suggestedServices[indexPath.row].busService.serviceNo
-            cell.destinationLabel.text = self.suggestedServices[indexPath.row].originBusStop.rawRoadDesc
-            cell.eventLabel.text = self.suggestedServices[indexPath.row].event.title
+            cell.serviceNoLabel.text = suggestedBusData.busService.serviceNo
+            cell.destinationLabel.text = suggestedBusData.originBusStop.rawRoadDesc
+            cell.eventLabel.text = suggestedBusData.event.title
             return cell
         }
         let nearbyCell = { () -> UITableViewCell in

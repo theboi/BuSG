@@ -21,7 +21,7 @@ public class BusService: NSManagedObject {
             routeReq.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
             do {
                 let busRoutes = try context.fetch(routeReq)
-                return busRoutes.map({ (busRoute) -> BusStop in
+                return try busRoutes.map({ (busRoute) -> BusStop in
                     let stopReq: NSFetchRequest<BusStop> = BusStop.fetchRequest()
                     stopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute.busStopCode)
                     do {
@@ -34,7 +34,9 @@ public class BusService: NSManagedObject {
                     } catch {
                         fatalError(error.localizedDescription)
                     }
-                })
+                }).sorted {
+                    $0.accessorBusRoute?.stopSequence ?? 0 > $1.accessorBusRoute?.stopSequence ?? 0
+                }
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -48,8 +50,11 @@ public class BusService: NSManagedObject {
                     busStops.append(busStop)
                 } else { return fetch() }
             }
-            return busStops
-        } else { return fetch() }
+            return busStops.sorted {
+                $0.accessorBusRoute?.stopSequence ?? 0 > $1.accessorBusRoute?.stopSequence ?? 0
+            }
+        }
+        return fetch()
     }
     
     public var originBusStop: BusStop? {
