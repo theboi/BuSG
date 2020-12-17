@@ -12,10 +12,10 @@ class LaunchViewController: ListViewController {
     var favouritePlaces = ["Home", "Work", "School"]
         
     func reloadData() {
-        let favouritePlacesTableItems = favouritePlaces.enumerated().map { (index, string) -> ListItem in
-            ListItem(title: string, pushViewController: ListViewController(tableData: [
+        let favouritePlacesTableItems = favouritePlaces.enumerated().map { (index, name) -> ListItem in
+            ListItem(title: name, pushViewController: ListViewController(tableData: [
                 ListSection(tableItems: [
-                    ListItem(textField: UITextField(frame: CGRect(), primaryAction: UIAction(handler: { action in
+                    ListItem(textField: UITextField(frame: CGRect(), placeholder: "Name", text: name, primaryAction: UIAction(handler: { action in
                         let textField = action.sender as! UITextField
                         textField.resignFirstResponder()
                         if let text = textField.text {
