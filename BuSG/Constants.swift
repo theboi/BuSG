@@ -54,6 +54,7 @@ enum K {
         static let lastUpdatedEpoch = "lastUpdatedEpoch"
         static let connectToCalendar = "connectToCalendar"
         static let updateFrequency = "updateFrequency"
+        static let favoritePlaces = "favoritePlaces"
     }
     
     enum mapView {

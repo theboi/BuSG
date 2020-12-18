@@ -109,7 +109,7 @@ class MainViewController: UIViewController {
         if lastOpenedEpoch == 0 {
             print("First Timer!")
             /// First time using app
-            self.present(UINavigationController(rootViewController: LaunchViewController()), animated: true)
+            self.present(UINavigationController(rootViewController: SetupViewController()), animated: true)
         }
         let updateFrequency: Double = { () -> Double in
             switch UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency) {
@@ -126,6 +126,21 @@ class MainViewController: UIViewController {
             }
         }
         UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
+        
+        if UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar) {
+            EventProvider.shared.requestForCalendarAccess { (granted, error) in
+                UserDefaults.standard.setValue(false, forKey: K.userDefaults.connectToCalendar)
+                
+                if error != nil || !granted {
+                    let alert = UIAlertController(title: "Unable to access Calendar", message: error?.localizedDescription ?? "In order to access this feature, BuSG requires you to grant access to Calendar in Settings", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    alert.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _ in
+                        URL.open(webURL: UIApplication.openSettingsURLString)
+                    }))
+                    self.present(alert, animated: true)
+                }
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
