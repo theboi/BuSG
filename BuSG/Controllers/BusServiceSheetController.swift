@@ -23,7 +23,8 @@ class BusServiceSheetController: SheetController {
             self.dismissSheet()
         }))
         headerView.trailingButton = trailingButton
-        
+        headerView.trailingButtonIsHidden = false
+
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
@@ -37,20 +38,20 @@ class BusServiceSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busServiceCell)
+        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStopCell)
     }
     
     init(for serviceNo: String, in direction: Int64) {
         super.init()
 
-        self.busService = ApiProvider.shared.getBusService(with: serviceNo, in: direction)
+        busService = ApiProvider.shared.getBusService(with: serviceNo, in: direction)
         
-        self.headerView.titleText = busService.serviceNo
+        headerView.titleLabel.text = busService.serviceNo
         if let originDesc = busService.originBusStop?.roadDesc, let destinationDesc = busService.destinationBusStop?.roadDesc {
             if originDesc != destinationDesc {
-                self.headerView.detailText = "\(originDesc) → \(destinationDesc)"
+                self.headerView.detailLabel.text = "\(originDesc) → \(destinationDesc)"
             } else {
-                self.headerView.detailText = originDesc
+                self.headerView.detailLabel.text = originDesc
             }
         }
         
@@ -73,7 +74,7 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busServiceCell, for: indexPath) as! BusServiceTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStopCell, for: indexPath) as! BusStopTableViewCell
         let busStopData = self.busService.busStops[indexPath.row]
 
         cell.busServices = busStopData.busServices
