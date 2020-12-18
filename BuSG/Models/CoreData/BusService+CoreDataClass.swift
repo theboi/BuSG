@@ -21,17 +21,12 @@ public class BusService: NSManagedObject {
             if _busStops.count > 0 { return _busStops }
             if let busRoutes = busRoutes?.allObjects as? [BusRoute] {
                 _busStops = busRoutes.filter {
-                    return $0.direction == accessorBusRoute?.direction
+                    $0.direction == accessorBusRoute?.direction
                 }.sorted {
-                    return $0.stopSequence < $1.stopSequence
+                    $0.stopSequence < $1.stopSequence
                 }.compactMap {
-                    return $0.busStop
+                    $0.busStop
                 }
-                
-                print(_busStops.map({ (busStop) -> Int64 in
-                    busStop.accessorBusRoute?.stopSequence ?? -100
-                }))
-                
             }
             return _busStops
         }
