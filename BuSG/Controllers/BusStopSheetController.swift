@@ -41,12 +41,6 @@ class BusStopSheetController: SheetController {
         
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop))
         
-        let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
-            self.dismissSheet()
-        }))
-        headerView.trailingButton = trailingButton
-        headerView.trailingButtonIsHidden = false
-        
         tableView.addSubview(refreshControl)
         tableView.backgroundColor = .clear
         tableView.delegate = self

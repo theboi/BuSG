@@ -9,48 +9,26 @@ import UIKit
 
 class SheetHeaderView: UIView {
     
-    private lazy var trailingButtonWidthConstraint = {
-        trailingButton?.widthAnchor.constraint(equalToConstant: 0)
-    }()
-        
-    public var trailingButtonIsHidden = true {
-        didSet {
-            trailingButtonWidthConstraint?.isActive = trailingButtonIsHidden
-        }
-    }
-    
     private var textView: UIStackView!
-    
-    public lazy var customView = UIView()
-    
+        
     public lazy var titleLabel = UILabel()
     public lazy var detailLabel = UILabel()
     
-    /// An optional trailing button such as close or cancel buttons.
-    public var trailingButton: UIButton? {
-        didSet {
-            if let trailingButton = trailingButton {
-                addSubview(trailingButton)
-                trailingButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-                trailingButton.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    trailingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.small),
-                    trailingButton.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.large),
-                ])
-                trailingButtonWidthConstraint?.isActive = true
-                customView.trailingAnchor.constraint(equalTo: trailingButton.leadingAnchor).isActive = true
-            }
-        }
-    }
+    public var trailingButton: UIButton!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(for sheetController: SheetController) {
+        super.init(frame: CGRect())
         
-        addSubview(customView)
-        customView.translatesAutoresizingMaskIntoConstraints = false
+        trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { _ in
+            sheetController.dismissSheet()
+        }))
+        
+        addSubview(trailingButton)
+        trailingButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        trailingButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            customView.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small-2),
-            customView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.small),
+            trailingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
+            trailingButton.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.large),
         ])
         
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -63,7 +41,7 @@ class SheetHeaderView: UIView {
         NSLayoutConstraint.activate([
             textView.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.large),
             textView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            textView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
+            textView.trailingAnchor.constraint(equalTo: trailingButton.leadingAnchor, constant: -K.margin.large),
         ])
     }
     

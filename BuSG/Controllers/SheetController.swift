@@ -38,7 +38,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         didSet { updateView(for: state) }
     }
     
-    lazy var headerView = SheetHeaderView()
+    lazy var headerView = SheetHeaderView(for: self)
     
     lazy var contentView = SheetContentView()
     
