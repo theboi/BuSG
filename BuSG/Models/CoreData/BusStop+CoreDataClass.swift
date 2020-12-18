@@ -19,12 +19,9 @@ public class BusStop: NSManagedObject {
             var busServices: [BusService] = []
             for busRoute in busRoutes {
                 let busServiceBusRoutes = busRoute.busService?.busRoutes?.allObjects as! [BusRoute]
-                if busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 1 }).count || busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 2 }).count {
-                    continue
-                }
+                if (busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 1 }).count && busRoute.direction == 1) || (busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 2 }).count && busRoute.direction == 2) { continue }
                 
                 if let busService = busRoute.busService {
-//                    busService.accessorBusRoute = busRoute
                     busServices.append(busService)
                 }
             }
