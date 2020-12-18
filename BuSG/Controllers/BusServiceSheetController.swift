@@ -18,12 +18,6 @@ class BusServiceSheetController: SheetController {
         super.viewDidLoad()
         
         delegate = self
-        
-        let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: {_ in
-            self.dismissSheet()
-        }))
-        headerView.trailingButton = trailingButton
-        headerView.trailingButtonIsHidden = false
 
         tableView.backgroundColor = .clear
         tableView.delegate = self

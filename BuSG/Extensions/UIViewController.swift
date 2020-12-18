@@ -15,8 +15,8 @@ extension UIViewController {
     }
     
     // TODO: Move present(_:animted:completion:) to SheetController
-    /// Extension method to present `SheetController`s
-    func present(_ sheetControllerToPresent: SheetController, animated flag: Bool, completion: (() -> Void)? = nil) {
+    /// Extension method to present `SheetController`s. `@objc` to allow override of extension methods
+    @objc func present(_ sheetControllerToPresent: SheetController, animated flag: Bool, completion: (() -> Void)? = nil) {
         
         var parentViewController: UIViewController
         

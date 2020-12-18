@@ -9,7 +9,7 @@ import UIKit
 import CoreLocation
 
 class HomeSheetController: SheetController {
-
+    
     lazy var searchBar = UISearchBar()
     
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
@@ -41,6 +41,16 @@ class HomeSheetController: SheetController {
         }
     }
     
+    override func dismissSheet() {
+        super.dismissSheet()
+        view.endEditing(true)
+    }
+    
+    override func present(_ sheetControllerToPresent: SheetController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.present(sheetControllerToPresent, animated: flag, completion: completion)
+        view.endEditing(true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,20 +60,15 @@ class HomeSheetController: SheetController {
         searchBar.placeholder = "Search for a bus stop or service"
         searchBar.delegate = self
         
-        let closeButton = UIButton(type: .system, primaryAction: UIAction(handler: { _ in
-            self.searchBar.resignFirstResponder()
-            self.headerView.trailingButtonIsHidden = true
-        }))
-        closeButton.setTitle("Cancel", for: .normal)
-        headerView.trailingButton = closeButton
         
-        headerView.customView.addSubview(searchBar)
+        headerView.trailingButton.isHidden = true
+        headerView.addSubview(searchBar)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: headerView.customView.topAnchor),
-            searchBar.bottomAnchor.constraint(equalTo: headerView.customView.bottomAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: headerView.customView.leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: headerView.customView.trailingAnchor),
+            searchBar.topAnchor.constraint(equalTo: headerView.topAnchor, constant: K.margin.small),
+            searchBar.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: K.margin.small),
+            searchBar.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -K.margin.small),
         ])
         
         tableView.addSubview(refreshControl)
@@ -84,7 +89,7 @@ class HomeSheetController: SheetController {
         tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStopCell)
         tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busServiceCell)
         tableView.register(BusSuggestionTableViewCell.self, forCellReuseIdentifier: K.identifiers.busSuggestionCell)
-
+        
         reloadData()
     }
 }
@@ -129,7 +134,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-        
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         30
     }
@@ -235,31 +240,43 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension HomeSheetController: UISearchBarDelegate {
-
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        headerView.trailingButtonIsHidden = false
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchText = searchText
         self.tableView.reloadData()
     }
-
+    
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        headerView.trailingButtonIsHidden = true
+        searchBar.showsCancelButton = false
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        headerView.trailingButtonIsHidden = true
-        searchBar.resignFirstResponder()
-    }
 }
 
 extension HomeSheetController: SheetControllerDelegate {
     
     func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
+        switch (state) {
+        case .small:
+            self.view.endEditing(true)
+        case .minimized:
+            self.view.endEditing(true)
+        default: break
+        }
         UIView.animate(withDuration: 0.3) {
             switch state {
+            
             case .minimized:
                 self.tableView.layer.opacity = 0
             default:
@@ -267,7 +284,7 @@ extension HomeSheetController: SheetControllerDelegate {
             }
         }
     }
-
+    
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
         LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
     }
