@@ -29,7 +29,7 @@
 		AA7F4CC2257A81B200A4DD14 /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F4CC1257A81B200A4DD14 /* BusStopTableViewCell.swift */; };
 		AA7F4CC7257A9D0900A4DD14 /* BusStopAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7F4CC6257A9D0900A4DD14 /* BusStopAnnotation.swift */; };
 		AA808A8725793DA90060547F /* BusRouteMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA808A8625793DA90060547F /* BusRouteMapper.swift */; };
-		AA87B999257F8816002F322D /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA87B998257F8816002F322D /* LaunchViewController.swift */; };
+		AA87B999257F8816002F322D /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA87B998257F8816002F322D /* SetupViewController.swift */; };
 		AA8D078D257B8E6C00BF3E3B /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8D078C257B8E6C00BF3E3B /* CLLocationCoordinate2D.swift */; };
 		AA8D0795257BDA2800BF3E3B /* MKMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8D0794257BDA2800BF3E3B /* MKMapView.swift */; };
 		AA908429257A4012000A9D2B /* BusService+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA908423257A4012000A9D2B /* BusService+CoreDataClass.swift */; };
@@ -47,6 +47,7 @@
 		AA9C4A9E258BB9270042C1C3 /* BusService+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4A9B258BB9270042C1C3 /* BusService+CoreDataProperties.swift */; };
 		AA9C4A9F258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4A9C258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift */; };
 		AA9C4AA0258BB9270042C1C3 /* BusStop+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4A9D258BB9270042C1C3 /* BusStop+CoreDataProperties.swift */; };
+		AA9C4AAB258C95420042C1C3 /* FavoritePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4AAA258C95420042C1C3 /* FavoritePlace.swift */; };
 		AAA49517258270530073F360 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA49516258270530073F360 /* UITextField.swift */; };
 		AAA4951F25832A870073F360 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA4951E25832A870073F360 /* SettingsViewController.swift */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
@@ -105,7 +106,7 @@
 		AA7F4CC1257A81B200A4DD14 /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
 		AA7F4CC6257A9D0900A4DD14 /* BusStopAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopAnnotation.swift; sourceTree = "<group>"; };
 		AA808A8625793DA90060547F /* BusRouteMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusRouteMapper.swift; sourceTree = "<group>"; };
-		AA87B998257F8816002F322D /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		AA87B998257F8816002F322D /* SetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		AA8D078C257B8E6C00BF3E3B /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		AA8D0794257BDA2800BF3E3B /* MKMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMapView.swift; sourceTree = "<group>"; };
 		AA908423257A4012000A9D2B /* BusService+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		AA9C4A9B258BB9270042C1C3 /* BusService+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusService+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA9C4A9C258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusRoute+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AA9C4A9D258BB9270042C1C3 /* BusStop+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusStop+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AA9C4AAA258C95420042C1C3 /* FavoritePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePlace.swift; sourceTree = "<group>"; };
 		AAA49516258270530073F360 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		AAA4951E25832A870073F360 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			children = (
 				AA91D0FB257649A6003FAE6E /* BusArrival.swift */,
 				AA51A3382588AE76002EB6A2 /* BusSuggestion.swift */,
+				AA9C4AAA258C95420042C1C3 /* FavoritePlace.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -314,7 +317,7 @@
 				AA13B6DB2572127E006FD219 /* HomeSheetController.swift */,
 				AA13B7272573447C006FD219 /* BusStopSheetController.swift */,
 				AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */,
-				AA87B998257F8816002F322D /* LaunchViewController.swift */,
+				AA87B998257F8816002F322D /* SetupViewController.swift */,
 				AAA4951E25832A870073F360 /* SettingsViewController.swift */,
 			);
 			path = Controllers;
@@ -491,7 +494,7 @@
 				AA6E97BB257FA5F4004D585A /* EventProvider.swift in Sources */,
 				AA710A18258B0F8900B59E4F /* CLLocation.swift in Sources */,
 				AA90842D257A4012000A9D2B /* BusStop+CoreDataClass.swift in Sources */,
-				AA87B999257F8816002F322D /* LaunchViewController.swift in Sources */,
+				AA87B999257F8816002F322D /* SetupViewController.swift in Sources */,
 				AAF4A4FA25627D4F00FC51E7 /* SceneDelegate.swift in Sources */,
 				AAF4A53D256284D100FC51E7 /* SheetController.swift in Sources */,
 				AA13B73F257369B9006FD219 /* URL.swift in Sources */,
@@ -506,6 +509,7 @@
 				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
 				AA37ECD325890C3E00E60786 /* UIAlertController.swift in Sources */,
 				AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */,
+				AA9C4AAB258C95420042C1C3 /* FavoritePlace.swift in Sources */,
 				AA995B26258873BB00072557 /* Sequence.swift in Sources */,
 				AA808A8725793DA90060547F /* BusRouteMapper.swift in Sources */,
 				AA9C4A9F258BB9270042C1C3 /* BusRoute+CoreDataProperties.swift in Sources */,
