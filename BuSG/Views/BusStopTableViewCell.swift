@@ -13,7 +13,15 @@ class BusStopTableViewCell: UITableViewCell {
     public lazy var roadDescLabel = UILabel()
     public lazy var roadNameLabel = UILabel()
     public lazy var distanceLabel = UILabel()
-    
+    private lazy var sequenceCircleShape = { () -> CAShapeLayer in
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: bounds.width-K.margin.large*2, y: frame.height/2), radius: 12, startAngle: 0, endAngle: 360, clockwise: true)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.cgPath
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = UIColor.accent.cgColor
+        shapeLayer.lineWidth = 4
+        return shapeLayer
+    }()
     private lazy var busServicesLabel = UILabel()
     
     public var busServices: [BusService] = [] {
@@ -69,6 +77,8 @@ class BusStopTableViewCell: UITableViewCell {
             distanceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
             distanceLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
         ])
+        
+//        layer.addSublayer(sequenceCircleShape)
 
         backgroundColor = .clear
         selectedBackgroundView = FillView(solidWith: UIColor.label.withAlphaComponent(0.1))
@@ -76,5 +86,11 @@ class BusStopTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+//        sequenceCircleShape.bounds = CGRect(x: bounds.width-K.margin.large*2, y: frame.height/2, width: 0, height: 0)
     }
 }
