@@ -228,18 +228,28 @@ class ApiProvider {
             return nil
         }
         let commonBusSuggestions = nearbyBusStops.flatMap { (busStops: [BusStop], event: EKEvent) -> [BusSuggestion] in
-            let uniqueBusServices = busStops.flatMap { (busStop: BusStop) -> [(BusStop, BusService, EKEvent)] in
+            let destinationBusServices = busStops.flatMap { (busStop: BusStop) -> [(BusStop, BusService, EKEvent)] in
                 return busStop.busServices.map { (busStop, $0, event) }
             }.uniqued { (busStop, busService, event) -> String in
                 busService.serviceNo
             }
-            let currentNearbyBusServices = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate).flatMap { (busStop: BusStop) -> [(BusStop, BusService)] in
+            let originBusServices = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate).flatMap { (busStop: BusStop) -> [(BusStop, BusService)] in
                 return busStop.busServices.map { (busStop, $0) }
             }.uniqued { $1.serviceNo }
-            let commonBusSuggestions = uniqueBusServices.filter { (busStop, busService, event) -> Bool in
-                currentNearbyBusServices.contains { $1.serviceNo == busService.serviceNo }
-            }.map { BusSuggestion(busService: $1, originBusStop: $0, event: $2) }
-            return commonBusSuggestions
+            
+            let destinationBusServicesDict = destinationBusServices.reduce([String: (BusStop, BusService, EKEvent)]()) { (dict, data) -> [String: (BusStop, BusService, EKEvent)] in
+                var dict = dict
+                dict[data.1.serviceNo] = data
+                return dict
+            }
+            
+            let common = originBusServices.compactMap { (originBusStop, originBusService) -> BusSuggestion? in
+                if let (destinationBusStop, _, event) = destinationBusServicesDict[originBusService.serviceNo] {
+                    return BusSuggestion(busService: originBusService, originBusStop: originBusStop, destinationBusStop: destinationBusStop, event: event)
+                }
+                return nil
+            }
+            return common
         }
         completion?(commonBusSuggestions)
     }
