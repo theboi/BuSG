@@ -205,8 +205,8 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
         let busSuggestionSheetController = {
             BusStopSheetController(for: self.suggestedServices[indexPath.row].originBusStop.busStopCode)
         }
-        let busStopSheetController = {
-            BusStopSheetController(for: self.nearbyStops[indexPath.row].busStopCode)
+        let busStopSheetController = { (busStops: [BusStop]) -> BusStopSheetController in
+            BusStopSheetController(for: busStops[indexPath.row].busStopCode)
         }
         let busServiceSheetController = {
             // FIXME: BUS SERVICE SHEET CONTROLLER NOT SHOWING
@@ -217,10 +217,10 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
         if searchText.count == 0 {
             switch indexPath.section {
             case 0:
-                present(suggestedServices.isEmpty ? busStopSheetController() : busSuggestionSheetController(), animated: true)
+                present(suggestedServices.isEmpty ? busStopSheetController(nearbyStops) : busSuggestionSheetController(), animated: true)
             case 1: fallthrough
             default:
-                present(busStopSheetController(), animated: true)
+                present(busStopSheetController(nearbyStops), animated: true)
             }
         } else {
             switch indexPath.section {
@@ -228,7 +228,7 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
                 present(busServiceSheetController(), animated: true)
             case 1: fallthrough
             default:
-                present(busStopSheetController(), animated: true)
+                present(busStopSheetController(searchBusStops), animated: true)
             }
         }
     }

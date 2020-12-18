@@ -21,7 +21,7 @@ public class BusService: NSManagedObject {
             if _busStops.count > 0 { return _busStops }
             if let busRoutes = busRoutes?.allObjects as? [BusRoute] {
                 _busStops = busRoutes.filter {
-                    $0.direction == accessorBusRoute?.direction
+                    return $0.direction == direction
                 }.sorted {
                     $0.stopSequence < $1.stopSequence
                 }.compactMap {

@@ -66,7 +66,7 @@ class BusServiceSheetController: SheetController {
 
 extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return busService?.busStops.count ?? 0
+        busService.busStops.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
