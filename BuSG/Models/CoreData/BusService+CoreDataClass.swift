@@ -14,21 +14,27 @@ public class BusService: NSManagedObject {
     
     public var accessorBusRoute: BusRoute?
     
+    private var _busStops = [BusStop]()
+    
     public var busStops: [BusStop] {
-        if let busRoutes = busRoutes {
-            var busStops: [BusStop] = []
-            for busRoute in (busRoutes.allObjects as! [BusRoute]) {
-                if busRoute.direction != accessorBusRoute?.direction ?? 1 { continue }
-                if let busStop = busRoute.busStop {
-//                    busStop.accessorBusRoute = busRoute
-                    busStops.append(busStop)
+        get {
+            if _busStops.count > 0 { return _busStops }
+            if let busRoutes = busRoutes?.allObjects as? [BusRoute] {
+                _busStops = busRoutes.filter {
+                    return $0.direction == accessorBusRoute?.direction
+                }.sorted {
+                    return $0.stopSequence < $1.stopSequence
+                }.compactMap {
+                    return $0.busStop
                 }
+                
+                print(_busStops.map({ (busStop) -> Int64 in
+                    busStop.accessorBusRoute?.stopSequence ?? -100
+                }))
+                
             }
-            return busStops.sorted {
-                return $0.accessorBusRoute!.stopSequence < $1.accessorBusRoute!.stopSequence
-            }
+            return _busStops
         }
-        return []
     }
     
     public var originBusStop: BusStop? {
