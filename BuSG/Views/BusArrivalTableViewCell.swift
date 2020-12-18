@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Height: 65
 class BusArrivalTableViewCell: BusServiceTableViewCell {
     
     private var stackView: UIStackView!

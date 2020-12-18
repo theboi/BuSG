@@ -75,12 +75,6 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
         cell.roadDescLabel.text = busStopData.roadDesc
         cell.busStopCodeLabel.text = busStopData.busStopCode
         cell.roadNameLabel.text = busStopData.roadName
-        let distance = LocationProvider.shared.distanceFromCurrentLocation(to: CLLocation(latitude: busStopData.latitude, longitude: busStopData.longitude))
-        if distance > 100 {
-            cell.distanceLabel.text = "\(String(format: "%.2f", distance/1000)) km"
-        } else {
-            cell.distanceLabel.text = "\(String(format: "%.1f", distance)) m"
-        }
         
         return cell
     }

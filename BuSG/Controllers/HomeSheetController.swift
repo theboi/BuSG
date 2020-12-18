@@ -75,6 +75,7 @@ class HomeSheetController: SheetController {
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.keyboardDismissMode = .interactive
         
         contentView.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -214,7 +215,6 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
             BusStopSheetController(for: busStops[indexPath.row].busStopCode)
         }
         let busServiceSheetController = {
-            // FIXME: BUS SERVICE SHEET CONTROLLER NOT SHOWING
             BusServiceSheetController(for: self.searchBusServices[indexPath.row].serviceNo, in: self.searchBusServices[indexPath.row].direction)
         }
         tableView.deselectRow(at: indexPath, animated: true)
