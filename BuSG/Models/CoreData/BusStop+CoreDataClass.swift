@@ -14,22 +14,23 @@ public class BusStop: NSManagedObject {
     
     public var accessorBusRoute: BusRoute?
 
+    public var _busServices = [BusService]()
+    
     public var busServices: [BusService] {
-        if let busRoutes = busRoutes?.allObjects as? [BusRoute] {
-            var busServices: [BusService] = []
-            for busRoute in busRoutes {
-                let busServiceBusRoutes = busRoute.busService?.busRoutes?.allObjects as! [BusRoute]
-                if (busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 1 }).count && busRoute.direction == 1) || (busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 2 }).count && busRoute.direction == 2) { continue }
-                
-                if let busService = busRoute.busService {
-                    busServices.append(busService)
-                }
+        get {
+            if _busServices.count > 0 { return _busServices }
+            if let busRoutes = busRoutes?.allObjects as? [BusRoute] {
+                _busServices = busRoutes.filter({ (busRoute) -> Bool in
+                    let busServiceBusRoutes = busRoute.busService?.busRoutes?.allObjects as! [BusRoute]
+                    return !(busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 1 }).count && busRoute.direction == 1) || (busRoute.stopSequence == busServiceBusRoutes.filter({ $0.direction == 2 }).count && busRoute.direction == 2)
+                }).sorted {
+                    $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
+                }.compactMap({
+                    $0.busService
+                })
             }
-            return busServices.sorted {
-                $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
-            }
+            return _busServices
         }
-        return []
     }
     
     public var coordinate: CLLocationCoordinate2D {
