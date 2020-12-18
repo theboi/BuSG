@@ -1,75 +1,53 @@
 //
-//  BusStopTableViewCell.swift
-//   BuSG
+//  BusServiceTableViewCell.swift
+//  BuSG
 //
-//  Created by Ryan The on 4/12/20.
+//  Created by Ryan The on 18/12/20.
 //
 
 import UIKit
 
 class BusServiceTableViewCell: UITableViewCell {
+        
+    public lazy var serviceNoLabel = UILabel()
+    public lazy var destinationDirectionImageView = UIImageView()
+    public lazy var destinationLabel = UILabel()
     
-    public lazy var busStopCodeLabel = UILabel()
-    public lazy var roadDescLabel = UILabel()
-    public lazy var roadNameLabel = UILabel()
-    public lazy var distanceLabel = UILabel()
-    
-    private lazy var busServicesLabel = UILabel()
-    
-    public var busServices: [BusService] = [] {
+    public var busService: BusService? {
         didSet {
-            busServicesLabel.text = busServices.map({ $0.serviceNo }).joined(separator: "  ")
+            destinationDirectionImageView.image = UIImage(systemName: busService?.originCode == busService?.destinationCode ? "arrow.clockwise" : "arrow.right")
         }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(roadDescLabel)
-        roadDescLabel.font = .medium
-        roadDescLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(serviceNoLabel)
+        serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
+        serviceNoLabel.font = .large
         NSLayoutConstraint.activate([
-            roadDescLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            roadDescLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
+            serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
+            serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
         ])
         
-        addSubview(busStopCodeLabel)
-        busStopCodeLabel.font = .detail
-        busStopCodeLabel.textColor = .secondaryLabel
-        busStopCodeLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(destinationDirectionImageView)
+        destinationDirectionImageView.preferredSymbolConfiguration = .init(font: .detail)
+        destinationDirectionImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            busStopCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            busStopCodeLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.margin.small),
+            destinationDirectionImageView.heightAnchor.constraint(equalToConstant: 15),
+            destinationDirectionImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
+            destinationDirectionImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
         ])
         
-        addSubview(roadNameLabel)
-        roadNameLabel.font = .detail
-        roadNameLabel.textColor = .secondaryLabel
-        roadNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(destinationLabel)
+        destinationLabel.font = .detail
+        destinationLabel.textColor = .secondaryLabel
+        destinationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            roadNameLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: K.margin.small),
-            roadNameLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.margin.small),
+            destinationLabel.leadingAnchor.constraint(equalTo: destinationDirectionImageView.trailingAnchor, constant: K.margin.small),
+            destinationLabel.centerYAnchor.constraint(equalTo: destinationDirectionImageView.centerYAnchor),
         ])
         
-        addSubview(busServicesLabel)
-        busServicesLabel.font = .detail
-        busServicesLabel.textColor = .accent
-        busServicesLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            busServicesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            busServicesLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
-            busServicesLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
-        ])
-        
-        addSubview(distanceLabel)
-        distanceLabel.font = .detail
-        distanceLabel.textColor = .secondaryLabel
-        distanceLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            distanceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
-            distanceLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
-        ])
-
         backgroundColor = .clear
         selectedBackgroundView = FillView(solidWith: UIColor.label.withAlphaComponent(0.1))
     }

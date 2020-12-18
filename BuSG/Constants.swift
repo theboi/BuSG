@@ -42,9 +42,10 @@ enum K {
     }
     
     enum identifiers {
-        static let busServiceCell = "busServiceCellIdentifier"
         static let busStopCell = "busStopCellIdentifier"
-        static let busSuggestedCell = "busSuggestedCellIdentifier"
+        static let busServiceCell = "busServiceCellIdentifier"
+        static let busArrivalCell = "busArrivalCellIdentifier"
+        static let busSuggestionCell = "busSuggestionCellIdentifier"
         static let settingsCell = "settingsCellIdentifier"
         static let listViewHeader = "settingsHeaderIdentifier"
     }

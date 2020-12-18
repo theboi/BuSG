@@ -183,6 +183,16 @@ class ApiProvider {
         }
     }
     
+    public func getBusServices(containing searchString: String) -> [BusService] {
+        do {
+            let req = BusService.fetchRequest() as NSFetchRequest<BusService>
+            req.predicate = NSPredicate(format: "serviceNo CONTAINS[cd] %@", argumentArray: [searchString])
+            return try context.fetch(req)
+        } catch {
+            fatalError("Failure to fetch context: \(error)")
+        }
+    }
+    
     public func getBusStops(nearby coordinate: CLLocationCoordinate2D) -> [BusStop] {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
@@ -194,6 +204,16 @@ class ApiProvider {
             return try context.fetch(req).sorted(by: {
                 LocationProvider.shared.distanceFromCurrentLocation(to: CLLocation(coordinate: $0.coordinate)) < LocationProvider.shared.distanceFromCurrentLocation(to: CLLocation(coordinate: $1.coordinate))
             })
+        } catch {
+            fatalError("Failure to fetch context: \(error)")
+        }
+    }
+    
+    public func getBusStops(containing searchString: String) -> [BusStop] {
+        do {
+            let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+            req.predicate = NSPredicate(format: "rawRoadDesc CONTAINS[cd] %@ || rawRoadName CONTAINS[cd] %@ || busStopCode CONTAINS[cd] %@", argumentArray: [searchString, searchString, searchString])
+            return try context.fetch(req)
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }

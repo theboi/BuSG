@@ -45,6 +45,7 @@ class BusStopSheetController: SheetController {
             self.dismissSheet()
         }))
         headerView.trailingButton = trailingButton
+        headerView.trailingButtonIsHidden = false
         
         tableView.addSubview(refreshControl)
         tableView.backgroundColor = .clear
@@ -81,10 +82,10 @@ class BusStopSheetController: SheetController {
         
         busStop = ApiProvider.shared.getBusStop(with: busStopCode)
         
-        headerView.titleText = busStop.roadName
-        headerView.detailText = "\(busStop.busStopCode)  \(busStop.roadDesc)"
-                
-        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStopCell)
+        headerView.titleLabel.text = busStop.roadName
+        headerView.detailLabel.text = "\(busStop.busStopCode) • \(busStop.roadDesc)"
+        
+        tableView.register(BusArrivalTableViewCell.self, forCellReuseIdentifier: K.identifiers.busArrivalCell)
     }
     
     required init?(coder: NSCoder) {
@@ -102,7 +103,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStopCell, for: indexPath) as! BusStopTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busArrivalCell, for: indexPath) as! BusArrivalTableViewCell
         let busServiceData = busStop.busServices[indexPath.row]
         cell.serviceNoLabel.text = busServiceData.serviceNo
         cell.destinationLabel.text = ApiProvider.shared.getBusStop(with: busServiceData.destinationCode)?.roadDesc
