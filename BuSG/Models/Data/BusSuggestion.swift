@@ -13,6 +13,8 @@ struct BusSuggestion {
     
     var originBusStop: BusStop
     
+    var destinationBusStop: BusStop
+    
     var event: EKEvent
     
 }
