@@ -1,6 +1,6 @@
 //
 //  MainViewController.swift
-//  Navigem
+//   BuSG
 //
 //  Created by Ryan The on 16/11/20.
 //
@@ -31,7 +31,7 @@ class MainViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         
         self.view = mapView
-        
+
         locationManager.delegate = self
         mapView.delegate = self
         LocationProvider.shared.delegate = self
@@ -53,7 +53,7 @@ class MainViewController: UIViewController {
             }
             
             if !UIAccessibility.isReduceTransparencyEnabled {
-                button.backgroundColor = .clear
+                button.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.7)
                 
                 let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
                 blurEffectView.isUserInteractionEnabled = false // allows button to be clicked
@@ -101,8 +101,7 @@ class MainViewController: UIViewController {
     }
     
     private func checkForUpdates() {
-        UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
-
+//        UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
         let nowEpoch = Date().timeIntervalSince1970
         let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
         let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
@@ -110,10 +109,16 @@ class MainViewController: UIViewController {
         if lastOpenedEpoch == 0 {
             print("First Timer!")
             /// First time using app
-            self.present(LaunchViewController(), animated: true)
+            self.present(UINavigationController(rootViewController: SetupViewController()), animated: true)
         }
-        
-        if lastUpdatedEpoch+604800 < nowEpoch { // 1 week = 604800 seconds
+        let updateFrequency: Double = { () -> Double in
+            switch UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency) {
+            case 0: return 604800 // 1 week
+            case 1: return 2629743 // 1 month
+            default: return -999
+            }
+        }()
+        if lastUpdatedEpoch+updateFrequency < nowEpoch && updateFrequency != -999 {
             /// Requires update of bus data
             print("Updating Bus Data...")
             ApiProvider.shared.updateStaticData() {
@@ -121,6 +126,21 @@ class MainViewController: UIViewController {
             }
         }
         UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
+        
+        if UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar) {
+            EventProvider.shared.requestForCalendarAccess { (granted, error) in
+                UserDefaults.standard.setValue(false, forKey: K.userDefaults.connectToCalendar)
+                
+                if error != nil || !granted {
+                    let alert = UIAlertController(title: "Unable to access Calendar", message: error?.localizedDescription ?? "In order to access this feature, BuSG requires you to grant access to Calendar in Settings", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    alert.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _ in
+                        URL.open(webURL: UIApplication.openSettingsURLString)
+                    }))
+                    self.present(alert, animated: true)
+                }
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -153,7 +173,8 @@ extension MainViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        fatalError(error.localizedDescription)
+        // TODO
+        print(error.localizedDescription)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -222,17 +243,10 @@ extension MainViewController: LocationProviderDelegate {
     }
     
     func locationProvider(didRequestRouteFor busService: BusService, in direction: Int64) {
-        let busStops = busService.busStops.filter { (busStop) -> Bool in
-            busStop.accessorBusRoute?.direction == direction ? true : false
-        }.sorted { (prevBusStop, nextBusStop) -> Bool in
-            if let prevBusRoute = prevBusStop.accessorBusRoute, let nextBusRoute = nextBusStop.accessorBusRoute {
-                return prevBusRoute.stopSequence < nextBusRoute.stopSequence
-            }
-            return false
-        }
-        
+        let busStops = busService.busStops
+
         self.clearMapView()
-        
+
         for (index, _) in busStops.enumerated().dropLast() {
             if index%K.busStopRoutingSkip==0 || index == 0 || index == (busStops.count-1) {
                 let skip = index+K.busStopRoutingSkip >= busStops.count-1 ? busStops.count-1-index : K.busStopRoutingSkip
@@ -253,11 +267,11 @@ extension MainViewController: LocationProviderDelegate {
                 }
             }
         }
-        
+
         busStops.forEach { busStop in
             self.mapView.addAnnotation(BusStopAnnotation(for: busStop))
         }
-        
+
         self.mapView.fitAll()
     }
 }

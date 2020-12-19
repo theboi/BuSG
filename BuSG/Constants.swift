@@ -1,6 +1,6 @@
 //
 //  Constants.swift
-//  Navigem
+//   BuSG
 //
 //  Created by Ryan The on 16/11/20.
 //
@@ -15,6 +15,7 @@ enum K {
     enum margin {
         static let small: CGFloat = 8
         static let large: CGFloat = 16
+        static let extraLarge: CGFloat = 24
     }
     
     static let bottomSheetOpacity: CGFloat = 0.7
@@ -41,19 +42,24 @@ enum K {
     }
     
     enum identifiers {
-        static let busService = "busServiceIdentifier"
-        static let busStop = "busStopIdentifier"
-        static let busSuggested = "busSuggestedIdentifier"
-        static let settings = "settingsIdentifier"
+        static let busStopCell = "busStopCellIdentifier"
+        static let busServiceCell = "busServiceCellIdentifier"
+        static let busArrivalCell = "busArrivalCellIdentifier"
+        static let busSuggestionCell = "busSuggestionCellIdentifier"
+        static let settingsCell = "settingsCellIdentifier"
+        static let listViewHeader = "settingsHeaderIdentifier"
     }
     
     enum userDefaults {
         static let lastOpenedEpoch = "lastOpenedEpoch"
         static let lastUpdatedEpoch = "lastUpdatedEpoch"
+        static let connectToCalendar = "connectToCalendar"
+        static let updateFrequency = "updateFrequency"
+        static let favoritePlaces = "favoritePlaces"
     }
     
     enum mapView {
-        static let edgePadding = UIEdgeInsets(top: 100, left: 10, bottom: 400, right: 10)
-        static let span: CLLocationDistance = 400
+        static let edgePadding = UIEdgeInsets(top: 0, left: 10, bottom: 500, right: 10)
+        static let span: CLLocationDistance = 500
     }
 }

@@ -1,6 +1,6 @@
 //
 //  BusStopSheetController.swift
-//  Navigem
+//   BuSG
 //
 //  Created by Ryan The on 29/11/20.
 //
@@ -16,9 +16,15 @@ class BusStopSheetController: SheetController {
     
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
-    lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: { _ in
+    lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: {_ in
         self.reloadData()
     }))
+    
+    var timer: Timer? {
+        didSet {
+            timer?.fire()
+        }
+    }
     
     private func reloadData() {
         ApiProvider.shared.getBusArrivals(for: busStop.busStopCode) {busArrival in
@@ -35,11 +41,6 @@ class BusStopSheetController: SheetController {
         
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop))
         
-        let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
-            self.dismissSheet()
-        }))
-        headerView.trailingButton = trailingButton
-        
         tableView.addSubview(refreshControl)
         tableView.backgroundColor = .clear
         tableView.delegate = self
@@ -54,20 +55,31 @@ class BusStopSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        reloadData()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.reloadData() }
     }
     
-    init(for busStopCode: String?) {
+    override func dismissSheet() {
+        super.dismissSheet()
+        timer?.invalidate()
+    }
+    
+    override var isHidden: Bool {
+        didSet {
+            isHidden ? timer?.invalidate() : (timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.reloadData() })
+        }
+    }
+    
+    init(for busStopCode: String) {
         super.init()
         
         delegate = self
         
-        busStop = ApiProvider.shared.getBusStop(with: busStopCode ?? "00000")
+        busStop = ApiProvider.shared.getBusStop(with: busStopCode)
         
-        headerView.titleText = busStop.roadName
-        headerView.detailText = busStop.roadDesc
+        headerView.titleLabel.text = busStop.roadDesc
+        headerView.detailLabel.text = "\(busStop.busStopCode)  \(busStop.roadName)"
         
-        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStop)
+        tableView.register(BusArrivalTableViewCell.self, forCellReuseIdentifier: K.identifiers.busArrivalCell)
     }
     
     required init?(coder: NSCoder) {
@@ -77,55 +89,26 @@ class BusStopSheetController: SheetController {
 
 extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableView.rowHeight = 56
-        return busStop.busServices.count
+        busStop.busServices.count
     }
     
-
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        65
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStop, for: indexPath) as! BusStopTableViewCell
-        cell.backgroundColor = .clear
-        cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
-        cell.serviceNoLabel.text = busStop.busServices[indexPath.row].serviceNo
-        cell.serviceNoLabel.clipsToBounds = true
-        cell.serviceNoLabel.textColor = .white
-        cell.serviceNoLabel.layer.cornerRadius = 8
-        cell.serviceNoLabel.backgroundColor = UIColor(red: 0.0 / 255.0, green: 122.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
-        cell.serviceNoLabel.textAlignment = .center
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
-        cell.busTimingLabels.enumerated().forEach { (index, label) in
-            let optionalBusArrival = busArrival?.busServices[busStop.busServices[indexPath.row].serviceNo]
-            if let estimatedArrival = optionalBusArrival?.nextBuses[index].estimatedArrival, estimatedArrival != "" {
-                cell.stackView.isHidden = false
-                cell.errorLabel.text = ""
-                let date = dateFormatter.date(from: estimatedArrival)!
-                let arrTime = Calendar.current.dateComponents([.minute], from: Date(), to: date).minute!
-                if arrTime <= 0 { label.text = "Arr" }
-                else { label.text = String(arrTime) }
-                if arrTime <= 0 { label.textColor = UIColor(red: 0.0 / 255.0, green: 150.0 / 255.0, blue: 14.0 / 255.0, alpha: 1) }
-                
-            } else if optionalBusArrival == nil {
-                /// Bus Service not operating
-                cell.stackView.isHidden = true
-                cell.errorLabel.text = "Not In Operation"
-            } else {
-                /// Bus service stopped due to night time etc.
-                label.text = "-"
-            }
-        }
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busArrivalCell, for: indexPath) as! BusArrivalTableViewCell
+        let busServiceData = busStop.busServices[indexPath.row]
+        cell.serviceNoLabel.text = busServiceData.serviceNo
+        cell.destinationLabel.text = ApiProvider.shared.getBusStop(with: busServiceData.destinationCode)?.roadDesc
+        cell.busService = busStop.busServices[indexPath.row]
+        cell.busTimings = busArrival?.busServices[busServiceData.serviceNo]?.nextBuses
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusServiceSheetController(for: busStop.busServices[indexPath.row].serviceNo), animated: true)
+        present(BusServiceSheetController(for: busStop.busServices[indexPath.row].serviceNo, in: busStop.busServices[indexPath.row].accessorBusRoute!.direction), animated: true)
     }
 
 }
@@ -135,7 +118,7 @@ extension BusStopSheetController: SheetControllerDelegate {
     func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
         UIView.animate(withDuration: 0.3) {
             switch state {
-            case .min:
+            case .minimized:
                 self.tableView.layer.opacity = 0
             default:
                 self.tableView.layer.opacity = 1

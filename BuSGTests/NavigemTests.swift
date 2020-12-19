@@ -1,14 +1,14 @@
 //
-//  NavigemTests.swift
-//  NavigemTests
+//   BuSGTests.swift
+//   BuSGTests
 //
 //  Created by Ryan The on 16/11/20.
 //
 
 import XCTest
-@testable import Navigem
+@testable import BuSG
 
-class NavigemTests: XCTestCase {
+class BuSGTests: XCTestCase {
 
     // test_methodName_unitOfWork_expectedBehavior
     func test_initStringWithQueries_url_generateUrl() {

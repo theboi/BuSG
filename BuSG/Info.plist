@@ -25,6 +25,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>By enabling BuSG to access your Calendar information, better suggestions can be made for you. BuSG does not collect any of your data.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>BuSG requires your location to recommend nearby Buses and Bus Stops. BuSG does not collect any of your data.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>BuSG requires your location to recommend nearby Buses and Bus Stops. BuSG does not collect any of your data.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>By enabling BuSG to access your Reminders information, better suggestions can be made for you. BuSG does not collect any of your data.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -53,8 +61,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -63,13 +69,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>BuSG requires your location to recommend nearby Buses and Bus Stops. BuSG does not collect any of your data.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>BuSG requires your location to recommend nearby Buses and Bus Stops. BuSG does not collect any of your data.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>By enabling BuSG to access your Calendar information, better suggestions can be made for you. BuSG does not collect any of your data.</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>By enabling BuSG to access your Reminders information, better suggestions can be made for you. BuSG does not collect any of your data.</string>
 </dict>
 </plist>

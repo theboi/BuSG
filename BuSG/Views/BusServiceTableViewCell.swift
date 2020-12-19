@@ -1,59 +1,55 @@
 //
-//  BusStopTableViewCell.swift
-//  Navigem
+//  BusServiceTableViewCell.swift
+//  BuSG
 //
-//  Created by Ryan The on 4/12/20.
+//  Created by Ryan The on 18/12/20.
 //
 
 import UIKit
 
-enum BusStopData {
-    case arr
-    case left
-    case mins(Int)
-}
-
 class BusServiceTableViewCell: UITableViewCell {
+        
+    public lazy var serviceNoLabel = UILabel()
+    public lazy var destinationDirectionImageView = UIImageView()
+    public lazy var destinationLabel = UILabel()
     
-    public lazy var blockLabel = UILabel()
-    public lazy var streetLabel = UILabel()
-    public lazy var busStopCodeLabel = UILabel()
-    public lazy var blockImage = UIImageView()
-    public var stackView: UIStackView!
-    public lazy var errorLabel = UILabel()
+    public var busService: BusService? {
+        didSet {
+            destinationDirectionImageView.image = UIImage(systemName: busService?.originCode == busService?.destinationCode ? "arrow.clockwise" : "arrow.right")
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
-        
-        addSubview(blockLabel)
-        blockLabel.font = blockLabel.font.withSize(17)
-        blockLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(serviceNoLabel)
+        serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
+        serviceNoLabel.font = .large
         NSLayoutConstraint.activate([
-            blockLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            blockLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            blockLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant:
-                                                -26)
+            serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
+            serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
         ])
         
-        addSubview(busStopCodeLabel)
-        busStopCodeLabel.font = busStopCodeLabel.font.withSize(12)
-        busStopCodeLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(destinationDirectionImageView)
+        destinationDirectionImageView.preferredSymbolConfiguration = .init(font: .detail)
+        destinationDirectionImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            busStopCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            busStopCodeLabel.topAnchor.constraint(equalTo: blockLabel.bottomAnchor, constant: 2)
+            destinationDirectionImageView.heightAnchor.constraint(equalToConstant: 15),
+            destinationDirectionImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
+            destinationDirectionImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
         ])
-
-        addSubview(streetLabel)
-        streetLabel.font = streetLabel.font.withSize(12)
-        streetLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            streetLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: 7),
-            streetLabel.topAnchor.constraint(equalTo: blockLabel.bottomAnchor, constant: 2)
-        ])
-
         
+        addSubview(destinationLabel)
+        destinationLabel.font = .detail
+        destinationLabel.textColor = .secondaryLabel
+        destinationLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            destinationLabel.leadingAnchor.constraint(equalTo: destinationDirectionImageView.trailingAnchor, constant: K.margin.small),
+            destinationLabel.centerYAnchor.constraint(equalTo: destinationDirectionImageView.centerYAnchor),
+        ])
+        
+        backgroundColor = .clear
+        selectedBackgroundView = FillView(solidWith: UIColor.label.withAlphaComponent(0.1))
     }
     
     required init?(coder: NSCoder) {

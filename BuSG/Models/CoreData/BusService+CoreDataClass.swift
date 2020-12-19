@@ -1,6 +1,6 @@
 //
 //  BusService+CoreDataClass.swift
-//  Navigem
+//   BuSG
 //
 //  Created by Ryan The on 4/12/20.
 //
@@ -14,42 +14,22 @@ public class BusService: NSManagedObject {
     
     public var accessorBusRoute: BusRoute?
     
+    private var _busStops = [BusStop]()
+    
     public var busStops: [BusStop] {
-        func fetch() -> [BusStop] {
-            let context = managedObjectContext!
-            let routeReq: NSFetchRequest<BusRoute> = BusRoute.fetchRequest()
-            routeReq.predicate = NSPredicate(format: "serviceNo == %@", serviceNo)
-            do {
-                let busRoutes = try context.fetch(routeReq)
-                return busRoutes.map({ (busRoute) -> BusStop in
-                    let stopReq: NSFetchRequest<BusStop> = BusStop.fetchRequest()
-                    stopReq.predicate = NSPredicate(format: "busStopCode == %@", busRoute.busStopCode)
-                    do {
-                        let busStop = try context.fetch(stopReq).first!
-                        busStop.accessorBusRoute = busRoute
-                        busRoute.busService = self
-                        busRoute.busStop = busStop
-                        try context.save()
-                        return busStop
-                    } catch {
-                        fatalError(error.localizedDescription)
-                    }
-                })
-            } catch {
-                fatalError(error.localizedDescription)
+        get {
+            if _busStops.count > 0 { return _busStops }
+            if let busRoutes = busRoutes?.allObjects as? [BusRoute] {
+                _busStops = busRoutes.filter {
+                    return $0.direction == direction
+                }.sorted {
+                    $0.stopSequence < $1.stopSequence
+                }.compactMap {
+                    $0.busStop
+                }
             }
+            return _busStops
         }
-        
-        if let busRoutes = busRoutes, busRoutes.count > 0 {
-            var busStops: [BusStop] = []
-            for busRoute in (busRoutes.allObjects as! [BusRoute]) {
-                if let busStop = busRoute.busStop {
-                    busStop.accessorBusRoute = busRoute
-                    busStops.append(busStop)
-                } else { return fetch() }
-            }
-            return busStops
-        } else { return fetch() }
     }
     
     public var originBusStop: BusStop? {
