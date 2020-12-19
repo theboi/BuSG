@@ -1,6 +1,6 @@
 //
 //  LocationProvider.swift
-//  Navigem
+//   BuSG
 //
 //  Created by Ryan The on 3/12/20.
 //
@@ -30,6 +30,10 @@ class LocationProvider: NSObject {
     
     public var currentLocation: CLLocation {
         locationManager.location ?? CLLocation(latitude: 0, longitude: 0)
+    }
+    
+    public func distanceFromCurrentLocation(to location: CLLocation) -> CLLocationDistance {
+        CLLocation.distance(location)(from: currentLocation)
     }
     
 }

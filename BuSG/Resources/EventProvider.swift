@@ -11,25 +11,25 @@ class EventProvider {
     
     static let shared = EventProvider()
     
-    lazy var store: EKEventStore = {
-        let store = EKEventStore()
-        store.requestAccess(to: .reminder) { granted, error in
-            
+    lazy var store = EKEventStore()
+    
+    public func requestForCalendarAccess(completion: CompletionHandler<(Bool, Error?)> = nil) {
+        store.requestAccess(to: .event) { granted, error in
+            completion?((granted, error))
         }
-        return store
-    }()
+    }
     
     public func presentDayCalendarEvents() -> [EKEvent] {
-        let calendar = Calendar.current
-        
-        var todayComponents = DateComponents()
-        todayComponents.day = 1
-        if let today = calendar.date(byAdding: todayComponents, to: Date(), wrappingComponents: false) {
-            let predicate = store.predicateForEvents(withStart: today, end: today, calendars: nil)
+        if UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar) {
+            let calendar = Calendar.current
+            
+            let todayStart = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
+            let todayEnd = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: Date())!
+
+            let predicate = store.predicateForEvents(withStart: todayStart, end: todayEnd, calendars: nil)
             let events = store.events(matching: predicate)
             return events
         }
         return []
     }
-    
 }

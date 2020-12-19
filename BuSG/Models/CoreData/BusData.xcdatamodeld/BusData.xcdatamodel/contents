@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="BusRoute" representedClassName="BusRoute" syncable="YES">
         <attribute name="busStopCode" attributeType="String"/>
         <attribute name="direction" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="distance" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="rawSatFirstBus" attributeType="String"/>
+        <attribute name="rawSatLastBus" attributeType="String"/>
         <attribute name="rawServiceOperator" attributeType="String"/>
-        <attribute name="satFirstBus" attributeType="String"/>
-        <attribute name="satLastBus" attributeType="String"/>
+        <attribute name="rawSunFirstBus" attributeType="String"/>
+        <attribute name="rawSunLastBus" attributeType="String"/>
+        <attribute name="rawWdFirstBus" attributeType="String"/>
+        <attribute name="rawWdLastBus" attributeType="String"/>
         <attribute name="serviceNo" attributeType="String"/>
         <attribute name="stopSequence" attributeType="Integer 64" usesScalarValueType="YES"/>
-        <attribute name="sunFirstBus" attributeType="String"/>
-        <attribute name="sunLastBus" attributeType="String"/>
-        <attribute name="wdFirstBus" attributeType="String"/>
-        <attribute name="wdLastBus" attributeType="String"/>
-        <relationship name="busService" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BusService" inverseName="busRoutes" inverseEntity="BusService"/>
-        <relationship name="busStop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BusStop" inverseName="busRoutes" inverseEntity="BusStop"/>
+        <relationship name="rawBusService" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BusService" inverseName="busRoutes" inverseEntity="BusService"/>
+        <relationship name="rawBusStop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BusStop" inverseName="busRoutes" inverseEntity="BusStop"/>
     </entity>
     <entity name="BusService" representedClassName="BusService" syncable="YES">
-        <attribute name="amOffpeakFreq" attributeType="String"/>
-        <attribute name="amPeakFreq" attributeType="String"/>
         <attribute name="destinationCode" attributeType="String"/>
         <attribute name="direction" attributeType="Integer 64" usesScalarValueType="YES"/>
-        <attribute name="loopDesc" attributeType="String"/>
         <attribute name="originCode" attributeType="String"/>
-        <attribute name="pmOffpeakFreq" attributeType="String"/>
-        <attribute name="pmPeakFreq" attributeType="String"/>
+        <attribute name="rawAmOffpeakFreq" attributeType="String"/>
+        <attribute name="rawAmPeakFreq" attributeType="String"/>
         <attribute name="rawCategory" attributeType="String"/>
+        <attribute name="rawLoopDesc" attributeType="String"/>
+        <attribute name="rawPmOffpeakFreq" attributeType="String"/>
+        <attribute name="rawPmPeakFreq" attributeType="String"/>
         <attribute name="rawServiceOperator" attributeType="String"/>
         <attribute name="serviceNo" attributeType="String"/>
-        <relationship name="busRoutes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BusRoute" inverseName="busService" inverseEntity="BusRoute"/>
+        <relationship name="busRoutes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BusRoute" inverseName="rawBusService" inverseEntity="BusRoute"/>
     </entity>
     <entity name="BusStop" representedClassName="BusStop" syncable="YES">
         <attribute name="busStopCode" attributeType="String"/>
         <attribute name="latitude" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="longitude" attributeType="Double" usesScalarValueType="YES"/>
-        <attribute name="roadDesc" attributeType="String"/>
-        <attribute name="roadName" attributeType="String"/>
-        <relationship name="busRoutes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BusRoute" inverseName="busStop" inverseEntity="BusRoute"/>
+        <attribute name="rawRoadDesc" attributeType="String"/>
+        <attribute name="rawRoadName" attributeType="String"/>
+        <relationship name="busRoutes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BusRoute" inverseName="rawBusStop" inverseEntity="BusRoute"/>
     </entity>
     <elements>
         <element name="BusRoute" positionX="-54" positionY="90" width="128" height="239"/>

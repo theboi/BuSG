@@ -1,6 +1,6 @@
 //
 //  BusNumberSheetController.swift
-//  Navigem
+//   BuSG
 //
 //  Created by Ryan The on 29/11/20.
 //
@@ -18,12 +18,7 @@ class BusServiceSheetController: SheetController {
         super.viewDidLoad()
         
         delegate = self
-        
-        let trailingButton = UIButton(type: .close, primaryAction: UIAction(handler: { (action) in
-            self.dismissSheet()
-        }))
-        headerView.trailingButton = trailingButton
-        
+
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
@@ -37,18 +32,24 @@ class BusServiceSheetController: SheetController {
             contentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         
-        tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busService)
+        tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStopCell)
     }
     
-    init(for serviceNo: String?) {
-        
+    init(for serviceNo: String, in direction: Int64) {
         super.init()
+
+        busService = ApiProvider.shared.getBusService(with: serviceNo, in: direction)
         
-        self.busService = ApiProvider.shared.getBusService(with: serviceNo ?? "1")
-        self.headerView.titleText = busService.serviceNo
-        self.headerView.detailText = busService.destinationCode
+        headerView.titleLabel.text = busService.serviceNo
+        if let originDesc = busService.originBusStop?.roadDesc, let destinationDesc = busService.destinationBusStop?.roadDesc {
+            if originDesc != destinationDesc {
+                self.headerView.detailLabel.text = "\(originDesc) → \(destinationDesc)"
+            } else {
+                self.headerView.detailLabel.text = originDesc
+            }
+        }
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 2)
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: direction)
         
     }
     
@@ -59,17 +60,22 @@ class BusServiceSheetController: SheetController {
 
 extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return busService?.busStops.count ?? 0
+        busService.busStops.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        85
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        tableView.rowHeight = 56
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busService, for: indexPath) as! BusServiceTableViewCell
-        cell.blockLabel.text = busService?.busStops[indexPath.row].busStopCode
-        cell.busStopCodeLabel.text = busService?.busStops[indexPath.row].busStopCode
-        cell.streetLabel.text = busService?.busStops[indexPath.row].busStopCode
-        cell.backgroundColor = .clear
-        cell.selectedBackgroundView = FillView(solidWith: (UIScreen.main.traitCollection.userInterfaceStyle == .dark ? UIColor.white : UIColor.black).withAlphaComponent(0.1))
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStopCell, for: indexPath) as! BusStopTableViewCell
+        let busStopData = self.busService.busStops[indexPath.row]
+
+        cell.busServices = busStopData.busServices
+        cell.roadDescLabel.text = busStopData.roadDesc
+        cell.busStopCodeLabel.text = busStopData.busStopCode
+        cell.roadNameLabel.text = busStopData.roadName
+        
         return cell
     }
 
@@ -84,7 +90,7 @@ extension BusServiceSheetController: SheetControllerDelegate {
     func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
         UIView.animate(withDuration: 0.3) {
             switch state {
-            case .min:
+            case .minimized:
                 self.tableView.layer.opacity = 0
             default:
                 self.tableView.layer.opacity = 1

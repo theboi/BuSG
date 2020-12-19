@@ -2,7 +2,7 @@
 //  BusStop+CoreDataProperties.swift
 //  BuSG
 //
-//  Created by Ryan The on 7/12/20.
+//  Created by Ryan The on 18/12/20.
 //
 //
 
@@ -19,8 +19,8 @@ extension BusStop {
     @NSManaged public var busStopCode: String
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
-    @NSManaged public var roadDesc: String
-    @NSManaged public var roadName: String
+    @NSManaged public var rawRoadDesc: String
+    @NSManaged public var rawRoadName: String
     @NSManaged public var busRoutes: NSSet?
 
 }

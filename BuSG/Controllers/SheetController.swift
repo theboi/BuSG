@@ -1,6 +1,6 @@
 //
 //  BottomSheetViewController.swift
-//  Navigem
+//   BuSG
 //
 //  Created by Ryan The on 16/11/20.
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 enum SheetState {
-    case min, mid, max
+    case full, regular, small, minimized
 }
 
 protocol SheetControllerDelegate: class {
@@ -31,14 +31,14 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     var presentedSheetController: SheetController?
     
     /// Holds information about current sheet's state. **Never directly set this**.
-    private var state: SheetState = .mid
+    private var state: SheetState = .regular
     
     /// Tells class if should prevent sheet from being seen.
     var isHidden = false {
         didSet { updateView(for: state) }
     }
     
-    lazy var headerView = SheetHeaderView()
+    lazy var headerView = SheetHeaderView(for: self)
     
     lazy var contentView = SheetContentView()
     
@@ -93,7 +93,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateView(for: .mid)
+        updateView(for: state)
     }
     
     private func styleView() {
@@ -101,7 +101,7 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         view.layer.cornerRadius = K.cornerRadius
         view.layer.masksToBounds = true
         if !UIAccessibility.isReduceTransparencyEnabled {
-            view.backgroundColor = .clear
+            view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.7)
             
             let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
             
@@ -143,20 +143,28 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         } else if sender.state == .ended {
             let distance = abs(lastScrollHeight-view.frame.height)
             let velocity = sender.velocity(in: view).y / distance
+                        
+            let goal = self.view.frame.height
+            let states: [SheetState] = [.minimized, .small, .regular, .full]
             
-            let midHeight = self.getSheetHeight(for: .mid)
-            let threshold: CGFloat = abs(velocity)*15
-            // FIXME: Redo scroll snapping. Currently is biased towards swiping towards center as threshold increases from centre. Also crashes sometimes if too fast.
-            let newState: SheetState = {
-                switch self.view.frame.height {
-                case (midHeight-threshold)...(midHeight+threshold): return .mid
-                case ...(midHeight-threshold): return .min
-                case (midHeight+threshold)...: fallthrough
-                default: return .max
+            var closest: (Int, CGFloat)?
+            for (index, state) in states.map({ self.getSheetHeight(for: $0) }).enumerated() {
+                guard let closestUnwrapped = closest else {
+                    closest = (index, state)
+                    continue
                 }
-            }()
+                closest = abs(state - goal) < abs(closestUnwrapped.1 - goal) ? (index, state) : closest
+            }
+
+            var nextStateIndex = closest!.0
+            if velocity > 20, closest!.0 - 1 >= 0 {
+                nextStateIndex = closest!.0 - 1
+            } else if velocity < -20, closest!.0 + 1 <= states.count-1 {
+                nextStateIndex = closest!.0 + 1
+            }
             
-            updateView(for: newState, velocity: velocity)
+            updateView(for: states[nextStateIndex], velocity: velocity)
+
         }
     }
     
@@ -184,7 +192,6 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     public func dismissSheet() {
         if let presentingSheetController = presentingSheetController {
             presentingSheetController.isHidden = false
-            //(parent as! MainViewController).currentlyPresentingSheetController = presentingSheetController
             presentingSheetController.didReturnFromDismissalBy(dismissingSheetController: self)
             self.isHidden = true
             // Clean up container view controller
@@ -198,10 +205,11 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     private func getSheetHeight(for state: SheetState) -> CGFloat {
         if isHidden { return 0 }
         switch state {
-        case .max: return UIScreen.main.bounds.height-50
-        case .min: return 100
-        case .mid: fallthrough
-        default: return 400
+        case .full: return UIScreen.main.bounds.height-50
+        case .minimized: return 100
+        case .small: return 300
+        case .regular: fallthrough
+        default: return 600
         }
     }
     
