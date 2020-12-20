@@ -8,21 +8,22 @@
 import UIKit
 import CoreLocation
 
-/// DataMall does not support HTTPS
-let apiUrlBase = "http://datamall2.mytransport.sg/ltaodataservice"
-
 enum K {
+    
+    /// DataMall does not support HTTPS
+    private static let apiUrlBase = "http://datamall2.mytransport.sg/ltaodataservice"
+    
     enum margin {
-        static let small: CGFloat = 8
-        static let large: CGFloat = 16
-        static let extraLarge: CGFloat = 24
+        static let half: CGFloat = 4
+        static let one: CGFloat = 8
+        static let two: CGFloat = 16
+        static let twoAndHalf: CGFloat = 24
     }
     
     static let bottomSheetOpacity: CGFloat = 0.7
     static let cornerRadius: CGFloat = 8
     
     static let nearbyCoordRadius: Double = 1/111.3/2 // 0.5km radius. 1 degree of lat/long is approximately equal to 111.3 kilometers
-    static let datamallEnvVar = "datamall_api_key"
     static let busStopRoutingSkip = 5
     static let nilStr = "-"
     static let cellHeight: CGFloat = 50

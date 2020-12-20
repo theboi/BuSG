@@ -78,7 +78,7 @@ class MainViewController: UIViewController {
         mapView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.two),
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             stackView.widthAnchor.constraint(equalToConstant: 50),
             stackView.heightAnchor.constraint(equalToConstant: 100),
@@ -90,57 +90,14 @@ class MainViewController: UIViewController {
         mapView.addSubview(compassButton)
         compassButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            compassButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.large),
-            compassButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: K.margin.large),
+            compassButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.two),
+            compassButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: K.margin.two),
         ])
         
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-    }
-    
-    private func checkForUpdates() {
-//        UserDefaults.standard.setValue(0, forKey: K.userDefaults.lastOpenedEpoch)
-        let nowEpoch = Date().timeIntervalSince1970
-        let lastOpenedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastOpenedEpoch)
-        let lastUpdatedEpoch = UserDefaults.standard.double(forKey: K.userDefaults.lastUpdatedEpoch)
-
-        if lastOpenedEpoch == 0 {
-            print("First Timer!")
-            /// First time using app
-            self.present(UINavigationController(rootViewController: SetupViewController()), animated: true)
-        }
-        let updateFrequency: Double = { () -> Double in
-            switch UserDefaults.standard.integer(forKey: K.userDefaults.updateFrequency) {
-            case 0: return 604800 // 1 week
-            case 1: return 2629743 // 1 month
-            default: return -999
-            }
-        }()
-        if lastUpdatedEpoch+updateFrequency < nowEpoch && updateFrequency != -999 {
-            /// Requires update of bus data
-            print("Updating Bus Data...")
-            ApiProvider.shared.updateStaticData() {
-                UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastUpdatedEpoch)
-            }
-        }
-        UserDefaults.standard.setValue(nowEpoch, forKey: K.userDefaults.lastOpenedEpoch)
-        
-        if UserDefaults.standard.bool(forKey: K.userDefaults.connectToCalendar) {
-            EventProvider.shared.requestForCalendarAccess { (granted, error) in
-                UserDefaults.standard.setValue(false, forKey: K.userDefaults.connectToCalendar)
-                
-                if error != nil || !granted {
-                    let alert = UIAlertController(title: "Unable to access Calendar", message: error?.localizedDescription ?? "In order to access this feature, BuSG requires you to grant access to Calendar in Settings", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-                    alert.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _ in
-                        URL.open(webURL: UIApplication.openSettingsURLString)
-                    }))
-                    self.present(alert, animated: true)
-                }
-            }
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -156,8 +113,6 @@ class MainViewController: UIViewController {
         } else {
             LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
         }
-        
-        checkForUpdates()
     }
     
     private func clearMapView() {

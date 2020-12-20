@@ -26,7 +26,7 @@ class SettingsViewController: ListViewController {
                             alert.view.addSubview(activityIndicator)
                             activityIndicator.translatesAutoresizingMaskIntoConstraints = false
                             NSLayoutConstraint.activate([
-                                activityIndicator.leadingAnchor.constraint(equalTo: alert.view.leadingAnchor, constant: K.margin.extraLarge),
+                                activityIndicator.leadingAnchor.constraint(equalTo: alert.view.leadingAnchor, constant: K.margin.twoAndHalf),
                                 activityIndicator.centerYAnchor.constraint(equalTo: alert.view.centerYAnchor),
                             ])
                             activityIndicator.startAnimating()

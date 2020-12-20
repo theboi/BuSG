@@ -65,10 +65,10 @@ class HomeSheetController: SheetController {
         headerView.addSubview(searchBar)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: headerView.topAnchor, constant: K.margin.small),
+            searchBar.topAnchor.constraint(equalTo: headerView.topAnchor, constant: K.margin.one),
             searchBar.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: K.margin.small),
-            searchBar.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -K.margin.small),
+            searchBar.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: K.margin.one),
+            searchBar.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -K.margin.one),
         ])
         
         tableView.addSubview(refreshControl)

@@ -69,12 +69,12 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
         stackView = UIStackView(arrangedSubviews: busTimingLabels)
         stackView.distribution = .fillEqually
         stackView.alignment = .trailing
-        stackView.spacing = K.margin.extraLarge
+        stackView.spacing = K.margin.twoAndHalf
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.two),
             stackView.widthAnchor.constraint(equalToConstant: 180),
         ])
         

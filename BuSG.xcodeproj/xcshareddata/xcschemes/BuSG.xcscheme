@@ -82,11 +82,6 @@
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "datamall_api_key"
-            value = "PH6IauvsShyiUOpSgWP4/A=="
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
             key = "SQLITE_ENABLE_THREAD_ASSERTIONS"
             value = "1"
             isEnabled = "NO">

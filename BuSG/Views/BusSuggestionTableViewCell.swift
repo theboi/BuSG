@@ -27,7 +27,7 @@ class BusSuggestionTableViewCell: UITableViewCell {
         addSubview(eventImageView)
         eventImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            eventImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            eventImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
             eventImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         
@@ -35,8 +35,8 @@ class BusSuggestionTableViewCell: UITableViewCell {
         serviceNoLabel.font = .medium
         serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            serviceNoLabel.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: K.margin.large),
-            serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
+            serviceNoLabel.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: K.margin.two),
+            serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.one),
         ])
         
         addSubview(destinationLabel)
@@ -44,15 +44,15 @@ class BusSuggestionTableViewCell: UITableViewCell {
         destinationLabel.textColor = .secondaryLabel
         destinationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            destinationLabel.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: K.margin.large),
-            destinationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
+            destinationLabel.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: K.margin.two),
+            destinationLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.one),
         ])
         
         addSubview(eventLabel)
         eventLabel.font = .detail
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            eventLabel.leadingAnchor.constraint(equalTo: serviceNoLabel.trailingAnchor, constant: K.margin.large),
+            eventLabel.leadingAnchor.constraint(equalTo: serviceNoLabel.trailingAnchor, constant: K.margin.two),
             eventLabel.centerYAnchor.constraint(equalTo: serviceNoLabel.centerYAnchor),
         ])
 
