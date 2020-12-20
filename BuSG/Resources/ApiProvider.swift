@@ -180,15 +180,17 @@ class ApiProvider {
         }
     }
     
-    public func getBusServices(containing searchString: String) -> [BusService] {
-        do {
-            let req = BusService.fetchRequest() as NSFetchRequest<BusService>
-            req.predicate = NSPredicate(format: "serviceNo CONTAINS[cd] %@", argumentArray: [searchString])
-            return try context.fetch(req).sorted {
-                $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
+    public func getBusServices(containing searchString: String, completion: CompletionHandler<[BusService]> = nil) {
+        DispatchQueue(label: K.backgroundThreadLabel).async {
+            do {
+                let req = BusService.fetchRequest() as NSFetchRequest<BusService>
+                req.predicate = NSPredicate(format: "serviceNo CONTAINS[cd] %@", argumentArray: [searchString])
+                completion?(try self.context.fetch(req).sorted {
+                    $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
+                })
+            } catch {
+                fatalError("Failure to fetch context: \(error)")
             }
-        } catch {
-            fatalError("Failure to fetch context: \(error)")
         }
     }
     
@@ -208,15 +210,17 @@ class ApiProvider {
         }
     }
     
-    public func getBusStops(containing searchString: String) -> [BusStop] {
-        do {
-            let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-            req.predicate = NSPredicate(format: "rawRoadDesc CONTAINS[cd] %@ || rawRoadName CONTAINS[cd] %@ || busStopCode CONTAINS[cd] %@", argumentArray: [searchString, searchString, searchString])
-            return try context.fetch(req).sorted {
-                $0.roadDesc.localizedStandardCompare($1.roadDesc) == .orderedAscending
+    public func getBusStops(containing searchString: String, completion: CompletionHandler<[BusStop]> = nil) {
+        DispatchQueue(label: K.backgroundThreadLabel).async {
+            do {
+                let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+                req.predicate = NSPredicate(format: "rawRoadDesc CONTAINS[cd] %@ || rawRoadName CONTAINS[cd] %@ || busStopCode CONTAINS[cd] %@", argumentArray: [searchString, searchString, searchString])
+                completion?(try self.context.fetch(req).sorted {
+                    $0.roadDesc.localizedStandardCompare($1.roadDesc) == .orderedAscending
+                })
+            } catch {
+                fatalError("Failure to fetch context: \(error)")
             }
-        } catch {
-            fatalError("Failure to fetch context: \(error)")
         }
     }
     
