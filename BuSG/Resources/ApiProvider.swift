@@ -184,7 +184,9 @@ class ApiProvider {
         do {
             let req = BusService.fetchRequest() as NSFetchRequest<BusService>
             req.predicate = NSPredicate(format: "serviceNo CONTAINS[cd] %@", argumentArray: [searchString])
-            return try context.fetch(req)
+            return try context.fetch(req).sorted {
+                $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
+            }
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
@@ -210,7 +212,9 @@ class ApiProvider {
         do {
             let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
             req.predicate = NSPredicate(format: "rawRoadDesc CONTAINS[cd] %@ || rawRoadName CONTAINS[cd] %@ || busStopCode CONTAINS[cd] %@", argumentArray: [searchString, searchString, searchString])
-            return try context.fetch(req)
+            return try context.fetch(req).sorted {
+                $0.roadDesc.localizedStandardCompare($1.roadDesc) == .orderedAscending
+            }
         } catch {
             fatalError("Failure to fetch context: \(error)")
         }
