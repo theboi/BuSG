@@ -27,6 +27,7 @@ enum K {
     static let busStopRoutingSkip = 5
     static let nilStr = "-"
     static let cellHeight: CGFloat = 50
+    static let backgroundThreadLabel = "com.ryanthe.background"
     
     enum apiUrls {
         static let busArrivals = "\(apiUrlBase)/BusArrivalv2"
