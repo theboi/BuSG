@@ -75,6 +75,7 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
         cell.roadDescLabel.text = busStopData.roadDesc
         cell.busStopCodeLabel.text = busStopData.busStopCode
         cell.roadNameLabel.text = busStopData.roadName
+        cell.showSequence = true
         
         return cell
     }

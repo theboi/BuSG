@@ -20,10 +20,7 @@ class ApiProvider {
     private let backgroundContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext()
     
     private var apiKey: String {
-        guard let apiKey = ProcessInfo.processInfo.environment[K.datamallEnvVar] else {
-            fatalError("DataMall API Key missing. Get a key at https://www.mytransport.sg/content/mytransport/home/dataMall.html")
-        }
-        return apiKey
+        Credentials.dataMallApiKey
     }
     
     /// Fetch bus data in Service nested structures with skip until DataMall API returns empty array (aka no more entries)

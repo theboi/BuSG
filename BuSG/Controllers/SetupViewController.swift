@@ -75,7 +75,7 @@ class SetupViewController: ListViewController {
     }
     
     init() {
-        super.init(data: ListData(sections: []), footerView: UIView(frame: CGRect(height: 50+K.margin.large*2)))
+        super.init(data: ListData(sections: []), footerView: UIView(frame: CGRect(height: 50+K.margin.two*2)))
         isModalInPresentation = true
         title = "Setup"
         
@@ -93,10 +93,10 @@ class SetupViewController: ListViewController {
         footerView.addSubview(doneButton)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            doneButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: K.margin.large),
-            doneButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -K.margin.large),
-            doneButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -K.margin.large),
-            doneButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: K.margin.large),
+            doneButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: K.margin.two),
+            doneButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -K.margin.two),
+            doneButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -K.margin.two),
+            doneButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: K.margin.two),
         ])
     }
     

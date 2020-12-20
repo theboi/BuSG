@@ -26,8 +26,8 @@ class BusServiceTableViewCell: UITableViewCell {
         serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
         serviceNoLabel.font = .large
         NSLayoutConstraint.activate([
-            serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.small),
-            serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.one),
+            serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
         ])
         
         addSubview(destinationDirectionImageView)
@@ -35,8 +35,8 @@ class BusServiceTableViewCell: UITableViewCell {
         destinationDirectionImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             destinationDirectionImageView.heightAnchor.constraint(equalToConstant: 15),
-            destinationDirectionImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.small),
-            destinationDirectionImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
+            destinationDirectionImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.one),
+            destinationDirectionImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
         ])
         
         addSubview(destinationLabel)
@@ -44,7 +44,7 @@ class BusServiceTableViewCell: UITableViewCell {
         destinationLabel.textColor = .secondaryLabel
         destinationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            destinationLabel.leadingAnchor.constraint(equalTo: destinationDirectionImageView.trailingAnchor, constant: K.margin.small),
+            destinationLabel.leadingAnchor.constraint(equalTo: destinationDirectionImageView.trailingAnchor, constant: K.margin.one),
             destinationLabel.centerYAnchor.constraint(equalTo: destinationDirectionImageView.centerYAnchor),
         ])
         
