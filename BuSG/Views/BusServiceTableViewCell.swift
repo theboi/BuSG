@@ -22,24 +22,24 @@ class BusServiceTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(serviceNoLabel)
+        contentView.addSubview(serviceNoLabel)
         serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
         serviceNoLabel.font = .large
         NSLayoutConstraint.activate([
-            serviceNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.one),
-            serviceNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
+            serviceNoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.margin.one),
+            serviceNoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.margin.two),
         ])
         
-        addSubview(destinationDirectionImageView)
+        contentView.addSubview(destinationDirectionImageView)
         destinationDirectionImageView.preferredSymbolConfiguration = .init(font: .detail)
         destinationDirectionImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             destinationDirectionImageView.heightAnchor.constraint(equalToConstant: 15),
-            destinationDirectionImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.one),
-            destinationDirectionImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
+            destinationDirectionImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -K.margin.one),
+            destinationDirectionImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.margin.two),
         ])
         
-        addSubview(destinationLabel)
+        contentView.addSubview(destinationLabel)
         destinationLabel.font = .detail
         destinationLabel.textColor = .secondaryLabel
         destinationLabel.translatesAutoresizingMaskIntoConstraints = false

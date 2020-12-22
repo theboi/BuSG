@@ -165,7 +165,7 @@ extension MainViewController: MKMapViewDelegate {
             stack.axis = .vertical
             annotationView?.detailCalloutAccessoryView = stack
             annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure, primaryAction: UIAction(handler: { _ in
-                self.currentlyPresentingSheetController?.present(BusStopSheetController(for: annotation.busStop.busStopCode), animated: true)
+                self.currentlyPresentingSheetController?.present(BusStopSheetController(for: annotation.busStop), animated: true)
             }))
             return annotationView
         default:
@@ -197,12 +197,12 @@ extension MainViewController: LocationProviderDelegate {
         mapView.showsUserLocation = true
     }
     
-    func locationProvider(didRequestRouteFor busService: BusService, in direction: Int64) {
+    func locationProvider(didRequestRouteFor busService: BusService) {
         let busStops = busService.busStops
 
         self.clearMapView()
 
-        for (index, _) in busStops.enumerated().dropLast() {
+        for index in 0...busStops.dropLast().count-1 {
             if index%K.busStopRoutingSkip==0 || index == 0 || index == (busStops.count-1) {
                 let skip = index+K.busStopRoutingSkip >= busStops.count-1 ? busStops.count-1-index : K.busStopRoutingSkip
                 let req = MKDirections.Request()

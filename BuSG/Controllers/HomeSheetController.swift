@@ -215,13 +215,13 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let busSuggestionSheetController = {
-            BusStopSheetController(for: self.suggestedServices[indexPath.row].originBusStop.busStopCode)
+            BusStopSheetController(for: self.suggestedServices[indexPath.row].originBusStop)
         }
         let busStopSheetController = { (busStops: [BusStop]) -> BusStopSheetController in
-            BusStopSheetController(for: busStops[indexPath.row].busStopCode)
+            BusStopSheetController(for: busStops[indexPath.row])
         }
         let busServiceSheetController = {
-            BusServiceSheetController(for: self.searchBusServices[indexPath.row].serviceNo, in: self.searchBusServices[indexPath.row].direction)
+            BusServiceSheetController(for: self.searchBusServices[indexPath.row])
         }
         tableView.deselectRow(at: indexPath, animated: true)
         
