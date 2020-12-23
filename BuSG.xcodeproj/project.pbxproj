@@ -134,6 +134,7 @@
 		AAE490B8257CEBCF0010B483 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		AAE490BD257D20080010B483 /* BusSuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusSuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		AAE490C8257E07EA0010B483 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		AAE799BA25936353000F6054 /* DISPLAY.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DISPLAY.jpg; sourceTree = "<group>"; };
 		AAF4A4F425627D4F00FC51E7 /* BuSG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuSG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF4A4F725627D4F00FC51E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAF4A4F925627D4F00FC51E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -255,6 +256,7 @@
 		AAF4A4EB25627D4F00FC51E7 = {
 			isa = PBXGroup;
 			children = (
+				AAE799BA25936353000F6054 /* DISPLAY.jpg */,
 				AAC97DA025638B6D002C5640 /* README.md */,
 				AAF4A4F625627D4F00FC51E7 /* BuSG */,
 				AAF4A50D25627D5200FC51E7 /* BuSGTests */,
