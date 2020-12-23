@@ -18,8 +18,8 @@ class ListViewHeaderFooterView: UITableViewHeaderFooterView {
             addSubview(trailingButton)
             trailingButton.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                trailingButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.large),
-                trailingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.extraLarge),
+                trailingButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.two),
+                trailingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.twoAndHalf),
             ])
         }
     }
@@ -30,9 +30,9 @@ class ListViewHeaderFooterView: UITableViewHeaderFooterView {
         header.font = .regularHeader
         header.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            header.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.large),
-            header.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.extraLarge),
-            header.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.extraLarge),
+            header.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -K.margin.two),
+            header.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.twoAndHalf),
+            header.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.twoAndHalf),
         ])
         
 //        addSubview(trailingButton)

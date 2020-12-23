@@ -19,8 +19,8 @@ extension UIWindow {
         NSLayoutConstraint.activate([
             toast.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -50),
             toast.heightAnchor.constraint(equalToConstant: 50),
-            toast.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.large),
-            toast.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
+            toast.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
+            toast.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.two),
         ])
         
         func animateAway() {

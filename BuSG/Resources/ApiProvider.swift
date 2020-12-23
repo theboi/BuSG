@@ -20,10 +20,7 @@ class ApiProvider {
     private let backgroundContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext()
     
     private var apiKey: String {
-        guard let apiKey = ProcessInfo.processInfo.environment[K.datamallEnvVar] else {
-            fatalError("DataMall API Key missing. Get a key at https://www.mytransport.sg/content/mytransport/home/dataMall.html")
-        }
-        return apiKey
+        Credentials.dataMallApiKey
     }
     
     /// Fetch bus data in Service nested structures with skip until DataMall API returns empty array (aka no more entries)
@@ -183,13 +180,17 @@ class ApiProvider {
         }
     }
     
-    public func getBusServices(containing searchString: String) -> [BusService] {
-        do {
-            let req = BusService.fetchRequest() as NSFetchRequest<BusService>
-            req.predicate = NSPredicate(format: "serviceNo CONTAINS[cd] %@", argumentArray: [searchString])
-            return try context.fetch(req)
-        } catch {
-            fatalError("Failure to fetch context: \(error)")
+    public func getBusServices(containing searchString: String, completion: CompletionHandler<[BusService]> = nil) {
+        DispatchQueue(label: K.backgroundThreadLabel).async {
+            do {
+                let req = BusService.fetchRequest() as NSFetchRequest<BusService>
+                req.predicate = NSPredicate(format: "serviceNo CONTAINS[cd] %@", argumentArray: [searchString])
+                completion?(try self.context.fetch(req).sorted {
+                    $0.serviceNo.localizedStandardCompare($1.serviceNo) == .orderedAscending
+                })
+            } catch {
+                fatalError("Failure to fetch context: \(error)")
+            }
         }
     }
     
@@ -209,13 +210,17 @@ class ApiProvider {
         }
     }
     
-    public func getBusStops(containing searchString: String) -> [BusStop] {
-        do {
-            let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
-            req.predicate = NSPredicate(format: "rawRoadDesc CONTAINS[cd] %@ || rawRoadName CONTAINS[cd] %@ || busStopCode CONTAINS[cd] %@", argumentArray: [searchString, searchString, searchString])
-            return try context.fetch(req)
-        } catch {
-            fatalError("Failure to fetch context: \(error)")
+    public func getBusStops(containing searchString: String, completion: CompletionHandler<[BusStop]> = nil) {
+        DispatchQueue(label: K.backgroundThreadLabel).async {
+            do {
+                let req = BusStop.fetchRequest() as NSFetchRequest<BusStop>
+                req.predicate = NSPredicate(format: "rawRoadDesc CONTAINS[cd] %@ || rawRoadName CONTAINS[cd] %@ || busStopCode CONTAINS[cd] %@", argumentArray: [searchString, searchString, searchString])
+                completion?(try self.context.fetch(req).sorted {
+                    $0.roadDesc.localizedStandardCompare($1.roadDesc) == .orderedAscending
+                })
+            } catch {
+                fatalError("Failure to fetch context: \(error)")
+            }
         }
     }
     

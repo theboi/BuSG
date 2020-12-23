@@ -15,24 +15,32 @@ class HomeSheetController: SheetController {
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
     lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: { _ in
-        self.reloadData()
+        self.reloadHome()
     }))
     
     var searchText: String = ""
     
-    var suggestedServices: [BusSuggestion] = []
+    var suggestedServices = [BusSuggestion]()
     
-    var nearbyStops: [BusStop] = []
+    var nearbyStops = [BusStop]()
     
-    var searchBusServices: [BusService] {
-        ApiProvider.shared.getBusServices(containing: searchText.lowercased())
+    var searchBusServices = [BusService]()
+    
+    var searchBusStops = [BusStop]()
+    
+    func reloadSearch() {
+        ApiProvider.shared.getBusStops(containing: searchText.lowercased()) { (busStops) in
+            self.searchBusStops = busStops
+            ApiProvider.shared.getBusServices(containing: self.searchText.lowercased()) { (busServices) in
+                self.searchBusServices = busServices
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
     
-    var searchBusStops: [BusStop] {
-        ApiProvider.shared.getBusStops(containing: searchText.lowercased())
-    }
-    
-    private func reloadData() {
+    private func reloadHome() {
         nearbyStops = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate)
         ApiProvider.shared.getSuggestedServices { busData in
             self.suggestedServices = busData
@@ -60,15 +68,13 @@ class HomeSheetController: SheetController {
         searchBar.placeholder = "Search for a bus stop or service"
         searchBar.delegate = self
         
-        
         headerView.trailingButton.isHidden = true
         headerView.addSubview(searchBar)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: headerView.topAnchor, constant: K.margin.small),
-            searchBar.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: K.margin.small),
-            searchBar.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -K.margin.small),
+            searchBar.topAnchor.constraint(equalTo: headerView.topAnchor, constant: K.margin.one),
+            searchBar.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: K.margin.one),
+            searchBar.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -K.margin.one),
         ])
         
         tableView.addSubview(refreshControl)
@@ -91,7 +97,7 @@ class HomeSheetController: SheetController {
         tableView.register(BusServiceTableViewCell.self, forCellReuseIdentifier: K.identifiers.busServiceCell)
         tableView.register(BusSuggestionTableViewCell.self, forCellReuseIdentifier: K.identifiers.busSuggestionCell)
         
-        reloadData()
+        reloadHome()
     }
 }
 
@@ -209,13 +215,13 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let busSuggestionSheetController = {
-            BusStopSheetController(for: self.suggestedServices[indexPath.row].originBusStop.busStopCode)
+            BusStopSheetController(for: self.suggestedServices[indexPath.row].originBusStop)
         }
         let busStopSheetController = { (busStops: [BusStop]) -> BusStopSheetController in
-            BusStopSheetController(for: busStops[indexPath.row].busStopCode)
+            BusStopSheetController(for: busStops[indexPath.row])
         }
         let busServiceSheetController = {
-            BusServiceSheetController(for: self.searchBusServices[indexPath.row].serviceNo, in: self.searchBusServices[indexPath.row].direction)
+            BusServiceSheetController(for: self.searchBusServices[indexPath.row])
         }
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -255,7 +261,7 @@ extension HomeSheetController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchText = searchText
-        self.tableView.reloadData()
+        reloadSearch()
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

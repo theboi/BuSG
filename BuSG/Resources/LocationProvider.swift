@@ -14,7 +14,7 @@ protocol LocationProviderDelegate: class {
     
     func locationProvider(didRequestNavigateTo annotation: MKAnnotation)
     
-    func locationProvider(didRequestRouteFor busService: BusService, in direction: Int64)
+    func locationProvider(didRequestRouteFor busService: BusService)
     
     func locationProviderDidRequestNavigateToCurrentLocation()
 
@@ -34,6 +34,12 @@ class LocationProvider: NSObject {
     
     public func distanceFromCurrentLocation(to location: CLLocation) -> CLLocationDistance {
         CLLocation.distance(location)(from: currentLocation)
+    }
+    
+    public func getNearestCoordinate(from arrayOfCoordinates: [CLLocationCoordinate2D]) -> Int {
+        return arrayOfCoordinates.enumerated().min {
+            distanceFromCurrentLocation(to: CLLocation(coordinate: $0.1)) < distanceFromCurrentLocation(to: CLLocation(coordinate: $1.1))
+        }!.0
     }
     
 }

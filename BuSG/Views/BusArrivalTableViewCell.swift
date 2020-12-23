@@ -69,12 +69,12 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
         stackView = UIStackView(arrangedSubviews: busTimingLabels)
         stackView.distribution = .fillEqually
         stackView.alignment = .trailing
-        stackView.spacing = K.margin.extraLarge
-        addSubview(stackView)
+        stackView.spacing = K.margin.twoAndHalf
+        contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.large),
+            stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.margin.two),
             stackView.widthAnchor.constraint(equalToConstant: 180),
         ])
         
@@ -108,8 +108,8 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
         insertSubview(errorLabel, aboveSubview: stackView)
         errorLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            errorLabel.topAnchor.constraint(equalTo: topAnchor),
-            errorLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            errorLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            errorLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             errorLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             errorLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
         ])

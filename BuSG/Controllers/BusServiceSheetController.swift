@@ -12,6 +12,12 @@ class BusServiceSheetController: SheetController {
     
     var busService: BusService!
     
+    lazy var previewingIndex: Int = {
+        visitingIndex
+    }()
+    
+    var visitingIndex: Int!
+        
     lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
     override func viewDidLoad() {
@@ -33,12 +39,17 @@ class BusServiceSheetController: SheetController {
         ])
         
         tableView.register(BusStopTableViewCell.self, forCellReuseIdentifier: K.identifiers.busStopCell)
+        
+        tableView.scrollToRow(at: IndexPath(row: visitingIndex, section: 0), at: .top, animated: false)
     }
     
-    init(for serviceNo: String, in direction: Int64) {
+    init(for busService: BusService, at busStopCode: String? = nil) {
         super.init()
 
-        busService = ApiProvider.shared.getBusService(with: serviceNo, in: direction)
+        self.visitingIndex = busService.busStops.firstIndex(where: { (busStop: BusStop) -> Bool in
+            busStop.busStopCode == busStopCode
+        }) ?? 0
+        self.busService = busService
         
         headerView.titleLabel.text = busService.serviceNo
         if let originDesc = busService.originBusStop?.roadDesc, let destinationDesc = busService.destinationBusStop?.roadDesc {
@@ -49,8 +60,7 @@ class BusServiceSheetController: SheetController {
             }
         }
         
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: direction)
-        
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService)
     }
     
     required init?(coder: NSCoder) {
@@ -70,18 +80,28 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStopCell, for: indexPath) as! BusStopTableViewCell
         let busStopData = self.busService.busStops[indexPath.row]
-
+        
+        cell.delegate = self
+        cell.indexPath = indexPath
+        
+        cell.isBeginning = indexPath.row == 0
+        cell.isEnd = indexPath.row == busService.busStops.count - 1
+        cell.isPreviewing = indexPath.row == previewingIndex
+        cell.isVisited = indexPath.row < visitingIndex
+        
         cell.busServices = busStopData.busServices
         cell.roadDescLabel.text = busStopData.roadDesc
         cell.busStopCodeLabel.text = busStopData.busStopCode
         cell.roadNameLabel.text = busStopData.roadName
+        cell.showSequence = true
+        cell.setNeedsDisplay()
         
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusStopSheetController(for: busService?.busStops[indexPath.row].busStopCode ?? K.nilStr), animated: true)
+        present(BusStopSheetController(for: busService.busStops[indexPath.row]), animated: true)
     }
 }
 
@@ -99,7 +119,17 @@ extension BusServiceSheetController: SheetControllerDelegate {
     }
     
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
-        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService, in: 1)
+        LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService)
     }
 
+}
+
+extension BusServiceSheetController: BusStopTableViewCellDelegate {
+    
+    func busStopTableViewCell(_ busStopTableViewCell: BusStopTableViewCell, didPressSequenceButtonAt index: Int) {
+        previewingIndex = index
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: CLLocation(coordinate: busService.busStops[previewingIndex].coordinate))
+        tableView.reloadData()
+    }
+    
 }

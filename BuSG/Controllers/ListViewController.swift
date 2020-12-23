@@ -177,8 +177,8 @@ extension ListViewController: UITableViewDataSource {
             dismissKeyboardWhenTapAround()
             textField.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: K.margin.large),
-                textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -K.margin.large),
+                textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: K.margin.two),
+                textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -K.margin.two),
                 textField.topAnchor.constraint(equalTo: cell.topAnchor),
                 textField.bottomAnchor.constraint(equalTo: cell.bottomAnchor),
             ])

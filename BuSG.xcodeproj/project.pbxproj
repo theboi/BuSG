@@ -51,6 +51,7 @@
 		AA9C4AC2258CE4580042C1C3 /* BusServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9C4AC1258CE4580042C1C3 /* BusServiceTableViewCell.swift */; };
 		AAA49517258270530073F360 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA49516258270530073F360 /* UITextField.swift */; };
 		AAA4951F25832A870073F360 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA4951E25832A870073F360 /* SettingsViewController.swift */; };
+		AAA7129A258ECF4200DA4835 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA71299258ECF4200DA4835 /* Credentials.swift */; };
 		AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */; };
 		AAE490B9257CEBCF0010B483 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE490B8257CEBCF0010B483 /* UIColor.swift */; };
 		AAE490BE257D20080010B483 /* BusSuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE490BD257D20080010B483 /* BusSuggestionTableViewCell.swift */; };
@@ -129,6 +130,7 @@
 		AA9C4AC1258CE4580042C1C3 /* BusServiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceTableViewCell.swift; sourceTree = "<group>"; };
 		AAA49516258270530073F360 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		AAA4951E25832A870073F360 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		AAA71299258ECF4200DA4835 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		AAC97DA025638B6D002C5640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AAE4909A257CCD690010B483 /* BusServiceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceAnnotation.swift; sourceTree = "<group>"; };
 		AAE490B8257CEBCF0010B483 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 		AAF4A4F625627D4F00FC51E7 /* BuSG */ = {
 			isa = PBXGroup;
 			children = (
+				AAA71299258ECF4200DA4835 /* Credentials.swift */,
 				AAF4A54425628DEF00FC51E7 /* Constants.swift */,
 				AA4C6E26256A52B300DDD32F /* Extensions */,
 				AA91D105257659DA003FAE6E /* Resources */,
@@ -530,6 +533,7 @@
 				AA995B17258794F000072557 /* UIWindow.swift in Sources */,
 				AA4C6E2B256A541D00DDD32F /* UIViewController.swift in Sources */,
 				AA8D0795257BDA2800BF3E3B /* MKMapView.swift in Sources */,
+				AAA7129A258ECF4200DA4835 /* Credentials.swift in Sources */,
 				AAE490B9257CEBCF0010B483 /* UIColor.swift in Sources */,
 				AA91D10825765A10003FAE6E /* BusData.xcdatamodeld in Sources */,
 				AAF4A54525628DEF00FC51E7 /* Constants.swift in Sources */,
