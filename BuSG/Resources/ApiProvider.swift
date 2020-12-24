@@ -258,7 +258,7 @@ class ApiProvider {
             }.uniqued { (busStop, busService, event) -> String in
                 busService.serviceNo
             }
-            let originBusServices = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate).flatMap { (busStop: BusStop) -> [(BusStop, BusService)] in
+            let originBusServices = ApiProvider.shared.getBusStops(nearby: (LocationProvider.shared.currentLocation ?? K.defaultLocation).coordinate).flatMap { (busStop: BusStop) -> [(BusStop, BusService)] in
                 return busStop.busServices.map { (busStop, $0) }
             }.uniqued { $1.serviceNo }
             

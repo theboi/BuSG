@@ -41,7 +41,7 @@ class HomeSheetController: SheetController {
     }
     
     private func reloadHome() {
-        nearbyStops = ApiProvider.shared.getBusStops(nearby: LocationProvider.shared.currentLocation.coordinate)
+        nearbyStops = ApiProvider.shared.getBusStops(nearby: (LocationProvider.shared.currentLocation ?? K.defaultLocation).coordinate)
         ApiProvider.shared.getSuggestedServices { busData in
             self.suggestedServices = busData
             self.tableView.reloadData()

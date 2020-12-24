@@ -29,6 +29,8 @@ enum K {
     static let cellHeight: CGFloat = 50
     static let backgroundThreadLabel = "com.ryanthe.background"
     
+    static let defaultLocation = CLLocation(latitude: 1.3521, longitude: 103.8198)
+    
     enum apiUrls {
         static let busArrivals = "\(apiUrlBase)/BusArrivalv2"
         static let busServices = "\(apiUrlBase)/BusServices"

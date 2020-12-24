@@ -28,12 +28,12 @@ class LocationProvider: NSObject {
     
     weak var delegate: LocationProviderDelegate?
     
-    public var currentLocation: CLLocation {
-        locationManager.location ?? CLLocation(latitude: 0, longitude: 0)
+    public var currentLocation: CLLocation? {
+        locationManager.location
     }
     
     public func distanceFromCurrentLocation(to location: CLLocation) -> CLLocationDistance {
-        CLLocation.distance(location)(from: currentLocation)
+        CLLocation.distance(location)(from: currentLocation ?? K.defaultLocation)
     }
     
     public func getNearestCoordinate(from arrayOfCoordinates: [CLLocationCoordinate2D]) -> Int {

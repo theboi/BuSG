@@ -191,7 +191,8 @@ extension MainViewController: LocationProviderDelegate {
     
     func locationProviderDidRequestNavigateToCurrentLocation() {
         locationManager.requestLocation()
-        let region = MKCoordinateRegion(center: LocationProvider.shared.currentLocation.coordinate.shift, latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
+        let span = LocationProvider.shared.currentLocation == nil ? 26000 : K.mapView.span
+        let region = MKCoordinateRegion(center: (LocationProvider.shared.currentLocation ?? K.defaultLocation).coordinate.shift, latitudinalMeters: span, longitudinalMeters: span)
         mapView.setRegion(region, animated: true)
         self.clearMapView()
         mapView.showsUserLocation = true
