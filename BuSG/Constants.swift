@@ -31,6 +31,9 @@ enum K {
     
     static let defaultLocation = CLLocation(latitude: 1.3521, longitude: 103.8198)
     
+    enum appDetails {
+        static let appleId = "1545571389"
+    }
     enum apiUrls {
         static let busArrivals = "\(apiUrlBase)/BusArrivalv2"
         static let busServices = "\(apiUrlBase)/BusServices"
