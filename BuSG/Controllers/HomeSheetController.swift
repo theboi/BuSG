@@ -11,9 +11,7 @@ import CoreLocation
 class HomeSheetController: SheetController {
     
     lazy var searchBar = UISearchBar()
-    
-    lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
-    
+        
     lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: { _ in
         self.reloadHome()
     }))

@@ -62,6 +62,7 @@ class SettingsViewController: ListViewController {
                     }
                     return UIAlertController(title: "Could not send Mail", message: "Please configure your device to send Mail.", preferredStyle: .alert)
                 }()),
+                ListItem(title: "Debug Logs", pushViewController: UIViewController()),
                 ListItem(title: "Rate on App Store", urlString: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=\(K.appDetails.appleId)"),
                 ListItem(title: "Open-Sourced on GitHub", urlString: "https://github.com/theboi/BuSG"),
             ]),

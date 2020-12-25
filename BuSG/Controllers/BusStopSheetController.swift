@@ -13,9 +13,7 @@ class BusStopSheetController: SheetController {
     var busStop: BusStop!
     
     var busArrival: BusArrival?
-    
-    lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
-    
+        
     lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: {_ in
         self.reloadData()
     }))
@@ -38,7 +36,7 @@ class BusStopSheetController: SheetController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop))
         
         tableView.addSubview(refreshControl)

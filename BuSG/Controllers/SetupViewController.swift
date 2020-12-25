@@ -10,7 +10,7 @@ import UIKit
 class SetupViewController: ListViewController {
     
     var favouritePlaces = [FavoritePlace]()
-        
+    
     func reloadData() {
         let favouritePlacesLocationPickerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 100))
         //favouritePlacesLocationPickerView.backgroundColor = .red

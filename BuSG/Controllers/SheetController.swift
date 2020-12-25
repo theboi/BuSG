@@ -38,6 +38,8 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
         didSet { updateView(for: state) }
     }
     
+    var tableView: UITableView!
+    
     lazy var headerView = SheetHeaderView(for: self)
     
     lazy var contentView = SheetContentView()
@@ -48,8 +50,9 @@ class SheetController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Init SheetController
     
-    init() {
+    init(tableView: UITableView = UITableView(frame: CGRect(), style: .grouped)) {
         super.init(nibName: nil, bundle: nil)
+        self.tableView = tableView
     }
     
     required init?(coder: NSCoder) {

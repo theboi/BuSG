@@ -17,8 +17,6 @@ class BusServiceSheetController: SheetController {
     }()
     
     var visitingIndex: Int!
-        
-    lazy var tableView = UITableView(frame: CGRect(), style: .grouped)
     
     override func viewDidLoad() {
         super.viewDidLoad()
