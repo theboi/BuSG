@@ -22,7 +22,7 @@ class BusServiceSheetController: SheetController {
         super.viewDidLoad()
         
         delegate = self
-
+        
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
@@ -43,7 +43,7 @@ class BusServiceSheetController: SheetController {
     
     init(for busService: BusService, at busStopCode: String? = nil) {
         super.init()
-
+        
         self.visitingIndex = busService.busStops.firstIndex(where: { (busStop: BusStop) -> Bool in
             busStop.busStopCode == busStopCode
         }) ?? 0
@@ -75,6 +75,22 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
         85
     }
     
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { suggestedActions in
+//            let remind = UIAction(title: "Remind Me to Alight", image: UIImage(systemName: "bell")) { action in
+//
+//            }
+            // TODO
+            
+            let locate = UIAction(title: "Locate", image: UIImage(systemName: "location")) { action in
+                let cell = tableView.cellForRow(at: indexPath) as! BusStopTableViewCell
+                cell.delegate?.busStopTableViewCell(cell, didPressSequenceButtonAt: indexPath.row)
+            }
+            
+            return UIMenu(title: "", children: [locate])
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busStopCell, for: indexPath) as! BusStopTableViewCell
         let busStopData = self.busService.busStops[indexPath.row]
@@ -96,7 +112,7 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
         
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         present(BusStopSheetController(for: busService.busStops[indexPath.row]), animated: true)
@@ -119,7 +135,7 @@ extension BusServiceSheetController: SheetControllerDelegate {
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
         LocationProvider.shared.delegate?.locationProvider(didRequestRouteFor: busService)
     }
-
+    
 }
 
 extension BusServiceSheetController: BusStopTableViewCellDelegate {
