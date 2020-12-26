@@ -11,7 +11,7 @@ import UIKit
 class BusArrivalTableViewCell: BusServiceTableViewCell {
     
     private var stackView: UIStackView!
-    private lazy var busTimingLabels = [UILabel(), UILabel(), UILabel()]
+    private lazy var busTimingLabels = [UIButton(), UIButton(), UIButton()]
     
     public lazy var errorLabel = UILabel()
     
@@ -25,10 +25,9 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
                     let label = busTimingLabels[index]
                     let loadIndicator = label.subviews[0]
                     label.layer.borderWidth = 0
-                    label.textColor = .label
+                    label.setTitleColor(.label, for: .normal)
                     label.backgroundColor = .clear
                     label.layer.opacity = 1
-                    
                     if index == 0 {
                         label.backgroundColor = UIColor.label.withAlphaComponent(0.1)
                     } else {
@@ -37,20 +36,20 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
                     }
                     if time == -999 {
                         /// Bus service estimation not available (stopped due to night time etc.)
-                        label.text = "-"
+                        label.setTitle("-", for: .normal)
                         label.layer.opacity = 0.4
                     } else if time == 0 {
                         /// Bus Arriving
-                        label.text = "Arr"
-                        label.textColor = .systemBackground
+                        label.setTitle("Arr", for: .normal)
+                        label.setTitleColor(.systemBackground, for: .normal)
                         label.backgroundColor = .systemGreen
                     } else if time < 0 {
                         /// Bus Just Left
-                        label.text = "Arr"
+                        label.setTitle("Arr", for: .normal)
                         label.layer.opacity = 0.4
                     } else {
                         /// Valid timing
-                        label.text = String(time)
+                        label.setTitle(String(time), for: .normal)
                     }
                     loadIndicator.isHidden = !(bus.load == .sda || bus.load == .lsd)
                     loadIndicator.backgroundColor = bus.load == .sda ? .systemYellow : .systemRed
@@ -79,18 +78,16 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
         ])
         
         busTimingLabels.forEach { (label) in
-            label.textAlignment = .center
-            label.font = .medium
+            label.titleLabel?.font = .medium
             label.layer.cornerRadius = K.cornerRadius
-            label.clipsToBounds = true
             label.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 label.heightAnchor.constraint(equalToConstant: 40)
             ])
             
             let loadIndicatorView = UIView()
+            label.insertSubview(loadIndicatorView, at: 0)
             loadIndicatorView.backgroundColor = .systemGreen
-            label.addSubview(loadIndicatorView)
             loadIndicatorView.translatesAutoresizingMaskIntoConstraints = false
             loadIndicatorView.layer.cornerRadius = 3
             loadIndicatorView.layer.borderWidth = 1
