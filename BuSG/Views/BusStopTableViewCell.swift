@@ -9,13 +9,16 @@ import UIKit
 
 protocol BusStopTableViewCellDelegate {
     
-    func busStopTableViewCell(_ busStopTableViewCell: BusStopTableViewCell, didPressSequenceButtonAt index: Int)
+    func busStopTableViewCell(_ busStopTableViewCell: BusStopTableViewCell, didSelectSequenceButtonAt index: Int)
     
 }
 
+/// Height: 85
 class BusStopTableViewCell: UITableViewCell {
     
     public var indexPath: IndexPath?
+    
+    public var delegate: BusStopTableViewCellDelegate?
     
     public lazy var busStopCodeLabel = UILabel()
     
@@ -30,15 +33,13 @@ class BusStopTableViewCell: UITableViewCell {
     private lazy var sequenceButton = { () -> UIButton in 
         let button = UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
             if let indexPath = self.indexPath {
-                self.delegate?.busStopTableViewCell(self, didPressSequenceButtonAt: indexPath.row)
+                self.delegate?.busStopTableViewCell(self, didSelectSequenceButtonAt: indexPath.row)
             }
         }))
         button.isHidden = true
         return button
     }()
-    
-    public var delegate: BusStopTableViewCellDelegate?
-    
+        
     public var showSequence: Bool = false {
         didSet {
             sequenceButton.isHidden = !showSequence
@@ -66,8 +67,8 @@ class BusStopTableViewCell: UITableViewCell {
         roadDescLabel.font = .medium
         roadDescLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            roadDescLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.margin.two),
-            roadDescLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.margin.one),
+            roadDescLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.sizes.margin.two),
+            roadDescLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.sizes.margin.one),
         ])
         
         contentView.addSubview(busStopCodeLabel)
@@ -75,8 +76,8 @@ class BusStopTableViewCell: UITableViewCell {
         busStopCodeLabel.textColor = .secondaryLabel
         busStopCodeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            busStopCodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.margin.two),
-            busStopCodeLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.margin.one),
+            busStopCodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.sizes.margin.two),
+            busStopCodeLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.sizes.margin.one),
         ])
         
         contentView.addSubview(roadNameLabel)
@@ -84,8 +85,8 @@ class BusStopTableViewCell: UITableViewCell {
         roadNameLabel.textColor = .secondaryLabel
         roadNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            roadNameLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: K.margin.one),
-            roadNameLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.margin.one),
+            roadNameLabel.leadingAnchor.constraint(equalTo: busStopCodeLabel.trailingAnchor, constant: K.sizes.margin.one),
+            roadNameLabel.topAnchor.constraint(equalTo: roadDescLabel.bottomAnchor, constant: K.sizes.margin.one),
         ])
         
         contentView.addSubview(busServicesLabel)
@@ -93,9 +94,9 @@ class BusStopTableViewCell: UITableViewCell {
         busServicesLabel.textColor = .accent
         busServicesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            busServicesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.margin.two),
-            busServicesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.margin.two),
-            busServicesLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -K.margin.one),
+            busServicesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.sizes.margin.two),
+            busServicesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.sizes.margin.two),
+            busServicesLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -K.sizes.margin.one),
         ])
         
         contentView.addSubview(distanceLabel)
@@ -103,15 +104,15 @@ class BusStopTableViewCell: UITableViewCell {
         distanceLabel.textColor = .secondaryLabel
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            distanceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.margin.two),
-            distanceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.margin.one),
+            distanceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.sizes.margin.two),
+            distanceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.sizes.margin.one),
         ])
         
         contentView.addSubview(sequenceButton)
         sequenceButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             sequenceButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            sequenceButton.widthAnchor.constraint(equalToConstant: K.margin.two*4),
+            sequenceButton.widthAnchor.constraint(equalToConstant: K.sizes.margin.two*4),
             sequenceButton.topAnchor.constraint(equalTo: contentView.topAnchor),
             sequenceButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
@@ -128,7 +129,7 @@ class BusStopTableViewCell: UITableViewCell {
         super.draw(rect)
                 
         if showSequence {
-            let trailingXPoint = bounds.width-K.margin.two*2
+            let trailingXPoint = bounds.width-K.sizes.margin.two*2
             let radius: CGFloat = 12
             let lineWidth: CGFloat = 4 /// Radius + Line Width = 16 (K.margin.two)
             let color = isVisited ? UIColor.secondarySystemFill : UIColor.accent
@@ -147,7 +148,7 @@ class BusStopTableViewCell: UITableViewCell {
                 verticalLine.move(to: CGPoint(x: trailingXPoint, y: frame.height/2 + radius/2 + lineWidth*2))
                 verticalLine.addLine(to: CGPoint(x: trailingXPoint, y: frame.height))
             }
-            verticalLine.lineWidth = K.margin.half
+            verticalLine.lineWidth = K.sizes.margin.half
             color.setStroke()
             verticalLine.stroke()
             

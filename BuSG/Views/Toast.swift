@@ -26,7 +26,7 @@ class Toast: UIView {
             imageView?.translatesAutoresizingMaskIntoConstraints = false
             imageView?.setContentHuggingPriority(.defaultHigh, for: .horizontal)
             NSLayoutConstraint.activate([
-                imageView!.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
+                imageView!.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.sizes.margin.two),
                 imageView!.centerYAnchor.constraint(equalTo: centerYAnchor),
             ])
         }
@@ -37,8 +37,8 @@ class Toast: UIView {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: imageView?.trailingAnchor ?? leadingAnchor, constant: K.margin.two),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.two),
+            label.leadingAnchor.constraint(equalTo: imageView?.trailingAnchor ?? leadingAnchor, constant: K.sizes.margin.two),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.sizes.margin.two),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
         

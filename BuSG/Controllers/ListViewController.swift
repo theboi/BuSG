@@ -152,7 +152,7 @@ extension ListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        data.sections[section].headerText != nil ? 60 : 20
+        data.sections[section].headerText != nil ? K.sizes.header.listMax : K.sizes.header.listMin
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -177,8 +177,8 @@ extension ListViewController: UITableViewDataSource {
             dismissKeyboardWhenTapAround()
             textField.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: K.margin.two),
-                textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -K.margin.two),
+                textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: K.sizes.margin.two),
+                textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -K.sizes.margin.two),
                 textField.topAnchor.constraint(equalTo: cell.topAnchor),
                 textField.bottomAnchor.constraint(equalTo: cell.bottomAnchor),
             ])
@@ -210,7 +210,7 @@ extension ListViewController: UITableViewDataSource {
 extension ListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return data.sections[indexPath.section].items[indexPath.row].height ?? K.cellHeight
+        return data.sections[indexPath.section].items[indexPath.row].height ?? K.sizes.cell.list
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

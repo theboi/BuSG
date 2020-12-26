@@ -72,7 +72,7 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        85
+        K.sizes.cell.busStop
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -84,7 +84,7 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
             
             let locate = UIAction(title: "Locate", image: UIImage(systemName: "location")) { action in
                 let cell = tableView.cellForRow(at: indexPath) as! BusStopTableViewCell
-                cell.delegate?.busStopTableViewCell(cell, didPressSequenceButtonAt: indexPath.row)
+                cell.delegate?.busStopTableViewCell(cell, didSelectSequenceButtonAt: indexPath.row)
             }
             
             return UIMenu(title: "", children: [locate])
@@ -108,6 +108,7 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
         cell.busStopCodeLabel.text = busStopData.busStopCode
         cell.roadNameLabel.text = busStopData.roadName
         cell.showSequence = true
+        /// Calls cell to redraw
         cell.setNeedsDisplay()
         
         return cell
@@ -115,7 +116,7 @@ extension BusServiceSheetController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        present(BusStopSheetController(for: busService.busStops[indexPath.row]), animated: true)
+        present(BusArrivalSheetController(for: busService.busStops[indexPath.row]), animated: true)
     }
 }
 
@@ -140,7 +141,7 @@ extension BusServiceSheetController: SheetControllerDelegate {
 
 extension BusServiceSheetController: BusStopTableViewCellDelegate {
     
-    func busStopTableViewCell(_ busStopTableViewCell: BusStopTableViewCell, didPressSequenceButtonAt index: Int) {
+    func busStopTableViewCell(_ busStopTableViewCell: BusStopTableViewCell, didSelectSequenceButtonAt index: Int) {
         previewingIndex = index
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: CLLocation(coordinate: busService.busStops[previewingIndex].coordinate))
         tableView.reloadData()

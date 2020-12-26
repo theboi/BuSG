@@ -7,11 +7,15 @@
 
 import UIKit
 
-/// Height: 65
 class BusArrivalTableViewCell: BusServiceTableViewCell {
     
     private var stackView: UIStackView!
-    private lazy var busTimingLabels = [UIButton(), UIButton(), UIButton()]
+    
+    private lazy var busTimingButtons: [UIButton] = (0...2).map { num in
+        UIButton(primaryAction: UIAction(handler: { _ in
+            self.delegate?.busArrivalTableViewCell(self, didSelectBusTimingButtonAt: num, forCellAt: self.indexPath)
+        }))
+    }
     
     public lazy var errorLabel = UILabel()
     
@@ -22,34 +26,34 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
                 stackView.isHidden = false
                 busTimings.enumerated().forEach { (index, bus) in
                     let time = bus.estimatedMinsToArrival
-                    let label = busTimingLabels[index]
-                    let loadIndicator = label.subviews[0]
-                    label.layer.borderWidth = 0
-                    label.setTitleColor(.label, for: .normal)
-                    label.backgroundColor = .clear
-                    label.layer.opacity = 1
+                    let button = busTimingButtons[index]
+                    let loadIndicator = button.subviews[0]
+                    button.layer.borderWidth = 0
+                    button.setTitleColor(.label, for: .normal)
+                    button.backgroundColor = .clear
+                    button.layer.opacity = 1
                     if index == 0 {
-                        label.backgroundColor = UIColor.label.withAlphaComponent(0.1)
+                        button.backgroundColor = UIColor.label.withAlphaComponent(0.1)
                     } else {
-                        label.layer.borderWidth = 1
-                        label.layer.borderColor = UIColor.systemFill.cgColor
+                        button.layer.borderWidth = 1
+                        button.layer.borderColor = UIColor.systemFill.cgColor
                     }
                     if time == -999 {
                         /// Bus service estimation not available (stopped due to night time etc.)
-                        label.setTitle("-", for: .normal)
-                        label.layer.opacity = 0.4
+                        button.setTitle("-", for: .normal)
+                        button.layer.opacity = 0.4
                     } else if time == 0 {
                         /// Bus Arriving
-                        label.setTitle("Arr", for: .normal)
-                        label.setTitleColor(.systemBackground, for: .normal)
-                        label.backgroundColor = .systemGreen
+                        button.setTitle("Arr", for: .normal)
+                        button.setTitleColor(.systemBackground, for: .normal)
+                        button.backgroundColor = .systemGreen
                     } else if time < 0 {
                         /// Bus Just Left
-                        label.setTitle("Arr", for: .normal)
-                        label.layer.opacity = 0.4
+                        button.setTitle("Arr", for: .normal)
+                        button.layer.opacity = 0.4
                     } else {
                         /// Valid timing
-                        label.setTitle(String(time), for: .normal)
+                        button.setTitle(String(time), for: .normal)
                     }
                     loadIndicator.isHidden = !(bus.load == .sda || bus.load == .lsd)
                     loadIndicator.backgroundColor = bus.load == .sda ? .systemYellow : .systemRed
@@ -65,28 +69,28 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        stackView = UIStackView(arrangedSubviews: busTimingLabels)
+        stackView = UIStackView(arrangedSubviews: busTimingButtons)
         stackView.distribution = .fillEqually
         stackView.alignment = .trailing
-        stackView.spacing = K.margin.twoAndHalf
+        stackView.spacing = K.sizes.margin.twoAndHalf
         contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.margin.two),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: (K.sizes.cell.busArrivalMin-K.sizes.others.busTimingButton)/2),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.sizes.margin.two),
             stackView.widthAnchor.constraint(equalToConstant: 180),
         ])
         
-        busTimingLabels.forEach { (label) in
-            label.titleLabel?.font = .medium
-            label.layer.cornerRadius = K.cornerRadius
-            label.translatesAutoresizingMaskIntoConstraints = false
+        busTimingButtons.forEach { (button) in
+            button.titleLabel?.font = .medium
+            button.layer.cornerRadius = K.cornerRadius
+            button.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                label.heightAnchor.constraint(equalToConstant: 40)
+                button.heightAnchor.constraint(equalToConstant: K.sizes.others.busTimingButton)
             ])
             
             let loadIndicatorView = UIView()
-            label.insertSubview(loadIndicatorView, at: 0)
+            button.insertSubview(loadIndicatorView, at: 0)
             loadIndicatorView.backgroundColor = .systemGreen
             loadIndicatorView.translatesAutoresizingMaskIntoConstraints = false
             loadIndicatorView.layer.cornerRadius = 3
@@ -95,8 +99,8 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
             NSLayoutConstraint.activate([
                 loadIndicatorView.heightAnchor.constraint(equalToConstant: 5),
                 loadIndicatorView.widthAnchor.constraint(equalToConstant: 5),
-                loadIndicatorView.topAnchor.constraint(equalTo: label.topAnchor, constant: 5),
-                loadIndicatorView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: -5),
+                loadIndicatorView.topAnchor.constraint(equalTo: button.topAnchor, constant: 5),
+                loadIndicatorView.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -5),
             ])
         }
         

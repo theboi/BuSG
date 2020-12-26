@@ -11,7 +11,7 @@
 		AA13B6E4257229F2006FD219 /* SheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E3257229F2006FD219 /* SheetContentView.swift */; };
 		AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */; };
 		AA13B6FC2572571F006FD219 /* ApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6FB2572571F006FD219 /* ApiProvider.swift */; };
-		AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B7272573447C006FD219 /* BusStopSheetController.swift */; };
+		AA13B7282573447C006FD219 /* BusArrivalSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B7272573447C006FD219 /* BusArrivalSheetController.swift */; };
 		AA13B72D2573469B006FD219 /* BusServiceSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */; };
 		AA13B732257346D6006FD219 /* BusServiceMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B731257346D6006FD219 /* BusServiceMapper.swift */; };
 		AA13B737257346E4006FD219 /* BusStopMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B736257346E4006FD219 /* BusStopMapper.swift */; };
@@ -90,7 +90,7 @@
 		AA13B6E3257229F2006FD219 /* SheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetContentView.swift; sourceTree = "<group>"; };
 		AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetHeaderView.swift; sourceTree = "<group>"; };
 		AA13B6FB2572571F006FD219 /* ApiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiProvider.swift; sourceTree = "<group>"; };
-		AA13B7272573447C006FD219 /* BusStopSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopSheetController.swift; sourceTree = "<group>"; };
+		AA13B7272573447C006FD219 /* BusArrivalSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusArrivalSheetController.swift; sourceTree = "<group>"; };
 		AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceSheetController.swift; sourceTree = "<group>"; };
 		AA13B731257346D6006FD219 /* BusServiceMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusServiceMapper.swift; sourceTree = "<group>"; };
 		AA13B736257346E4006FD219 /* BusStopMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopMapper.swift; sourceTree = "<group>"; };
@@ -322,7 +322,7 @@
 				AAE490C8257E07EA0010B483 /* ListViewController.swift */,
 				AAF4A5332562840500FC51E7 /* MainViewController.swift */,
 				AA13B6DB2572127E006FD219 /* HomeSheetController.swift */,
-				AA13B7272573447C006FD219 /* BusStopSheetController.swift */,
+				AA13B7272573447C006FD219 /* BusArrivalSheetController.swift */,
 				AA13B72C2573469B006FD219 /* BusServiceSheetController.swift */,
 				AA87B998257F8816002F322D /* SetupViewController.swift */,
 				AAA4951E25832A870073F360 /* SettingsViewController.swift */,
@@ -514,7 +514,7 @@
 				AA995B1C258795E900072557 /* UIView.swift in Sources */,
 				AA7F4CC2257A81B200A4DD14 /* BusArrivalTableViewCell.swift in Sources */,
 				AA710A132589FC5400B59E4F /* UISwitch.swift in Sources */,
-				AA13B7282573447C006FD219 /* BusStopSheetController.swift in Sources */,
+				AA13B7282573447C006FD219 /* BusArrivalSheetController.swift in Sources */,
 				AA37ECD325890C3E00E60786 /* UIAlertController.swift in Sources */,
 				AA45B6482578BD3D00EBCCE1 /* LocationProvider.swift in Sources */,
 				AA9C4AAB258C95420042C1C3 /* FavoritePlace.swift in Sources */,

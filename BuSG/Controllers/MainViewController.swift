@@ -78,7 +78,7 @@ class MainViewController: UIViewController {
         mapView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.two),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.sizes.margin.two),
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             stackView.widthAnchor.constraint(equalToConstant: 50),
             stackView.heightAnchor.constraint(equalToConstant: 100),
@@ -90,8 +90,8 @@ class MainViewController: UIViewController {
         mapView.addSubview(compassButton)
         compassButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            compassButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.margin.two),
-            compassButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: K.margin.two),
+            compassButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.sizes.margin.two),
+            compassButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: K.sizes.margin.two),
         ])
         
     }
@@ -165,7 +165,7 @@ extension MainViewController: MKMapViewDelegate {
             stack.axis = .vertical
             annotationView?.detailCalloutAccessoryView = stack
             annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure, primaryAction: UIAction(handler: { _ in
-                self.currentlyPresentingSheetController?.present(BusStopSheetController(for: annotation.busStop), animated: true)
+                self.currentlyPresentingSheetController?.present(BusArrivalSheetController(for: annotation.busStop), animated: true)
             }))
             return annotationView
         default:

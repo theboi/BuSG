@@ -27,8 +27,8 @@ class SheetHeaderView: UIView {
         trailingButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         trailingButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            trailingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.margin.two),
-            trailingButton.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.two),
+            trailingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -K.sizes.margin.two),
+            trailingButton.topAnchor.constraint(equalTo: topAnchor, constant: K.sizes.margin.two),
         ])
         
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -39,9 +39,9 @@ class SheetHeaderView: UIView {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
         NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalTo: topAnchor, constant: K.margin.two),
-            textView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.margin.two),
-            textView.trailingAnchor.constraint(equalTo: trailingButton.leadingAnchor, constant: -K.margin.two),
+            textView.topAnchor.constraint(equalTo: topAnchor, constant: K.sizes.margin.two),
+            textView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: K.sizes.margin.two),
+            textView.trailingAnchor.constraint(equalTo: trailingButton.leadingAnchor, constant: -K.sizes.margin.two),
         ])
     }
     

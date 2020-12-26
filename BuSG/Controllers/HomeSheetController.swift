@@ -70,9 +70,9 @@ class HomeSheetController: SheetController {
         headerView.addSubview(searchBar)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: headerView.topAnchor, constant: K.margin.one),
-            searchBar.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: K.margin.one),
-            searchBar.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -K.margin.one),
+            searchBar.topAnchor.constraint(equalTo: headerView.topAnchor, constant: K.sizes.margin.one),
+            searchBar.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: K.sizes.margin.one),
+            searchBar.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -K.sizes.margin.one),
         ])
         
         tableView.addSubview(refreshControl)
@@ -141,21 +141,21 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        30
+        K.sizes.header.home
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if searchText.count == 0 {
             switch indexPath.section {
-            case 0: return suggestedServices.isEmpty ? 85 : 55
+            case 0: return suggestedServices.isEmpty ? K.sizes.cell.busStop : K.sizes.cell.busSuggestion
             case 1: fallthrough
-            default: return 85
+            default: return K.sizes.cell.busStop
             }
         } else {
             switch indexPath.section {
-            case 0: return 65
+            case 0: return K.sizes.cell.busService
             case 1: fallthrough
-            default: return 85
+            default: return K.sizes.cell.busStop
             }
         }
     }
@@ -213,10 +213,10 @@ extension HomeSheetController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let busSuggestionSheetController = {
-            BusStopSheetController(for: self.suggestedServices[indexPath.row].originBusStop)
+            BusArrivalSheetController(for: self.suggestedServices[indexPath.row].originBusStop)
         }
-        let busStopSheetController = { (busStops: [BusStop]) -> BusStopSheetController in
-            BusStopSheetController(for: busStops[indexPath.row])
+        let busStopSheetController = { (busStops: [BusStop]) -> BusArrivalSheetController in
+            BusArrivalSheetController(for: busStops[indexPath.row])
         }
         let busServiceSheetController = {
             BusServiceSheetController(for: self.searchBusServices[indexPath.row])

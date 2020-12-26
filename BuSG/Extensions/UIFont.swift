@@ -9,6 +9,10 @@ import UIKit
 
 extension UIFont {
     
+    class var largeScaled: UIFont {
+        UIFont.systemFont(ofSize: 30, weight: .semibold)
+    }
+    
     class var large: UIFont {
         UIFont.systemFont(ofSize: 24, weight: .semibold)
     }

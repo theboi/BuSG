@@ -8,12 +8,14 @@
 import UIKit
 import MapKit
 
-class BusStopSheetController: SheetController {
+class BusArrivalSheetController: SheetController {
     
     var busStop: BusStop!
     
     var busArrival: BusArrival?
-        
+    
+    var previewingIndexes = [Int]()
+    
     lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: {_ in
         self.reloadData()
     }))
@@ -85,20 +87,24 @@ class BusStopSheetController: SheetController {
     }
 }
 
-extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
+extension BusArrivalSheetController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         busStop.busServices.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        65
+        previewingIndexes.contains(indexPath.row) ? K.sizes.cell.busArrivalMax : K.sizes.cell.busArrivalMin
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.identifiers.busArrivalCell, for: indexPath) as! BusArrivalTableViewCell
         let busServiceData = busStop.busServices[indexPath.row]
+        cell.indexPath = indexPath
+        cell.delegate = self
+        cell.isPreviewing = previewingIndexes.contains(indexPath.row)
         cell.serviceNoLabel.text = busServiceData.serviceNo
-        cell.destinationLabel.text = ApiProvider.shared.getBusStop(with: busServiceData.destinationCode)?.roadDesc
+        cell.originLabel.text = busServiceData.originBusStop?.roadDesc
+        cell.destinationLabel.text = busServiceData.destinationBusStop?.roadDesc
         cell.busService = busStop.busServices[indexPath.row]
         cell.busTimings = busArrival?.busServices[busServiceData.serviceNo]?.nextBuses
         return cell
@@ -111,7 +117,7 @@ extension BusStopSheetController: UITableViewDelegate, UITableViewDataSource {
 
 }
 
-extension BusStopSheetController: SheetControllerDelegate {
+extension BusArrivalSheetController: SheetControllerDelegate {
     
     func sheetController(_ sheetController: SheetController, didUpdate state: SheetState) {
         UIView.animate(withDuration: 0.3) {
@@ -126,6 +132,22 @@ extension BusStopSheetController: SheetControllerDelegate {
     
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
         LocationProvider.shared.delegate?.locationProvider(didRequestNavigateTo: BusStopAnnotation(for: busStop))
+    }
+    
+}
+
+extension BusArrivalSheetController: BusServiceTableViewCellDelegate {
+    
+    func busArrivalTableViewCell(_ busArrivalTableViewCell: BusServiceTableViewCell, didSelectBusTimingButtonAt busTimingIndex: Int, forCellAt cellIndexPath: IndexPath) {
+        if previewingIndexes.contains(cellIndexPath.row) {
+            previewingIndexes.removeAll(where: { $0 == cellIndexPath.row })
+        } else {
+            previewingIndexes.append(cellIndexPath.row)
+        }
+        let cell = tableView.cellForRow(at: cellIndexPath) as! BusArrivalTableViewCell
+        cell.isPreviewing = !cell.isPreviewing
+        tableView.beginUpdates()
+        tableView.endUpdates()
     }
     
 }
