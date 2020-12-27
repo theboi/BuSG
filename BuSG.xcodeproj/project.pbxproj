@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA12DCE72598550000923FB5 /* BusStopEndAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA12DCE62598550000923FB5 /* BusStopEndAnnotationView.swift */; };
+		AA12DCEC2598606400923FB5 /* BusStopMidAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA12DCEB2598606400923FB5 /* BusStopMidAnnotationView.swift */; };
+		AA12DCF725988B4800923FB5 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA12DCF625988B4800923FB5 /* CALayer.swift */; };
 		AA13B6DC2572127E006FD219 /* HomeSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6DB2572127E006FD219 /* HomeSheetController.swift */; };
 		AA13B6E4257229F2006FD219 /* SheetContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E3257229F2006FD219 /* SheetContentView.swift */; };
 		AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */; };
@@ -86,6 +89,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA12DCE62598550000923FB5 /* BusStopEndAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopEndAnnotationView.swift; sourceTree = "<group>"; };
+		AA12DCEB2598606400923FB5 /* BusStopMidAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopMidAnnotationView.swift; sourceTree = "<group>"; };
+		AA12DCF625988B4800923FB5 /* CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		AA13B6DB2572127E006FD219 /* HomeSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSheetController.swift; sourceTree = "<group>"; };
 		AA13B6E3257229F2006FD219 /* SheetContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetContentView.swift; sourceTree = "<group>"; };
 		AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetHeaderView.swift; sourceTree = "<group>"; };
@@ -180,6 +186,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA12DCE42598544400923FB5 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				AA91D0F62576416C003FAE6E /* BusStopTableViewCell.swift */,
+				AA7F4CC1257A81B200A4DD14 /* BusArrivalTableViewCell.swift */,
+				AA9C4AC1258CE4580042C1C3 /* BusServiceTableViewCell.swift */,
+				AAE490BD257D20080010B483 /* BusSuggestionTableViewCell.swift */,
+				AA710A1C258B197500B59E4F /* ListViewHeaderFooterView.swift */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		AA12DCE52598546700923FB5 /* Annotations */ = {
+			isa = PBXGroup;
+			children = (
+				AA12DCE62598550000923FB5 /* BusStopEndAnnotationView.swift */,
+				AA12DCEB2598606400923FB5 /* BusStopMidAnnotationView.swift */,
+			);
+			path = Annotations;
+			sourceTree = "<group>";
+		};
 		AA4C6E26256A52B300DDD32F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,6 +224,7 @@
 				AA710A122589FC5400B59E4F /* UISwitch.swift */,
 				AA710A17258B0F8900B59E4F /* CLLocation.swift */,
 				AA710A21258B530300B59E4F /* CGRect.swift */,
+				AA12DCF625988B4800923FB5 /* CALayer.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -344,15 +372,12 @@
 		AAF4A5502562A53D00FC51E7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AA12DCE52598546700923FB5 /* Annotations */,
+				AA12DCE42598544400923FB5 /* TableView */,
 				AA13B6E3257229F2006FD219 /* SheetContentView.swift */,
 				AA13B6E825722A8A006FD219 /* SheetHeaderView.swift */,
 				AA91D0DB25763BCA003FAE6E /* FillView.swift */,
-				AA91D0F62576416C003FAE6E /* BusStopTableViewCell.swift */,
-				AA7F4CC1257A81B200A4DD14 /* BusArrivalTableViewCell.swift */,
-				AA9C4AC1258CE4580042C1C3 /* BusServiceTableViewCell.swift */,
-				AAE490BD257D20080010B483 /* BusSuggestionTableViewCell.swift */,
 				AA995B202587BA4C00072557 /* Toast.swift */,
-				AA710A1C258B197500B59E4F /* ListViewHeaderFooterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -493,12 +518,14 @@
 				AA13B6E925722A8A006FD219 /* SheetHeaderView.swift in Sources */,
 				AAE490BE257D20080010B483 /* BusSuggestionTableViewCell.swift in Sources */,
 				AAF4A4FC25627D4F00FC51E7 /* ViewController.swift in Sources */,
+				AA12DCF725988B4800923FB5 /* CALayer.swift in Sources */,
 				AA995B212587BA4D00072557 /* Toast.swift in Sources */,
 				AAA4951F25832A870073F360 /* SettingsViewController.swift in Sources */,
 				AAE4909B257CCD690010B483 /* BusServiceAnnotation.swift in Sources */,
 				AA90842B257A4012000A9D2B /* BusRoute+CoreDataClass.swift in Sources */,
 				AAA49517258270530073F360 /* UITextField.swift in Sources */,
 				AAF4A4F825627D4F00FC51E7 /* AppDelegate.swift in Sources */,
+				AA12DCEC2598606400923FB5 /* BusStopMidAnnotationView.swift in Sources */,
 				AA6E97BB257FA5F4004D585A /* EventProvider.swift in Sources */,
 				AA710A18258B0F8900B59E4F /* CLLocation.swift in Sources */,
 				AA90842D257A4012000A9D2B /* BusStop+CoreDataClass.swift in Sources */,
@@ -508,6 +535,7 @@
 				AA13B73F257369B9006FD219 /* URL.swift in Sources */,
 				AA13B6E4257229F2006FD219 /* SheetContentView.swift in Sources */,
 				AA7F4CC7257A9D0900A4DD14 /* BusStopAnnotation.swift in Sources */,
+				AA12DCE72598550000923FB5 /* BusStopEndAnnotationView.swift in Sources */,
 				AA13B737257346E4006FD219 /* BusStopMapper.swift in Sources */,
 				AA91D0FC257649A6003FAE6E /* BusArrival.swift in Sources */,
 				AA9C4AA0258BB9270042C1C3 /* BusStop+CoreDataProperties.swift in Sources */,

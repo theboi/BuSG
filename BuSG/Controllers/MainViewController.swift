@@ -12,6 +12,8 @@ class MainViewController: UIViewController {
     
     lazy var mapView = MKMapView()
     
+    var sheetController = HomeSheetController()
+    
     var locationManager: CLLocationManager {
         LocationProvider.shared.locationManager
     }
@@ -24,19 +26,26 @@ class MainViewController: UIViewController {
         return topSheetController
     }
     
-    var sheetController = HomeSheetController()
-    
     init() {
         super.init(nibName: nil, bundle: nil)
-        self.view.backgroundColor = .systemBackground
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        self.view = mapView
-
+        view = mapView
+        view.backgroundColor = .systemBackground
+        
         locationManager.delegate = self
         mapView.delegate = self
         LocationProvider.shared.delegate = self
         
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "busStop")
+        mapView.register(BusStopEndAnnotationView.self, forAnnotationViewWithReuseIdentifier: K.identifiers.busStopEndAnnotation)
+        mapView.register(BusStopMidAnnotationView.self, forAnnotationViewWithReuseIdentifier: K.identifiers.busStopMidAnnotation)
         
         let stackButtons = [
             UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
@@ -93,16 +102,11 @@ class MainViewController: UIViewController {
             compassButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -K.sizes.margin.two),
             compassButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: K.sizes.margin.two),
         ])
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.present(sheetController, animated: true)
+        present(sheetController, animated: true)
         
         guard CLLocationManager.locationServicesEnabled() else {
             return
@@ -153,20 +157,15 @@ extension MainViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         switch annotation {
         case let annotation as BusStopAnnotation:
-            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "busStop", for: annotation) as? MKMarkerAnnotationView
-            annotationView?.glyphImage = UIImage(systemName: "building")
-            annotationView?.markerTintColor = .systemRed
-            annotationView?.canShowCallout = true
-            let roadNameLabel = UILabel()
-            roadNameLabel.text = annotation.busStop.roadDesc
-            let busStopCodeLabel = UILabel()
-            busStopCodeLabel.text = annotation.busStop.busStopCode
-            let stack = UIStackView(arrangedSubviews: [roadNameLabel, busStopCodeLabel])
-            stack.axis = .vertical
-            annotationView?.detailCalloutAccessoryView = stack
-            annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure, primaryAction: UIAction(handler: { _ in
+            //annotation.isEnds
+//            annotation.isEnds ? (mapView.dequeueReusableAnnotationView(withIdentifier: K.identifiers.busStopMidAnnotation, for: annotation)) as! BusStopMidAnnotationView
+//            : 
+            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: K.identifiers.busStopEndAnnotation, for: annotation) as! BusStopEndAnnotationView
+            annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure, primaryAction: UIAction(handler: { _ in
                 self.currentlyPresentingSheetController?.present(BusArrivalSheetController(for: annotation.busStop), animated: true)
             }))
+            annotationView.roadNameLabel.text = annotation.busStop.roadDesc
+            annotationView.busStopCodeLabel.text = annotation.busStop.busStopCode
             return annotationView
         default:
             return nil
