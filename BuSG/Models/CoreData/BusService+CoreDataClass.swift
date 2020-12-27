@@ -40,4 +40,8 @@ public class BusService: NSManagedObject {
         ApiProvider.shared.getBusStop(with: destinationCode)
     }
     
+    public var serviceOperator: BusServiceOperator {
+        BusServiceOperator(rawValue: rawServiceOperator)!
+    }
+    
 }

@@ -5,7 +5,7 @@
 //  Created by Ryan The on 29/11/20.
 //
 
-enum BusServiceOperator: String, Codable {
+public enum BusServiceOperator: String, Codable {
     /// SBST (for SBS Transit)
     case sbst = "SBST"
     /// SMRT (for SMRT Corporation)
@@ -17,7 +17,7 @@ enum BusServiceOperator: String, Codable {
     case none = ""
 }
 
-enum BusServiceCategory: String, Codable {
+public enum BusServiceCategory: String, Codable {
     /// EXPRESS
     case express = "EXPRESS"
     /// FEEDER
@@ -39,7 +39,7 @@ enum BusServiceCategory: String, Codable {
     case none = ""
 }
 
-struct BusServiceMapperValue: Codable {
+public struct BusServiceMapperValue: Codable {
     
     /// The bus service number. Sample: `"107M"`
     let serviceNo: String
@@ -90,7 +90,7 @@ struct BusServiceMapperValue: Codable {
     
 }
 
-struct BusServiceMapperRoot: Codable, BusApiMapperRoot {
+public struct BusServiceMapperRoot: Codable, BusApiMapperRoot {
     
     typealias Value = BusServiceMapperValue
         

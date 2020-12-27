@@ -21,22 +21,19 @@ class BusServiceTableViewCell: UITableViewCell {
     
     public lazy var serviceNoLabel = UILabel()
     
+    public lazy var originLabel = UILabel()
+
     public lazy var destinationDirectionImageView = UIImageView()
     
     public lazy var destinationLabel = UILabel()
     
-    public lazy var originLabel = UILabel()
-
+    public lazy var busOperatorImage = UIImageView()
+    
     public lazy var isPreviewing: Bool = false {
         didSet {
             originLabelWidthConstraint.isActive = !isPreviewing
             destinationDirectionImageViewLeadingAnchorConstraint.constant = isPreviewing ? K.sizes.margin.one : 0
-            let scale: CGFloat = isPreviewing ? 1 : 0.8
-            let shift: CGFloat = 1-scale
-            let label = self.serviceNoLabel
-            UIView.animate(withDuration: 0.2) {
-                self.serviceNoLabel.transform = CGAffineTransform(scaleX: scale, y: scale).concatenating(CGAffineTransform(translationX: -label.frame.width*shift/2, y: -label.frame.height*shift/2))
-            }
+            busOperatorImage.isHidden = !isPreviewing
         }
     }
     
@@ -46,23 +43,20 @@ class BusServiceTableViewCell: UITableViewCell {
         }
     }
     
-    enum originLabelConstraints {
-        
-    }
-    
     lazy var originLabelWidthConstraint = originLabel.widthAnchor.constraint(equalToConstant: 0)
-    lazy var destinationDirectionImageViewLeadingAnchorConstraint = destinationDirectionImageView.leadingAnchor.constraint(equalTo: originLabel.trailingAnchor, constant: K.sizes.margin.one)
+    lazy var destinationDirectionImageViewLeadingAnchorConstraint = destinationDirectionImageView.leadingAnchor.constraint(equalTo: originLabel.trailingAnchor, constant: isPreviewing ? K.sizes.margin.one : 0)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         contentView.addSubview(serviceNoLabel)
+        contentView.addSubview(originLabel)
         contentView.addSubview(destinationDirectionImageView)
         contentView.addSubview(destinationLabel)
-        contentView.addSubview(originLabel)
+        contentView.addSubview(busOperatorImage)
 
         serviceNoLabel.translatesAutoresizingMaskIntoConstraints = false
-        serviceNoLabel.font = .largeScaled
+        serviceNoLabel.font = .large
         NSLayoutConstraint.activate([
             serviceNoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: K.sizes.margin.one),
             serviceNoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.sizes.margin.two),
@@ -75,8 +69,8 @@ class BusServiceTableViewCell: UITableViewCell {
             originLabel.heightAnchor.constraint(equalToConstant: 15),
             originLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -K.sizes.margin.one),
             originLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: K.sizes.margin.two),
-            originLabelWidthConstraint,
         ])
+        originLabelWidthConstraint.isActive = !isPreviewing
         
         destinationDirectionImageView.preferredSymbolConfiguration = .init(font: .detail)
         destinationDirectionImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -91,6 +85,16 @@ class BusServiceTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             destinationLabel.leadingAnchor.constraint(equalTo: destinationDirectionImageView.trailingAnchor, constant: K.sizes.margin.one),
             destinationLabel.centerYAnchor.constraint(equalTo: destinationDirectionImageView.centerYAnchor),
+        ])
+        
+        busOperatorImage.isHidden = !isPreviewing
+        busOperatorImage.contentMode = .scaleAspectFit
+        busOperatorImage.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            busOperatorImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -K.sizes.margin.two),
+            busOperatorImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -K.sizes.margin.one),
+            busOperatorImage.heightAnchor.constraint(equalToConstant: 20),
+            busOperatorImage.widthAnchor.constraint(equalToConstant: 48),
         ])
         
         backgroundColor = .clear

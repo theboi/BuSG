@@ -33,4 +33,8 @@ extension UIFont {
         UIFont.systemFont(ofSize: 13)
     }
     
+    class var small: UIFont {
+        UIFont.systemFont(ofSize: 11)
+    }
+    
 }

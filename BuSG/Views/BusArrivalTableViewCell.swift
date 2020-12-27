@@ -9,7 +9,7 @@ import UIKit
 
 class BusArrivalTableViewCell: BusServiceTableViewCell {
     
-    private var stackView: UIStackView!
+    private lazy var stackView = UIStackView(arrangedSubviews: busTimingButtons)
     
     private lazy var busTimingButtons: [UIButton] = (0...2).map { num in
         UIButton(primaryAction: UIAction(handler: { _ in
@@ -17,7 +17,26 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
         }))
     }
     
+    private var previewSelectionLayer = { () -> CALayer in
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.label.withAlphaComponent(0.2).cgColor
+        layer.cornerRadius = K.cornerRadius
+        return layer
+    }()
+    
     public lazy var errorLabel = UILabel()
+    
+    public var previewingTimingIndex: Int? = nil {
+        didSet {
+            previewSelectionLayer.removeFromSuperlayer()
+            stackView.arrangedSubviews.enumerated().forEach { (index, view) in
+                if index == previewingTimingIndex {
+                    previewSelectionLayer.frame = view.bounds
+                    view.layer.addSublayer(previewSelectionLayer)
+                }
+            }
+        }
+    }
     
     public var busTimings: [BusArrivalBus]? {
         didSet {
@@ -69,11 +88,10 @@ class BusArrivalTableViewCell: BusServiceTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        stackView = UIStackView(arrangedSubviews: busTimingButtons)
+        contentView.addSubview(stackView)
         stackView.distribution = .fillEqually
         stackView.alignment = .trailing
         stackView.spacing = K.sizes.margin.twoAndHalf
-        contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: (K.sizes.cell.busArrivalMin-K.sizes.others.busTimingButton)/2),

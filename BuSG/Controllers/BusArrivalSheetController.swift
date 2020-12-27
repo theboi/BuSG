@@ -14,7 +14,7 @@ class BusArrivalSheetController: SheetController {
     
     var busArrival: BusArrival?
     
-    var previewingIndexes = [Int]()
+    var previewingIndexes = [Int: Int]()
     
     lazy var refreshControl = UIRefreshControl(frame: CGRect(), primaryAction: UIAction(handler: {_ in
         self.reloadData()
@@ -93,7 +93,7 @@ extension BusArrivalSheetController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        previewingIndexes.contains(indexPath.row) ? K.sizes.cell.busArrivalMax : K.sizes.cell.busArrivalMin
+        previewingIndexes[indexPath.row] != nil ? K.sizes.cell.busArrivalMax : K.sizes.cell.busArrivalMin
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -101,7 +101,15 @@ extension BusArrivalSheetController: UITableViewDelegate, UITableViewDataSource 
         let busServiceData = busStop.busServices[indexPath.row]
         cell.indexPath = indexPath
         cell.delegate = self
-        cell.isPreviewing = previewingIndexes.contains(indexPath.row)
+        cell.isPreviewing = previewingIndexes[indexPath.row] != nil
+        cell.previewingTimingIndex = previewingIndexes[indexPath.row]
+        switch busServiceData.serviceOperator {
+        case .sbst: cell.busOperatorImage.image = UIImage(named: "BusOperatorLogoSBST")
+        case .smrt: cell.busOperatorImage.image = UIImage(named: "BusOperatorLogoSMRT")
+        case .gas: cell.busOperatorImage.image = UIImage(named: "BusOperatorLogoGAS")
+        case .tts: cell.busOperatorImage.image = UIImage(named: "BusOperatorLogoTTS")
+        default: break
+        }
         cell.serviceNoLabel.text = busServiceData.serviceNo
         cell.originLabel.text = busServiceData.originBusStop?.roadDesc
         cell.destinationLabel.text = busServiceData.destinationBusStop?.roadDesc
@@ -139,13 +147,15 @@ extension BusArrivalSheetController: SheetControllerDelegate {
 extension BusArrivalSheetController: BusServiceTableViewCellDelegate {
     
     func busArrivalTableViewCell(_ busArrivalTableViewCell: BusServiceTableViewCell, didSelectBusTimingButtonAt busTimingIndex: Int, forCellAt cellIndexPath: IndexPath) {
-        if previewingIndexes.contains(cellIndexPath.row) {
-            previewingIndexes.removeAll(where: { $0 == cellIndexPath.row })
-        } else {
-            previewingIndexes.append(cellIndexPath.row)
-        }
         let cell = tableView.cellForRow(at: cellIndexPath) as! BusArrivalTableViewCell
-        cell.isPreviewing = !cell.isPreviewing
+
+        if previewingIndexes[cellIndexPath.row] == busTimingIndex {
+            previewingIndexes.removeValue(forKey: cellIndexPath.row)
+        } else {
+            previewingIndexes[cellIndexPath.row] = busTimingIndex
+        }
+        cell.isPreviewing = previewingIndexes[cellIndexPath.row] != nil
+        cell.previewingTimingIndex = previewingIndexes[cellIndexPath.row]
         tableView.beginUpdates()
         tableView.endUpdates()
     }
