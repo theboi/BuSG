@@ -60,7 +60,9 @@ class SettingsViewController: ListViewController {
                         mail.setSubject("Feedback on BuSG")
                         return mail
                     }
-                    return UIAlertController(title: "Could not send Mail", message: "Please configure your device to send Mail.", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Could not send Mail", message: "Please configure your device to send Mail.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+                    return alert
                 }()),
                 ListItem(title: "Debug Logs", pushViewController: UIViewController()),
                 ListItem(title: "Rate on App Store", urlString: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=\(K.appDetails.appleId)"),
