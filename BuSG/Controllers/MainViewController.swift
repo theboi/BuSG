@@ -52,7 +52,7 @@ class MainViewController: UIViewController {
                 self.present(UINavigationController(rootViewController: SettingsViewController()), animated: true)
             })),
             UIButton(type: .roundedRect, primaryAction: UIAction(handler: { _ in
-                LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
+                LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationAnimated: true)
             }))
         ]
         
@@ -115,7 +115,7 @@ class MainViewController: UIViewController {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestAlwaysAuthorization()
         } else {
-            LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
+            LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationAnimated: true)
         }
     }
     
@@ -128,7 +128,7 @@ class MainViewController: UIViewController {
 extension MainViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationAnimated: false)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -177,22 +177,22 @@ extension MainViewController: MKMapViewDelegate {
 extension MainViewController: LocationProviderDelegate {
     
     func locationProvider(didRequestNavigateTo location: CLLocation) {
-        let region = MKCoordinateRegion(center: location.coordinate.shift, latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
+        let region = MKCoordinateRegion(center: location.coordinate.shift(), latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
         mapView.setRegion(region, animated: true)
     }
     
     func locationProvider(didRequestNavigateTo annotation: MKAnnotation) {
-        let region = MKCoordinateRegion(center: annotation.coordinate.shift, latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
+        let region = MKCoordinateRegion(center: annotation.coordinate.shift(), latitudinalMeters: K.mapView.span, longitudinalMeters: K.mapView.span)
         mapView.setRegion(region, animated: true)
         self.clearMapView()
         mapView.addAnnotation(annotation)
     }
     
-    func locationProviderDidRequestNavigateToCurrentLocation() {
+    func locationProvider(didRequestNavigateToCurrentLocationAnimated animated: Bool) {
         locationManager.requestLocation()
-        let span = LocationProvider.shared.currentLocation == nil ? 26000 : K.mapView.span
-        let region = MKCoordinateRegion(center: (LocationProvider.shared.currentLocation ?? K.defaultLocation).coordinate.shift, latitudinalMeters: span, longitudinalMeters: span)
-        mapView.setRegion(region, animated: true)
+        let span = LocationProvider.shared.currentLocation == nil ? K.mapView.defaultSpan : K.mapView.span
+        let region = MKCoordinateRegion(center: (LocationProvider.shared.currentLocation ?? K.mapView.defaultLocation).coordinate.shift(by: span), latitudinalMeters: span, longitudinalMeters: span)
+        mapView.setRegion(region, animated: animated)
         self.clearMapView()
         mapView.showsUserLocation = true
     }

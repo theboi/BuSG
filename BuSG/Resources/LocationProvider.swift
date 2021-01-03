@@ -16,7 +16,7 @@ protocol LocationProviderDelegate: class {
     
     func locationProvider(didRequestRouteFor busService: BusService)
     
-    func locationProviderDidRequestNavigateToCurrentLocation()
+    func locationProvider(didRequestNavigateToCurrentLocationAnimated animated: Bool)
 
 }
 
@@ -33,7 +33,7 @@ class LocationProvider: NSObject {
     }
     
     public func distanceFromCurrentLocation(to location: CLLocation) -> CLLocationDistance {
-        CLLocation.distance(location)(from: currentLocation ?? K.defaultLocation)
+        CLLocation.distance(location)(from: currentLocation ?? K.mapView.defaultLocation)
     }
     
     public func getNearestCoordinate(from arrayOfCoordinates: [CLLocationCoordinate2D]) -> Int {

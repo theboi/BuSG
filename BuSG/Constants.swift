@@ -20,9 +20,7 @@ enum K {
     static let busStopRoutingSkip = 5
     static let nilStr = "-"
     static let backgroundThreadLabel = "com.ryanthe.background"
-    
-    static let defaultLocation = CLLocation(latitude: 1.3521, longitude: 103.8198)
-    
+        
     enum appDetails {
         static let appleId = "1545571389"
     }
@@ -63,6 +61,8 @@ enum K {
     enum mapView {
         static let edgePadding = UIEdgeInsets(top: 0, left: 10, bottom: 500, right: 10)
         static let span: CLLocationDistance = 500
+        static let defaultSpan: CLLocationDistance = 55000
+        static let defaultLocation = CLLocation(latitude: 1.3521, longitude: 103.8198)
     }
     
     enum sizes {

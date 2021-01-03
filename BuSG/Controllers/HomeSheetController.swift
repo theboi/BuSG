@@ -39,7 +39,7 @@ class HomeSheetController: SheetController {
     }
     
     private func reloadHome() {
-        nearbyStops = ApiProvider.shared.getBusStops(nearby: (LocationProvider.shared.currentLocation ?? K.defaultLocation).coordinate)
+        nearbyStops = ApiProvider.shared.getBusStops(nearby: (LocationProvider.shared.currentLocation ?? K.mapView.defaultLocation).coordinate)
         ApiProvider.shared.getSuggestedServices { busData in
             self.suggestedServices = busData
             self.tableView.reloadData()
@@ -290,7 +290,7 @@ extension HomeSheetController: SheetControllerDelegate {
     }
     
     func sheetController(_ sheetController: SheetController, didReturnFromDismissalBy presentingSheetController: SheetController) {
-        LocationProvider.shared.delegate?.locationProviderDidRequestNavigateToCurrentLocation()
+        LocationProvider.shared.delegate?.locationProvider(didRequestNavigateToCurrentLocationAnimated: true)
     }
     
 }
